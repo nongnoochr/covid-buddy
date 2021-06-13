@@ -1,0 +1,9 @@
+.main-container {
+    margin-top: 20px;
+}
+
+@media screen and (max-width: 600px) {
+    .icon-text {
+        display: none;
+    }
+}

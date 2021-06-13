@@ -1,0 +1,41 @@
+.question-container {
+    margin: 1em;
+}
+
+.answer-container {
+    max-height: 60vh;
+    border-bottom: 5em;
+    margin-top: 2em;
+}
+
+.answer-contents {
+    height: 58vh;
+    overflow: auto;
+    padding: 0.5em 0;
+}
+
+.answer-item-timestamp {
+    font-size: smaller;
+    color: gray;
+}
+
+.answer-findhcp-container {
+    margin-top: 1em;
+}
+
+.answer-user-user {
+    font-weight: bold;
+    color: salmon;
+}
+
+.answer-user-buddy {
+    font-weight: bold;
+    color: blue;
+}
+
+/* Remove styling for anchor elements */
+a.answer-link {
+    text-decoration: none;
+    pointer-events: none;
+    color: black;
+  }
