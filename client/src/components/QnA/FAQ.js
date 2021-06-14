@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Form, Col, Button } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
@@ -7,21 +7,29 @@ import { getFAQQuestions, getFAQResponseById } from '../../services/QnAService';
 // Icons
 import { GrFilter } from 'react-icons/gr';
 
-
-const options = getFAQQuestions();
-const setCategories = new Set(options.map(item => item.category));
-const categories = [...setCategories];
-
 const FAQ = (props) => {
     const refTypeahead = useRef(null);
 
-    const [faqQuestions, setFAQQuestions] = useState(options);
+    const [faqQuestions, setFAQQuestions] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [selectedQuestion, setSelectedQuestion] = useState([]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(async () => {
+        const options = await getFAQQuestions();
+        setFAQQuestions(options);
+        
+        const uniqueCategories = new Set(options.map(item => item.category));
+        const categories = [...uniqueCategories];
+        setCategories(categories);
+        
+    }, []);
+
+    // --------------
 
     const submitQuestionHandler = async () => {
-        const res = getFAQResponseById(selectedQuestion[0].id);
+        const res = await getFAQResponseById(selectedQuestion[0].id);
         return {
             id: res.id,
             source: res.source,
@@ -35,9 +43,10 @@ const FAQ = (props) => {
 
         const newCat = ev.target.value;
         setSelectedCategory(newCat);
+        getFAQQuestions(newCat).then(newQuestions => {
+            setFAQQuestions(newQuestions)
+        });
 
-        const newQuestions = getFAQQuestions(newCat);
-        setFAQQuestions(newQuestions);
     };
 
     const resetInputHandler = () => {
@@ -52,6 +61,8 @@ const FAQ = (props) => {
     };
 
     const filterByFields = ['question', 'category'];
+
+    
 
 
     return (<div>

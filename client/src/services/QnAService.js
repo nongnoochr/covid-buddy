@@ -7,11 +7,15 @@
 // // Add the WASM backend to the global backend registry.
 // import '@tensorflow/tfjs-backend-wasm';
 // import * as tf from '@tensorflow/tfjs';
-import '@tensorflow/tfjs';
+
+import axios from 'axios';
+
+// import '@tensorflow/tfjs';
 import '@tensorflow/tfjs-backend-webgl';
+// import '@tensorflow/tfjs-backend-cpu';
 
 import * as use from '@tensorflow-models/universal-sentence-encoder';
- 
+
 const maxContextLen = 256;
 // console.log(tf.getBackend());
 
@@ -22,7 +26,7 @@ const data_raw_flatten = data_raw.map(item => {
 
     const curAllData = item.data.map(curdata => {
         const curIndex = idx_cnt;
-        idx_cnt = idx_cnt +1;
+        idx_cnt = idx_cnt + 1;
         return {
             id: curIndex,
             category: item.title.trim(),
@@ -51,7 +55,7 @@ const responses = data_raw_flatten.map(data => {
     // and response input length n and O(n) for context length. 
     // ---> We recommend question and response inputs that are approximately 
     // one sentence in length."
-    
+
     // Trim the response to maximum of 512 characters to reduce complexity
     const res = docAnswer.body.innerText.trim();
     const trimRes = res.slice(0, maxContextLen);
@@ -90,64 +94,23 @@ const dotProduct =
 let model;
 
 // ------ Required method
-const getFAQQuestions = (category = 'All') => {
-    const allQuestions = data_raw_flatten.map(item => {
-        return {
-            id: item.id,
-            category: item.category,
-            question: item.context,
-        };
-    });
+const getFAQQuestions = async (category = 'All') => {
+    const res = await axios.get(`/getfaqquestions?category=${category}`)
+    return res.data;
 
-    if (category === 'All') {
-        return allQuestions
-    } else {
-
-        const catQuestions = allQuestions.filter(item => {
-            return item.category === category;
-        });
-
-        return catQuestions;
-    }
-    
 };
 
-const getFAQResponseById = (id) => {
-    const res = data_raw_flatten.find(item => item.id === id);
-    return res;
+const getFAQResponseById = async (id) => {
+
+    const res = await axios.get(`/getfaqresponse?id=${id}`)
+    return res.data;
+
 }
 
 const getResponse = async (inputQuery) => {
 
-    if (!model) {
-        model = await use.loadQnA();
-    }
-    const input = {
-        queries: [ inputQuery ],
-        responses: responses.map(item => item.data),
-        contexts: contexts.map(item => item.data)
-    };
-    let result = model.embed(input);
-    const query = result['queryEmbedding'].arraySync();
-    const answers = result['responseEmbedding'].arraySync();
-    const scores = [];
-
-    for (let i = 0; i < answers.length; i++) {
-        const score = dotProduct(query[0], answers[i]);
-        scores.push(score);
-
-    }
-
-    let finalResults = data_raw_flatten.map((res, i) => {
-        return {
-            ...res,
-            score: scores[i]
-        };
-    });
-
-    finalResults.sort((a, b) => (a.score > b.score) ? -1 : 1)
-
-    return finalResults;
+    const res = await axios.get(`/getqnaresponse?msg=${inputQuery}`)
+    return res.data;
 
 };
 

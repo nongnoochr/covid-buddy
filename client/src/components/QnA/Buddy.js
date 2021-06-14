@@ -23,7 +23,6 @@ const Buddy = (props) => {
             // https://towardsdatascience.com/how-we-created-an-open-source-covid-19-chatbot-c5c900b382df
             const regex = /(covid-19|covid)/ig;
             const cleanInputQuestion = inputQuestion.replaceAll(regex, 'coronavirus');
-
             const result = await getResponse(cleanInputQuestion);
 
             let response = {

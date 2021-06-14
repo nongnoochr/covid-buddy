@@ -1,8 +1,11 @@
-//   // -------------
-
 const express = require( 'express' );
 const fs = require( 'fs' );
 const path = require( 'path' );
+
+const {getFAQQuestions,  getFAQResponseById, getResponse } = 
+    require('./server/QnAService');
+
+// ------------
 
 // create express application
 const app = express();
@@ -17,6 +20,30 @@ app.use('/images', express.static(path.resolve( __dirname, 'client/build/images'
 // const pathStatic = path.join(__dirname,'client/build/static');
 // console.log('pathStatic: ', pathStatic);
 // app.use(express.static(pathStatic));
+
+app.get('/getfaqquestions', (req, res) => {
+
+    const category = req.query.category || 'All' ;
+    const faqquestions = getFAQQuestions(category);
+    res.send(faqquestions);
+});
+
+app.get('/getfaqresponse', (req, res) => {
+
+    const id = req.query.id || -1;
+    const faqresponse = getFAQResponseById(id);
+    res.send(faqresponse);
+});
+
+app.get('/getqnaresponse', async (req, res) => {
+
+    const msg = req.query.msg || '';
+    let ansRes = null;
+    if (msg) {
+        ansRes = await getResponse(msg);
+    }
+    res.send(ansRes);
+});
 
 // for any other requests, send `index.html` as a response
 app.use( '*', ( req, res ) => {
