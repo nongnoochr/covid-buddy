@@ -8,7 +8,7 @@ const path = require( 'path' );
 const app = express();
 
 const host = '0.0.0.0';
-const PORT = process.env.PORT || 3384
+const PORT = process.env.PORT || 8080;
 
 // serve static assets
 app.get( /\.(js|css|map|ico)$/, express.static( path.resolve( __dirname, 'client/build' ) ) );
