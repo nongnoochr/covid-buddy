@@ -104,7 +104,6 @@ const getFAQQuestions = (category = 'All') => {
 
 const getFAQResponseById = (id) => {
     const res = data_raw_flatten.find(item => item.id === +id); // Must compare with a numeric value
-    console.log('res: ', res);
     return res;
 };
 
