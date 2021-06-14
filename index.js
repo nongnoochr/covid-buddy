@@ -1,6 +1,9 @@
 const express = require( 'express' );
 const fs = require( 'fs' );
 const path = require( 'path' );
+const timeout = require('connect-timeout');
+var bodyParser = require('body-parser');
+
 
 const {getFAQQuestions,  getFAQResponseById, getResponse } = 
     require('./server/QnAService');
@@ -21,6 +24,12 @@ app.use('/images', express.static(path.resolve( __dirname, 'client/build/images'
 // console.log('pathStatic: ', pathStatic);
 // app.use(express.static(pathStatic));
 
+// https://help.heroku.com/AXOSFIXN/why-am-i-getting-h12-request-timeout-errors-in-nodejs
+// https://github.com/expressjs/timeout 
+function haltOnTimedout (req, res, next) {
+    if (!req.timedout) next()
+  }
+
 app.get('/getfaqquestions', (req, res) => {
 
     const category = req.query.category || 'All' ;
@@ -35,12 +44,17 @@ app.get('/getfaqresponse', (req, res) => {
     res.send(faqresponse);
 });
 
-app.get('/getqnaresponse', async (req, res) => {
+app.get('/getqnaresponse', timeout('120s'), bodyParser.json(), haltOnTimedout, async (req, res) => {
 
     const msg = req.query.msg || '';
     let ansRes = null;
     if (msg) {
-        ansRes = await getResponse(msg);
+        try {
+            ansRes = await getResponse(msg);
+        } catch(err) {
+            return next(err)
+        }
+        
     }
     res.send(ansRes);
 });
