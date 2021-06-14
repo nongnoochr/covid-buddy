@@ -7,6 +7,7 @@ const path = require( 'path' );
 // create express application
 const app = express();
 
+const host = '0.0.0.0';
 const PORT = process.env.PORT || 3384
 
 // serve static assets
@@ -33,7 +34,7 @@ app.use( '*', ( req, res ) => {
 } );
 
 // run express server on port 9000
-app.listen( PORT, () => {
+app.listen( PORT, host, () => {
     console.log( `Express server started at http://localhost:${PORT}` );
 } );
 
