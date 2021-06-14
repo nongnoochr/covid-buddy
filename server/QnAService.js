@@ -42,8 +42,8 @@ const data_raw_flatten = data_raw.map(item => {
 })
     .flat()
 
-    // Temporary to work around the network close issu
-    .splice(0, 256);
+    // Temporary to work around the network close and memory quota vastly exceeded issue
+    .splice(0, 128);
 
 
 const responses = data_raw_flatten.map(data => {
