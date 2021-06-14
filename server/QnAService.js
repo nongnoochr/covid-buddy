@@ -26,7 +26,10 @@ const data_raw_flatten = data_raw.map(item => {
 
     return curAllData
 })
-    .flat();
+    .flat()
+
+    // Temporary to work around the network close issu
+    .splice(0, 128);
 
 
 const responses = data_raw_flatten.map(data => {
