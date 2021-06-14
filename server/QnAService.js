@@ -6,7 +6,7 @@ const cheerio = require('cheerio');
 // --- Load & Manipulate data - To replace with a rest api
 const data_raw = require('./../data/qna/who.json');
 
-const maxContextLen = 200;
+const maxContextLen = 128;
 
 
 let idx_cnt = 0;
@@ -15,21 +15,35 @@ const data_raw_flatten = data_raw.map(item => {
     const curAllData = item.data.map(curdata => {
         const curIndex = idx_cnt;
         idx_cnt = idx_cnt + 1;
+
+        const $ = cheerio.load(curdata.answer);
+
+        // --- Don't send html texts becaues they don't use on mobile
+        // https://tfhub.dev/google/universal-sentence-encoder-multilingual-qa/1
+        // "All input text can have arbitrary length! 
+        // However, model time and space complexity is O(n^2) for question 
+        // and response input length n and O(n) for context length. 
+        // ---> We recommend question and response inputs that are approximately 
+        // one sentence in length."
+
+        // Trim the response to maximum of 512 characters to reduce complexity
+        const curans = $.text().trim();
+
         return {
             id: curIndex,
             category: item.title.trim(),
             source: item.url,
             context: curdata.question,
-            response: curdata.answer
+            response: curans
         };
     });
 
     return curAllData
 })
-    .flat()
+    .flat();
 
-    // Temporary to work around the network close issu
-    .splice(0, 128);
+    // // Temporary to work around the network close issu
+    // .splice(0, 256);
 
 
 const responses = data_raw_flatten.map(data => {
