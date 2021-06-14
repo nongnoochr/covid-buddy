@@ -6,7 +6,7 @@ const cheerio = require('cheerio');
 // --- Load & Manipulate data - To replace with a rest api
 const data_raw = require('./../data/qna/who.json');
 
-const maxContextLen = 256;
+const maxContextLen = 200;
 
 
 let idx_cnt = 0;
