@@ -1,0 +1,22 @@
+{
+  "name": "covid-buddy",
+  "version": "1.0.0",
+  "description": "TO add",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nongnoochr/covid-buddy.git"
+  },
+  "author": "Nongnooch Roongpiboonsopit",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nongnoochr/covid-buddy/issues"
+  },
+  "homepage": "https://github.com/nongnoochr/covid-buddy#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

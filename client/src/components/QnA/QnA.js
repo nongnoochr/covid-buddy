@@ -20,6 +20,7 @@ import { SiProbot } from 'react-icons/si';
 const QnA = (props) => {
 
     const refSelfChecker = useRef(null);
+    const refResponse = useRef(null);
 
     const ctx = useContext(HCPContext);
     const location = useLocation();
@@ -60,6 +61,9 @@ const QnA = (props) => {
             });
 
             setIsFindingAnswer('');
+            // Always scroll to the latest response
+            window.scrollTo(0,0);
+            refResponse.current.scrollTo(0,0);
         }, 100);
 
     };
@@ -201,7 +205,7 @@ const QnA = (props) => {
 
                     {
                         activeKey === 'selfchecker' ? ctx.linkFindHCP :
-                            (<div>
+                            (<div ref= {refResponse} >
                                 <h5><RiQuestionAnswerLine /> Responses:</h5>
                                 <div className={classes['answer-contents']}>
 
