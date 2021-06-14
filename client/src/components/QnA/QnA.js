@@ -18,46 +18,46 @@ import { RiUserVoiceLine, RiQuestionAnswerLine } from 'react-icons/ri';
 import { SiProbot } from 'react-icons/si';
 
 
-// DOMParser does not work on mobile devices and need a patch
-// https://stackoverflow.com/questions/33472302/javascript-usage-of-domparser-on-mobile-devices-ios-7
+// // DOMParser does not work on mobile devices and need a patch
+// // https://stackoverflow.com/questions/33472302/javascript-usage-of-domparser-on-mobile-devices-ios-7
 
-/* inspired by https://gist.github.com/1129031 */
-/*global document, DOMParser*/
+// /* inspired by https://gist.github.com/1129031 */
+// /*global document, DOMParser*/
 
-(function(DOMParser) {
-    "use strict";
+// (function(DOMParser) {
+//     "use strict";
 
-    var
-      proto = DOMParser.prototype
-    , nativeParse = proto.parseFromString
-    ;
+//     var
+//       proto = DOMParser.prototype
+//     , nativeParse = proto.parseFromString
+//     ;
 
-    // Firefox/Opera/IE throw errors on unsupported types
-    try {
-        // WebKit returns null on unsupported types
-        if ((new DOMParser()).parseFromString("", "text/html")) {
-            // text/html parsing is natively supported
-            return;
-        }
-    } catch (ex) {}
+//     // Firefox/Opera/IE throw errors on unsupported types
+//     try {
+//         // WebKit returns null on unsupported types
+//         if ((new DOMParser()).parseFromString("", "text/html")) {
+//             // text/html parsing is natively supported
+//             return;
+//         }
+//     } catch (ex) {}
 
-    proto.parseFromString = function(markup, type) {
-        if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {
-            var
-              doc = document.implementation.createHTMLDocument("")
-            ;
-                if (markup.toLowerCase().indexOf('<!doctype') > -1) {
-                    doc.documentElement.innerHTML = markup;
-                }
-                else {
-                    doc.body.innerHTML = markup;
-                }
-            return doc;
-        } else {
-            return nativeParse.apply(this, arguments);
-        }
-    };
-}(DOMParser));
+//     proto.parseFromString = function(markup, type) {
+//         if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {
+//             var
+//               doc = document.implementation.createHTMLDocument("")
+//             ;
+//                 if (markup.toLowerCase().indexOf('<!doctype') > -1) {
+//                     doc.documentElement.innerHTML = markup;
+//                 }
+//                 else {
+//                     doc.body.innerHTML = markup;
+//                 }
+//             return doc;
+//         } else {
+//             return nativeParse.apply(this, arguments);
+//         }
+//     };
+// }(DOMParser));
 
 
 const QnA = (props) => {
@@ -127,41 +127,51 @@ const QnA = (props) => {
 
         let jsxAnswer;
 
-        const docAnswer = parser.parseFromString(res.answer, "text/html");
+        // const docAnswer = parser.parseFromString(res.answer, "text/html");
         
-        if (docAnswer.body.getInnerHTML) {
-            // Remove any img doms since we don't have those images
-            const nodeListImg = docAnswer.body.querySelectorAll('img');
-            nodeListImg.forEach(item => item.remove())
+        // if (docAnswer.body.getInnerHTML) {
+        //     // Remove any img doms since we don't have those images
+        //     const nodeListImg = docAnswer.body.querySelectorAll('img');
+        //     nodeListImg.forEach(item => item.remove())
 
-            // Remove any img doms since we don't have those images
-            const nodeListAnchor = docAnswer.body.querySelectorAll('a');
-            nodeListAnchor.forEach(item => {
-                item.href = '#';
-                item.className = classes['answer-link'];
-            });
+        //     // Remove any img doms since we don't have those images
+        //     const nodeListAnchor = docAnswer.body.querySelectorAll('a');
+        //     nodeListAnchor.forEach(item => {
+        //         item.href = '#';
+        //         item.className = classes['answer-link'];
+        //     });
 
-            const htmlAnswer = `<div>${docAnswer.body.getInnerHTML()}</div>`;
+        //     const htmlAnswer = `<div>${docAnswer.body.getInnerHTML()}</div>`;
 
-            jsxAnswer = (
-                <>
-                    <div dangerouslySetInnerHTML={{ __html: htmlAnswer }} />
-                </>
-            );
+        //     jsxAnswer = (
+        //         <>
+        //             <div dangerouslySetInnerHTML={{ __html: htmlAnswer }} />
+        //         </>
+        //     );
 
-        } else {
-            // In case a patch for DOMParser does not work
-            // Roll back to remove all HTMLtags
-            const regex = /(<([^>]+)>)/ig;
-            const innerText = res.answer.replace(regex, "");
+        // } else {
+        //     // In case a patch for DOMParser does not work
+        //     // Roll back to remove all HTMLtags
+        //     const regex = /(<([^>]+)>)/ig;
+        //     const innerText = res.answer.replace(regex, "");
 
-            jsxAnswer = (
-                <>
-                    <div>{ innerText }</div>
-                </>
-            );
-        }
+        //     jsxAnswer = (
+        //         <>
+        //             <div>{ innerText }</div>
+        //         </>
+        //     );
+        // }
         
+        // In case a patch for DOMParser does not work
+        // Roll back to remove all HTMLtags
+        const regex = /(<([^>]+)>)/ig;
+        const innerText = res.answer.replace(regex, "");
+
+        jsxAnswer = (
+            <>
+                <div>{ innerText }</div>
+            </>
+        );
 
 
         const resJSX = (
