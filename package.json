@@ -4,7 +4,8 @@
   "description": "TO add",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
+    "heroku-postbuild": "cd client && npm install && npm install && npm run build",
+    "postinstall": "npm run build",
     "start": "node index.js"
   },
   "repository": {
