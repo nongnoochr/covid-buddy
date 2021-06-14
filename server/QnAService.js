@@ -8,11 +8,15 @@ const data_raw = require('./../data/qna/who.json');
 
 const maxContextLen = 128;
 
+const data_buddy = [];
+
 
 let idx_cnt = 0;
 const data_raw_flatten = data_raw.map(item => {
 
-    const curAllData = item.data.map(curdata => {
+    // Get only the first 5 questions from each category to save memory
+    // For buddy
+    const curAllData = item.data.map((curdata, index) => {
         const curIndex = idx_cnt;
         idx_cnt = idx_cnt + 1;
 
@@ -29,46 +33,52 @@ const data_raw_flatten = data_raw.map(item => {
         // Trim the response to maximum of 512 characters to reduce complexity
         const curans = $.text().trim();
 
-        return {
+        const curout = {
             id: curIndex,
             category: item.title.trim(),
             source: item.url,
             context: curdata.question,
             response: curans
         };
+
+        if (index < 5) {
+            data_buddy.push(curout);
+        }
+
+        return curout;
     });
 
     return curAllData
 })
-    .flat()
+    .flat();
 
-    // Temporary to work around the network close and memory quota vastly exceeded issue
-    .splice(0, 128);
+    // // Temporary to work around the network close and memory quota vastly exceeded issue
+    // .splice(0, 80);
 
 
-const responses = data_raw_flatten.map(data => {
-    // const parser = new DOMParser();
-    // const docAnswer = parser.parseFromString(data.response, "text/html");
-    // console.log('docAnswer: ', docAnswer.);
+// const responses = data_raw_flatten.map(data => {
+//     // const parser = new DOMParser();
+//     // const docAnswer = parser.parseFromString(data.response, "text/html");
+//     // console.log('docAnswer: ', docAnswer.);
 
-    const $ = cheerio.load(data.response);
+//     const $ = cheerio.load(data.response);
 
-    // https://tfhub.dev/google/universal-sentence-encoder-multilingual-qa/1
-    // "All input text can have arbitrary length! 
-    // However, model time and space complexity is O(n^2) for question 
-    // and response input length n and O(n) for context length. 
-    // ---> We recommend question and response inputs that are approximately 
-    // one sentence in length."
+//     // https://tfhub.dev/google/universal-sentence-encoder-multilingual-qa/1
+//     // "All input text can have arbitrary length! 
+//     // However, model time and space complexity is O(n^2) for question 
+//     // and response input length n and O(n) for context length. 
+//     // ---> We recommend question and response inputs that are approximately 
+//     // one sentence in length."
 
-    // Trim the response to maximum of 512 characters to reduce complexity
-    const res = $.text().trim();
-    const trimRes = res.slice(0, maxContextLen);
+//     // Trim the response to maximum of 512 characters to reduce complexity
+//     const res = $.text().trim();
+//     const trimRes = res.slice(0, maxContextLen);
 
-    return {
-        id: data.id,
-        data: trimRes
-    };
-});
+//     return {
+//         id: data.id,
+//         data: trimRes
+//     };
+// });
 
 const contexts = data_raw_flatten.map(data => {
     return {
@@ -131,10 +141,14 @@ const getResponse = async (inputQuery) => {
     if (!model) {
         model = await use.loadQnA();
     }
+
+    const in_responses = data_buddy.map(item => item.response.slice(0, maxContextLen));
+    const in_contexts = data_buddy.map(item => item.context);
+
     const input = {
         queries: [inputQuery],
-        responses: responses.map(item => item.data),
-        contexts: contexts.map(item => item.data)
+        responses: in_responses,
+        contexts: in_contexts
     };
     let result = model.embed(input);
     const query = result['queryEmbedding'].arraySync();
@@ -147,7 +161,7 @@ const getResponse = async (inputQuery) => {
 
     }
 
-    let finalResults = data_raw_flatten.map((res, i) => {
+    let finalResults = data_buddy.map((res, i) => {
         return {
             ...res,
             score: scores[i]

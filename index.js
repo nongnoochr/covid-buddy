@@ -54,7 +54,6 @@ app.get('/getqnaresponse', timeout('120s'), bodyParser.json(), haltOnTimedout, a
         } catch(err) {
             return next(err)
         }
-        
     }
     res.send(ansRes);
 });
