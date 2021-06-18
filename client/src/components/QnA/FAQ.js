@@ -41,7 +41,6 @@ const FAQ = (props) => {
     // --------------
 
     const submitQuestionHandler = async () => {
-        debugger
         const res = await getFAQResponseById(selectedQuestion[0].id);
         return {
             id: res.id,
