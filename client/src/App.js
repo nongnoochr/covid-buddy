@@ -155,6 +155,7 @@ const addQuickSearchToUrl = (qs) => {
               fullscreen={fullscreenModal} 
               onHide={handleHideModal}
               animation={false}
+              scrollable={true}
               centered
               >
               <Modal.Header closeButton>
