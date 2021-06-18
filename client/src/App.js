@@ -21,6 +21,7 @@ function App() {
   const refHCP = useRef(null);
 
   const [showhcp, setShowHCP] = useState(false);
+  const [quickSearch, setQuickSearch] = useState('');
   const [appQueryParams, setAppQueryParams] = useState('');
 
   const history = useHistory();
@@ -29,28 +30,30 @@ function App() {
   const setShowHCPMap = (newState) => {
 
     setShowHCP(() => {
-
       const queryParams = new URLSearchParams(location.search);
       let curQueryParams = queryParams.toString();
       if (newState) {
         window.scrollTo(0, 0);
 
-
         // ---- Update URL
-        queryParams.set('showhcp', 'on')
+        queryParams.set('showhcp', 'on');
 
-        curQueryParams = queryParams.toString();
+        const qs = quickSearch !== 'All' ? quickSearch : '';
+        if (qs) {
+          queryParams.set('quicksearch', qs);  
+        }
+        
 
         history.push({
           pathname: location.pathname,
-          search: curQueryParams,
+          search: queryParams.toString()
         });
-
 
       } else {
 
         if (queryParams.has('showhcp')) {
           queryParams.delete('showhcp');
+          queryParams.delete('quicksearch');
 
           curQueryParams = queryParams.toString();
 
@@ -78,34 +81,29 @@ function App() {
       
   }, [showhcp]);  // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    // When render the app for the first time
-    if (queryParams.get('showhcp') === 'on') {
-      // setShowHCPMap(true);
-      handleShowModal();
-    }
-  }, [location.search]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const linkFindHCPHandler = () => {
-      // setShowHCPMap(true);
+  const linkFindHCPHandler = (qs='') => {
+      setQuickSearch(qs);
       handleShowModal();
   };
 
-  const linkFindHCP = (<div>
-    <Link
-        to={{
-            pathname: location.pathname
-        }}
-        onClick={linkFindHCPHandler}>
-        <GrMapLocation /> Find Healthcare Providers Near You
-    </Link>
-</div>);
+  const getLinkFindHCP = (qs='All') => {
+    return (<div>
+      <Link
+          to={{
+              pathname: location.pathname
+          }}
+          onClick={() => linkFindHCPHandler(qs)}>
+          <GrMapLocation /> { (qs === 'All') ? 'Find Healthcare Providers Near You' : 
+              `Find suggested Healthcare Providers Near You - ${qs}`}
+      </Link>
+
+  </div>);
+  } 
 
 const [fullscreenModal, setFullscreenModal] = useState("true");
 const [showModal, setShowModal] = useState(false);
 
-const handleShowModal = () => {
+const handleShowModal = (quicksearch='') => {
   setFullscreenModal("true");
   setShowModal(true);
   setShowHCPMap(true);
@@ -115,6 +113,27 @@ const handleHideModal = () => {
   setFullscreenModal("false");
   setShowModal(false);
   setShowHCPMap(false);
+  setQuickSearch('');
+  // addQuickSearchToUrl('');
+}
+
+const addQuickSearchToUrl = (qs) => {
+  const queryParams = new URLSearchParams(location.search);
+  // Only add quicksearch when dialog is shown
+  const newqs = qs !== 'All' ? qs : '';
+  if (newqs) {
+    queryParams.set('quicksearch', newqs);  
+  } else {
+    queryParams.delete('quicksearch');
+
+  }
+
+  const curQueryParams = queryParams.toString();
+
+  history.push({
+    pathname: location.pathname,
+    search: curQueryParams,
+  });
 }
 
   return (
@@ -122,8 +141,11 @@ const handleHideModal = () => {
       showhcp,
       setShowHCPMap,
       appQueryParams,
-      linkFindHCP,
-      linkFindHCPHandler
+      getLinkFindHCP,
+      linkFindHCPHandler,
+      quickSearch, 
+      setQuickSearch,
+      addQuickSearchToUrl
     }}>
       <Layout>
 

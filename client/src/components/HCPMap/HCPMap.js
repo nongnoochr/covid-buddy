@@ -1,41 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Form, Col } from 'react-bootstrap';
 
 import { FaUserMd } from 'react-icons/fa';
 
+import HCPContext from '../../store/hcp-context';
+
+import HCLSDK from '../HCLSDK';
+
 const HCPMap = (props) => {
-    useEffect(() => {
-        const HCLSDK = document.querySelector('hcl-sdk');
-        HCLSDK.init({
-            apiKey: '30008a88a12364f2',
-            appName: 'https://github.com/nongnoochr',
-            appURL: 'https://github.com/nongnoochr'
-        });
 
-        // debugger
-        // customElements.whenDefined('hcl-sdk').then(function () {
-        //     debugger
+    const ctx = useContext(HCPContext);
 
-        // });
-    });
+   
+    const quickSearchValues = ['All', 'Physician', 'Pediatric', '<Doctor for Women>', 'Cardiologist', 'Psychologist']
 
-    const quickSearchValues = ['All', 'Physician', 'Pediatric', 'Cardiologis', 'Psychologist']
-
-
-    const [selectedQuickSearch, setSelectedQuickSearch] = useState('All');
     const [searchStatus, setSearchStatus] = useState('');
+    const [selectedQuickSearch, setSelectedQuickSearch] = useState(ctx.quickSearch);
+    const [appliedQuickSearch, setAppliedQuickSearch] = useState(ctx.quickSearch);
 
-
+   
     const selectionChangeHandler = (ev) => {
 
         const newCat = ev.target.value;
         setSelectedQuickSearch(newCat);
-
     }
 
     const quickSearchHandler = () => {
-        setSearchStatus('This feature is under construction... :)');
-    }
+        
+        let qs = selectedQuickSearch || 'All';
+        setAppliedQuickSearch(qs);
+
+    };
+
+    useEffect(() => {
+        ctx.addQuickSearchToUrl(appliedQuickSearch);
+    }, [appliedQuickSearch])
 
 
     return (<div>
@@ -63,6 +62,8 @@ const HCPMap = (props) => {
                     <Col xs="auto">
                         <Button
                             size="sm"
+                            // variant={ (selectedQuickSearch === appliedQuickSearch) ? 'dark' : 'warning' }
+                            disabled={ selectedQuickSearch === appliedQuickSearch }
                             onClick={quickSearchHandler}>
                             GO
                     </Button>
@@ -74,9 +75,11 @@ const HCPMap = (props) => {
             { searchStatus ? (<span style={{color: 'red'}}>{ searchStatus }</span>) : null }
         </div>
 
-        <div className="sdk-parent-element" style={{ height: "75vh" }}>
-            <hcl-sdk></hcl-sdk>
+        <div>
+            <HCLSDK quicksearch={appliedQuickSearch} />
         </div>
+
+        
     </div>
     );
 };

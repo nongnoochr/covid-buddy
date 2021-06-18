@@ -4,7 +4,6 @@ const path = require( 'path' );
 const timeout = require('connect-timeout');
 var bodyParser = require('body-parser');
 
-
 const {getFAQQuestions,  getFAQResponseById, getResponse } = 
     require('./server/QnAService');
 
@@ -44,7 +43,7 @@ app.get('/getfaqresponse', (req, res) => {
     res.send(faqresponse);
 });
 
-app.get('/getqnaresponse', timeout('120s'), bodyParser.json(), haltOnTimedout, async (req, res) => {
+app.get('/getqnaresponse', timeout('30s'), bodyParser.json(), haltOnTimedout, async (req, res) => {
 
     const msg = req.query.msg || '';
     let ansRes = null;

@@ -16,9 +16,12 @@ const getFAQResponseById = async (id) => {
 
 const getResponse = async (inputQuery) => {
 
-    const res = await axios.get(`/getqnaresponse?msg=${inputQuery}`)
-    return res.data;
-
+    try {
+        const res = await axios.get(`/getqnaresponse?msg=${inputQuery}`)
+        return res.data;
+    } catch(err) {
+        return [];
+    }
 };
 
 export {

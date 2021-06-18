@@ -75,7 +75,7 @@ const Landing = (props) => {
                             <div><a href="https://www.cdc.gov/coronavirus/2019-ncov/vaccines/index.html" target="_blank" rel="noreferrer">CDC: Vaccines for COVID-19</a></div>
 
                             <div>
-                                {ctx.linkFindHCP}
+                                {ctx.getLinkFindHCP()}
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,7 @@ const Landing = (props) => {
                                 </div>
 
                         <div>
-                            {ctx.linkFindHCP}
+                            {ctx.getLinkFindHCP()}
                         </div>
                         
                     </div>
@@ -124,7 +124,7 @@ const Landing = (props) => {
 
                         <div>
                             <div><FiPhoneCall /> Call <strong>911</strong> or</div>
-                            <div>{ctx.linkFindHCP}</div>
+                            <div>{ctx.getLinkFindHCP()}</div>
                         </div>
                     </div>
 
@@ -149,7 +149,7 @@ const Landing = (props) => {
                             <div>For more details, see</div>
                             <div><a href="https://www.cdc.gov/coronavirus/2019-ncov/downloads/sick-with-2019-nCoV-fact-sheet.pdf" target="_blank" rel="noreferrer">COVID-19 Fact Sheet</a></div>
                             <div>
-                                {ctx.linkFindHCP}
+                                {ctx.getLinkFindHCP()}
                             </div>
                         </div>
                     </div>

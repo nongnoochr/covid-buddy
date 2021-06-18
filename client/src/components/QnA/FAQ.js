@@ -8,12 +8,23 @@ import { getFAQQuestions, getFAQResponseById } from '../../services/QnAService';
 import { GrFilter } from 'react-icons/gr';
 
 const FAQ = (props) => {
-    const refTypeahead = useRef(null);
+    const refTypeaheadFAQ = useRef(null);
+    const refTypeaheadCat = useRef(null);
 
     const [faqQuestions, setFAQQuestions] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState('All');
+    const [selectedCategory, setSelectedCategory] = useState([]);
     const [selectedQuestion, setSelectedQuestion] = useState([]);
+
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(async () => {
+        const curSeletedCat = selectedCategory[0];
+        const newQuestions = await getFAQQuestions(curSeletedCat);
+        setFAQQuestions(newQuestions)
+        
+    }, [selectedCategory]);
+
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -21,7 +32,8 @@ const FAQ = (props) => {
         setFAQQuestions(options);
         
         const uniqueCategories = new Set(options.map(item => item.category));
-        const categories = [...uniqueCategories];
+        const categories = ['All', ...uniqueCategories];
+
         setCategories(categories);
         
     }, []);
@@ -29,35 +41,40 @@ const FAQ = (props) => {
     // --------------
 
     const submitQuestionHandler = async () => {
+        debugger
         const res = await getFAQResponseById(selectedQuestion[0].id);
         return {
             id: res.id,
             source: res.source,
             category: res.category,
-            question: res.context,
-            answer: res.response
+            question: res.question,
+            answer: res.response,
+            predictedHCP: res.predictedHCP
         };
     };
 
-    const selectionChangeHandler = (ev) => {
-
-        const newCat = ev.target.value;
+    const selectionChangeHandler = (newCat) => {
         setSelectedCategory(newCat);
-        getFAQQuestions(newCat).then(newQuestions => {
-            setFAQQuestions(newQuestions)
-        });
+        setSelectedQuestion([]);
 
     };
 
     const resetInputHandler = () => {
+
+        setSelectedCategory([]);
+        // refTypeaheadCat.current.clear();
+
         setSelectedQuestion([]);
-        refTypeahead.current.clear();
+        // refTypeaheadFAQ.current.clear();
+        
 
     };
 
     const onSubmit = () => {
         props.onSubmitDataHandler(submitQuestionHandler);
         setSelectedQuestion([]);
+        // setSelectedCategory([]);
+
     };
 
     const filterByFields = ['question', 'category'];
@@ -69,7 +86,7 @@ const FAQ = (props) => {
 
         <Form>
 
-            <Form.Row className="align-items-center">
+            {/* <Form.Row className="align-items-center">
                 <Col sm={12} className="mb-2">
                     <div>
 
@@ -96,6 +113,30 @@ const FAQ = (props) => {
 
 
 
+            </Form.Row> */}
+
+
+            <Form.Row className="align-items-center">
+
+                <Col sm={4} className="mb-2">
+                    <div><GrFilter />  Filter by Category:</div>
+                </Col>
+                
+
+                <Col sm={8} className="mb-2">
+                    <div>
+                        <Typeahead
+                            id="faqcat-typeahead"
+                            onChange={selectionChangeHandler}
+                            options={categories}
+                            selected={selectedCategory}
+                            placeholder="Select or Type a Category"
+                            ref={refTypeaheadCat}
+                            clearButton
+                        />
+                    </div>
+                    
+                </Col>
             </Form.Row>
 
             <Form.Row className="align-items-center">
@@ -110,8 +151,8 @@ const FAQ = (props) => {
                             selected={selectedQuestion}
                             filterBy={filterByFields}
                             labelKey="question"
-                            ref={refTypeahead}
-                            // clearButton
+                            ref={refTypeaheadFAQ}
+                            clearButton
                             renderMenuItemChildren={(option) => (
                                 <div>
                                     {option.question}

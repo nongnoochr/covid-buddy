@@ -21,9 +21,10 @@ const Buddy = (props) => {
 
         const fcn = async () => {
             // https://towardsdatascience.com/how-we-created-an-open-source-covid-19-chatbot-c5c900b382df
-            const regex = /(covid-19|covid)/ig;
-            const cleanInputQuestion = inputQuestion.replaceAll(regex, 'coronavirus');
-            const result = await getResponse(cleanInputQuestion);
+            // const regex = /(covid-19|covid)/ig;
+            // const cleanInputQuestion = inputQuestion.replaceAll(regex, 'coronavirus');
+            // const result = await getResponse(cleanInputQuestion);
+            const result = await getResponse(inputQuestion);
 
             let response = {
                 id: -1,
@@ -32,18 +33,22 @@ const Buddy = (props) => {
                 question: inputQuestion,
                 answer: ''
             };
-            if (result[0].score < 5) {
-                response.answer = "Sorry, your question does not seem to be related to COVID-19 and I don't know the answer.";
-            } else {
-                console.log('Top-5 results:', result.slice(0,5));
-
-                response = {
-                    id: result[0].id,
-                    source: result[0].source,
-                    category: result[0].category,
-                    question: inputQuestion,
-                    answer: result[0].response
-                };
+            if (result.length > 0) {
+                
+                if (result[0].score < 0.1) {
+                    response.answer = "Sorry, your question does not seem to be related to COVID-19 and I don't know the answer.";
+                } else {
+                    console.log('Top-5 results:', result.slice(0,5));
+    
+                    response = {
+                        id: result[0].id,
+                        source: result[0].source,
+                        category: result[0].category,
+                        question: inputQuestion,
+                        origquestion: result[0].question,
+                        answer: result[0].response
+                    };
+                }
             }
 
             return response;
