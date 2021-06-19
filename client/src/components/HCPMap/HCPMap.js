@@ -4,19 +4,22 @@ import { Button, Form, Col } from 'react-bootstrap';
 import { FaUserMd } from 'react-icons/fa';
 
 import HCPContext from '../../store/hcp-context';
+import HCPMapContext from '../../store/hcpmap-context';
 
-import HCLSDK from '../HCLSDK';
+
+import HCLSDK from './HCLSDK';
 
 const HCPMap = (props) => {
-
     const ctx = useContext(HCPContext);
+    const ctxMap = useContext(HCPMapContext);
 
-   
-    const quickSearchValues = ['All', 'Physician', 'Pediatric', '<Doctor for Women>', 'Cardiologist', 'Psychologist']
+    //ADOLESCENT MEDICINE - (Pediatric)
+    // const quickSearchValues = ['GENERAL PRACTICE', 'PEDIATRICS', 'OBSTETRICS', 'PSYCHIATRY'];
+    const quickSearchValues = ctxMap.quicksearch.map(item => item.specialtyLabel);
 
     const [searchStatus, setSearchStatus] = useState('');
     const [selectedQuickSearch, setSelectedQuickSearch] = useState(ctx.quickSearch);
-    const [appliedQuickSearch, setAppliedQuickSearch] = useState(ctx.quickSearch);
+    // const [appliedQuickSearch, setAppliedQuickSearch] = useState(ctx.quickSearch);
 
    
     const selectionChangeHandler = (ev) => {
@@ -26,15 +29,13 @@ const HCPMap = (props) => {
     }
 
     const quickSearchHandler = () => {
-        
-        let qs = selectedQuickSearch || 'All';
-        setAppliedQuickSearch(qs);
-
+        ctx.setQuickSearch(selectedQuickSearch);
     };
 
-    useEffect(() => {
-        ctx.addQuickSearchToUrl(appliedQuickSearch);
-    }, [appliedQuickSearch])
+    const quickSearchResetHandler = () => {
+        setSelectedQuickSearch('All');
+        ctx.setQuickSearch('All');
+    };
 
 
     return (<div>
@@ -44,7 +45,7 @@ const HCPMap = (props) => {
                 <Form.Row>
                     <Col xs="auto">
                         <label>
-                            <FaUserMd /> Quick Search: <select
+                            <FaUserMd /> Quick Search Near Me: <select
                                 value={selectedQuickSearch}
                                 className="mb-2"
                                 onChange={selectionChangeHandler}
@@ -62,11 +63,20 @@ const HCPMap = (props) => {
                     <Col xs="auto">
                         <Button
                             size="sm"
-                            // variant={ (selectedQuickSearch === appliedQuickSearch) ? 'dark' : 'warning' }
-                            disabled={ selectedQuickSearch === appliedQuickSearch }
+                            variant={ (selectedQuickSearch === ctx.quickSearch) ? 'dark' : 'primary' }
+                            disabled={ selectedQuickSearch === ctx.quickSearch }
                             onClick={quickSearchHandler}>
                             GO
-                    </Button>
+                        </Button>
+                    </Col>
+                    <Col xs="auto">
+                        <Button
+                            size="sm"
+                            variant="outline-primary"
+                            disabled={ ctx.quickSearch === 'All' }
+                            onClick={quickSearchResetHandler}>
+                            Reset
+                        </Button>
                     </Col>
                 </Form.Row>
             </Form>
@@ -76,7 +86,7 @@ const HCPMap = (props) => {
         </div>
 
         <div>
-            <HCLSDK quicksearch={appliedQuickSearch} />
+            <HCLSDK quicksearch={ctx.quickSearch} />
         </div>
 
         

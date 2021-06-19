@@ -5,6 +5,8 @@ import { Modal } from 'react-bootstrap';
 import { GrMapLocation } from 'react-icons/gr';
 
 import HCPContext from './store/hcp-context';
+import HCPMapContext from './store/hcpmap-context';
+
 
 // Components
 import Layout from './components/Layout/Layout';
@@ -21,7 +23,7 @@ function App() {
   const refHCP = useRef(null);
 
   const [showhcp, setShowHCP] = useState(false);
-  const [quickSearch, setQuickSearch] = useState('');
+  const [quickSearch, setQuickSearch] = useState('All');
   const [appQueryParams, setAppQueryParams] = useState('');
 
   const history = useHistory();
@@ -37,11 +39,7 @@ function App() {
 
         // ---- Update URL
         queryParams.set('showhcp', 'on');
-
-        const qs = quickSearch !== 'All' ? quickSearch : '';
-        if (qs) {
-          queryParams.set('quicksearch', qs);  
-        }
+        queryParams.set('quicksearch', quickSearch);
         
 
         history.push({
@@ -81,7 +79,11 @@ function App() {
       
   }, [showhcp]);  // eslint-disable-line react-hooks/exhaustive-deps
 
-  const linkFindHCPHandler = (qs='') => {
+  useEffect(() => {
+    addQuickSearchToUrl(quickSearch);
+}, [quickSearch])
+
+  const linkFindHCPHandler = (qs='All') => {
       setQuickSearch(qs);
       handleShowModal();
   };
@@ -103,7 +105,7 @@ function App() {
 const [fullscreenModal, setFullscreenModal] = useState("true");
 const [showModal, setShowModal] = useState(false);
 
-const handleShowModal = (quicksearch='') => {
+const handleShowModal = () => {
   setFullscreenModal("true");
   setShowModal(true);
   setShowHCPMap(true);
@@ -113,16 +115,15 @@ const handleHideModal = () => {
   setFullscreenModal("false");
   setShowModal(false);
   setShowHCPMap(false);
-  setQuickSearch('');
+  setQuickSearch('All');
   // addQuickSearchToUrl('');
 }
 
 const addQuickSearchToUrl = (qs) => {
   const queryParams = new URLSearchParams(location.search);
   // Only add quicksearch when dialog is shown
-  const newqs = qs !== 'All' ? qs : '';
-  if (newqs) {
-    queryParams.set('quicksearch', newqs);  
+  if (qs) {
+    queryParams.set('quicksearch', qs);  
   } else {
     queryParams.delete('quicksearch');
 
@@ -163,7 +164,7 @@ const addQuickSearchToUrl = (qs) => {
               </Modal.Header>
               <Modal.Body>
                 <div>
-                  <HCPMap />
+                  <HCPMap />                  
                 </div>
               </Modal.Body>
             </Modal>

@@ -1,6 +1,7 @@
 const express = require( 'express' );
 const fs = require( 'fs' );
 const path = require( 'path' );
+const cors = require('cors');
 const timeout = require('connect-timeout');
 var bodyParser = require('body-parser');
 
@@ -11,6 +12,7 @@ const {getFAQQuestions,  getFAQResponseById, getResponse } =
 
 // create express application
 const app = express();
+app.use(cors())
 
 const host = '0.0.0.0';
 const PORT = process.env.PORT || 8080;

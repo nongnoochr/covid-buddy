@@ -93,7 +93,7 @@ const QnA = (props) => {
                     <div>
                         <div><span className={classes['answer-user-buddy']}><SiProbot /> Buddy:</span> </div>
                         <div>
-                            {res.origquestion ? (<div><i>From FAQ: {res.origquestion}</i></div>) : null }
+                            {res.origquestion ? (<div><i>FAQ: {res.origquestion}</i></div>) : null }
                             <div>{res.answer}</div>
                         </div>
                         {res.source ? (<div>From: <a href={res.source} target="_blank" rel="noreferrer">source</a></div>) : null}
