@@ -7,9 +7,16 @@ const use = require('@tensorflow-models/universal-sentence-encoder');
 const cheerio = require('cheerio');
 
 // --- Load & Manipulate data - To replace with a rest api
-const data_raw = require('./../data/qna/who.json');
+const data_raw_who = require('./../data/qna/who.json');
+const data_raw_cdc = require('./../data/qna/cdc.json');
 
-const maxContextLen = 128;
+const data_raw = [
+    ...data_raw_who,
+    ...data_raw_cdc
+];
+
+// data_raw.sort((a, b) => (a.category > b.category) ? 1 : -1)
+
 
 let idx_cnt = 0;
 const qnaData = data_raw.map(item => {
@@ -42,7 +49,6 @@ const qnaData = data_raw.map(item => {
             predictedHCP = 'Pediatric'
         }
 
-
         // ---------------
 
         const curout = {
@@ -65,6 +71,8 @@ const qnaData = data_raw.map(item => {
 fs.writeFileSync('qna.data.json', JSON.stringify({
     qnaData,
 }));
+
+console.log('Successfully write qna.data.json');
 
 async function generateModel() {
     const model = await use.load();

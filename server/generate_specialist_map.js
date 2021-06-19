@@ -1,283 +1,42 @@
 const specialistGroupToWorlds = {
-    'Adolescent': [
+    'PEDIATRICS': [
+        "Can adolescents catch COVID-19?",
+        "Can adolescents spread COVID-19 to other people even if they have mild or no symptoms?",
+        "Since there are few known cases of adolescents getting seriously ill with COVID-19, should I go to a health facility if I develop symptoms of the disease?",
+        "Should I wear a mask at school or when playing sports?",
+        "Can children be cared for at home if they have COVID-19?",
+        "What is the incubation period for children?",
+        "Should children with underlying health conditions (asthma, diabetes, obesity) return to school?",
+        "Checklist for parents/caregivers and community members",
+        "Checklist for students and children",
+        "What are the risks during transportation to and from schools?",
 
     ],
-    'Pregnancy': [
-        'Pregnancy',
+    'OBSTETRICS': [
+        "Pregnancy",
+        "Breastfeeding",
+        "Can COVID-19 be passed through breastfeeding?",
+        "In communities where COVID-19 is prevalent, should mothers breastfeed?",
+        "Following delivery, should a baby still be immediately placed skin-to-skin and breastfed if the mother is confirmed or suspected to have COVID-19?",
+        "Can women with confirmed or suspected COVID-19 breastfeed?",
+        "If a mother confirmed or suspected to have COVID-19 does not have a medical face mask should she still breastfeed?",
+        "I have confirmed or suspected COVID-19 and am too unwell to breastfeed my baby directly. What can I do?",
+        "I had confirmed or suspected COVID-19 and was unable to breastfeed, when can I start to breastfeed again?",
+        "I have confirmed or suspected COVID-19, is it safer to give my baby infant formula milk?",
+        "Should pregnant and breastfeeding women living with HIV with COVID-19 and their newborns be managed differently?",
+        "Could pregnant women be cared for at home if they have COVID-19?",
+        "Are pregnant women at higher risk from COVID-19?",
+        "I’m pregnant. How can I protect myself against COVID-19?",
+        "Should pregnant women be tested for COVID-19?",
+        "Can COVID-19 be passed from a woman to her unborn or newborn baby?",
+        "What care should be available during pregnancy and childbirth?",
+        "Do pregnant women with suspected or confirmed COVID-19 need to give birth by caesarean section?",
+        "Can I touch and hold my newborn baby if I have COVID-19?",
+
     ],
-    'MentalHealth': [
+    'PSYCHIATRY': [
+        "Since my parents stopped going out to work, they have been arguing with each other much more, and in some instances, I have seen one parent harm or hurt the other either verbally or physically. I don’t feel safe at home. What should I do?",
+        "I feel like my future has been affected. I am not able to apply for the jobs I wanted, and now that I have a new job I find it hard to be noticed when remote working",
 
     ],
 }
-
-
-
-// ---------------------
-
-// {
-//     "id": "SP.WUS.GP",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "GENERAL PRACTICE",
-//     "shortLbl": "GENERAL PRACTICE"
-//   },
-
-// // ---- Pediatric
-
-// {
-//     "id": "SP.WUS.CHP",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "CHILD & ADOLESCENT PSYCHIATRY",
-//     "shortLbl": "CHILD & ADOLESCENT PSYCHIATRY"
-//   },
-
-//   {
-//     "id": "SP.WUS.ADO",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "Adolescent Medicine",
-//     "shortLbl": "Adolescent Med"
-//   },
-
-//   {
-//     "id": "SP.WUS.AMF",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "Adolescent Medicine (Family Practice)",
-//     "shortLbl": "Adolescent Med"
-//   },
-
-//   {
-//     "id": "SP.WUS.CPP",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "PED/PSYCH/CHILD & ADOLESCENT PSYCH",
-//     "shortLbl": "PED/PSYCH/CHILD & ADOLESCENT PSYCH"
-// },
-
-// {
-//     "id": "SP.WUS.ADL",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "ADOLESCENT MEDICINE (PEDIATRICS)",
-//     "shortLbl": "ADOLESCENT MEDICINE (PEDIATRICS)"
-//   },
-
-//   {
-//     "id": "SP.WUS.ADO",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "Adolescent Medicine",
-//     "shortLbl": "Adolescent Med"
-//   },
-
-//   {
-//     "id": "SP.WUS.AMF",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "Adolescent Medicine (Family Practice)",
-//     "shortLbl": "Adolescent Med"
-//   },
-
-//   {
-//     "id": "SP.WUS.AMI",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "ADOLESCENT MEDICINE (INTERNAL MEDICINE)",
-//     "shortLbl": "ADOLESCENT MEDICINE (INTERNAL MEDICINE)"
-//   },
-
-//   {
-//     "id": "SP.WUS.DBP",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "DEVELOPMENTAL/BEHAVIORAL PEDIATRICS",
-//     "shortLbl": "DEVELOPMENTAL/BEHAVIORAL PEDIATRICS"
-//   },
-
-//   {
-//     "id": "SP.WUS.PRM",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "PEDIATRIC REHABILITATION MEDICINE",
-//     "shortLbl": "PEDIATRIC REHABILITATION MEDICINE"
-//   },
-
-//   {
-//     "id": "SP.WUS.RPM",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "Pediatric Rehabilitation Medicine",
-//     "shortLbl": "Pediatric Rehabi"
-//   },
-
-//   {
-//     "id": "SP.WUS.SMP",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "Sleep Medicine (Pediatrics)",
-//     "shortLbl": "Sleep Med (Ped)"
-//   },
-
-//   {
-//     "id": "SP.WUS.PCT",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "Pediatric Critical Care Medicine",
-//     "shortLbl": "Ped Crit Care"
-//   },
-
-// // ---- Obstetrics
-// {
-//     "id": "SP.WUS.OBS",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "OBSTETRICS",
-//     "shortLbl": "OBSTETRICS"
-//   },
-  
-// {
-//     "id": "SP.WUS.OBG",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "OBSTETRICS & GYNECOLOGY",
-//     "shortLbl": "OBSTETRICS & GYNECOLOGY"
-//   }
-
-//   {
-//     "id": "SP.WUS.OCC",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "CRITICAL CARE MEDICINE (OB/GYN)",
-//     "shortLbl": "CRITICAL CARE MEDICINE (OB/GYN)"
-//   },
-
-// // ---- PSYCHIATRY
-// {
-//     "id": "SP.WUS.P",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "PSYCHIATRY",
-//     "shortLbl": "PSYCHIATRY"
-//   },
-
-
-//   {
-//     "id": "SP.WUS.CHP",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "CHILD & ADOLESCENT PSYCHIATRY",
-//     "shortLbl": "CHILD & ADOLESCENT PSYCHIATRY"
-//   },
-
-//   {
-//     "id": "SP.WUS.CPP",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "PED/PSYCH/CHILD & ADOLESCENT PSYCH",
-//     "shortLbl": "PED/PSYCH/CHILD & ADOLESCENT PSYCH"
-//   },
-
-//   {
-//     "id": "SP.WUS.PRM",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "PEDIATRIC REHABILITATION MEDICINE",
-//     "shortLbl": "PEDIATRIC REHABILITATION MEDICINE"
-//   },
-
-//   {
-//     "id": "SP.WUS.ADO",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "Adolescent Medicine",
-//     "shortLbl": "Adolescent Med"
-//   },
-
-//   {
-//     "id": "SP.WUS.IMP",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "Internal Medicine/Psychiatry",
-//     "shortLbl": "Intern Med/Psych"
-//   },
-//   {
-//     "id": "SP.WUS.PYG",
-//     "lisLbl": "Specialty",
-//     "lisCode": "SP",
-//     "updateDate": "",
-//     "dbCode": "WUS",
-//     "locale": "en",
-//     "longLbl": "GERIATRIC PSYCHIATRY",
-//     "shortLbl": "GERIATRIC PSYCHIATRY"
-//   },

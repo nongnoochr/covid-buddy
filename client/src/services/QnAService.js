@@ -3,6 +3,8 @@ import axios from 'axios';
 // ------ Required method
 const getFAQQuestions = async (category = 'All') => {
     const res = await axios.get(`/getfaqquestions?category=${category}`)
+    res.data.sort((a, b) => (a.category > b.category) ? 1 : -1)
+
     return res.data;
 
 };

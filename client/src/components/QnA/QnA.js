@@ -93,10 +93,13 @@ const QnA = (props) => {
                     <div>
                         <div><span className={classes['answer-user-buddy']}><SiProbot /> Buddy:</span> </div>
                         <div>
-                            {res.origquestion ? (<div><i>FAQ: {res.origquestion}</i></div>) : null }
+                            <p>
+                                {res.origquestion ? (<div><i>From FAQ: {res.origquestion}</i></div>) : null }
+                                {res.source ? (<div><a href={res.source} target="_blank" rel="noreferrer">source</a></div>) : null}
+                            </p>
+                            
                             <div>{res.answer}</div>
                         </div>
-                        {res.source ? (<div>From: <a href={res.source} target="_blank" rel="noreferrer">source</a></div>) : null}
     
                         <div className={classes['answer-findhcp-container']}>{ctx.getLinkFindHCP(res.predictedHCP)}</div>
                     </div>

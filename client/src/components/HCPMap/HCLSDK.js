@@ -8,9 +8,25 @@ import HCPMapContext from '../../store/hcpmap-context';
 
 const defaultSDKConfig = {
     apiKey: '30008a88a12364f2',
-    appName: 'https://github.com/nongnoochr',
-    appURL: 'https://github.com/nongnoochr'
+    // appName: 'https://github.com/nongnoochr',
+    // appURL: 'https://github.com/nongnoochr'
 };
+// debugger
+// // eslint-disable-next-line no-undef
+// const api = new HclAPI(defaultSDKConfig);
+// const params = {
+//     id: 'WCAM0000048701',
+//   };
+//   api.activityByID(params)
+//     .then(res => {
+//         debugger
+//       console.log("activityByID", res)
+//     })
+//     .catch(err => {
+//         debugger
+//       alert('activityByID error', err.message);
+//     })
+  
 
 const HCLSDK = (props) => {
 

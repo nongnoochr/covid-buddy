@@ -5,8 +5,6 @@ import { Modal } from 'react-bootstrap';
 import { GrMapLocation } from 'react-icons/gr';
 
 import HCPContext from './store/hcp-context';
-import HCPMapContext from './store/hcpmap-context';
-
 
 // Components
 import Layout from './components/Layout/Layout';

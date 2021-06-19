@@ -4,6 +4,7 @@ const use = require('@tensorflow-models/universal-sentence-encoder');
 const { qnaData } = require('./qna.data.json');
 const { embeddingMap } = require('./qna.embedding.json');
 
+
 // ------ Required method
 const getFAQQuestions = (category = 'All') => {
     const allQuestions = qnaData.map(item => {
