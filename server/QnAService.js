@@ -74,7 +74,24 @@ const setAllPredictedSpecialists = async () => {
     const allQuestions = qnaData.map(item => item.question);
 
     console.time('getAllPredictedSpecialists');
-    const predSPs = await predictSpecialist(allQuestions);
+
+    // Split this task to chunk to save memory!
+
+    const batchSize = 20;
+    const numLoop = Math.ceil(allQuestions.length / batchSize);
+
+    let predSPs = [];
+    for (let cnt = 0; cnt < numLoop; cnt++ ) {
+        console.log('|- Predict sp for chunk#', cnt);
+
+        const startIndex = cnt*batchSize;
+        const curBatchQuestions = allQuestions.slice(startIndex, startIndex + batchSize);
+        const curPredSPs = await predictSpecialist(curBatchQuestions);
+        predSPs = predSPs.concat(curPredSPs);
+        console.log('Finish chunk#', cnt)
+    }
+
+    // const predSPs = await predictSpecialist(allQuestions);
     console.timeEnd('getAllPredictedSpecialists');
 
     console.log('predSPs: ', predSPs);

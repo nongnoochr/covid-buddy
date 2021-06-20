@@ -131,84 +131,86 @@ const FAQ = (props) => {
     );
 
 
-    return (<div>
+    return (<div className={classes['faq-selection-container']}>
+        <div>
+            <Form.Group>
+                <InputGroup>
+                    <div className={classes['cat-selection-label-container']}>
+                        <InputGroup.Prepend>
+                            <InputGroup.Text>
+                                <GrFilter /> &nbsp; <span className={classes['cat-selection-label']}>Filter by Category: </span>
+                            </InputGroup.Text>
+                        </InputGroup.Prepend>
 
-        <Form.Group>
-            <InputGroup>
-                <div className={classes['cat-selection-label-container']}>
-                    <InputGroup.Prepend>
-                        <InputGroup.Text>
-                            <GrFilter /> &nbsp; <span className={classes['cat-selection-label']}>Filter by Category: </span>
-                        </InputGroup.Text>
-                    </InputGroup.Prepend>
-
-                </div>
-
-                <div className={classes['cat-selection-search-container']}>
-                    <Typeahead
-                        id="faqcat-typeahead"
-                        onChange={selectionChangeHandler}
-                        options={categories}
-                        selected={selectedCategory}
-                        filterBy={['categoryLabel', 'sourceName']}
-                        labelKey="categoryLabel"
-                        placeholder="(Optional) Select or Type a Category"
-                        ref={refTypeaheadCat}
-                    />
-
-                </div>
-
-            </InputGroup>
-        </Form.Group>
-
-        <Form>
-
-            <Form.Row className="align-items-center">
-
-                <Col sm={12} className="mb-2">
-                    <div>
-                        <Typeahead
-                            id="faq-typeahead"
-                            onChange={setSelectedQuestion}
-                            options={faqQuestions}
-                            placeholder="Select or Type a Question or Category"
-                            selected={selectedQuestion}
-                            filterBy={['question', 'categoryLabel', 'sourceName']}
-                            labelKey="question"
-                            ref={refTypeaheadFAQ}
-                            clearButton
-                            renderMenuItemChildren={questionSelectionRendererHandler}
-                        />
                     </div>
 
-                </Col>
-            </Form.Row>
+                    <div className={classes['cat-selection-search-container']}>
+                        <Typeahead
+                            id="faqcat-typeahead"
+                            onChange={selectionChangeHandler}
+                            options={categories}
+                            selected={selectedCategory}
+                            filterBy={['categoryLabel', 'sourceName']}
+                            labelKey="categoryLabel"
+                            placeholder="(Optional) Select or Type a Category"
+                            ref={refTypeaheadCat}
+                        />
 
-            <div className="float-right">
+                    </div>
+
+                </InputGroup>
+            </Form.Group>
+
+            <Form>
+
                 <Form.Row className="align-items-center">
-                    <Col xs="auto">
-                        <Button
-                            disabled={selectedQuestion && (selectedQuestion.length === 0)}
-                            onClick={onSubmit}>
-                            Submit
-                        </Button>
-                    </Col>
-                    <Col xs="auto">
-                        <Button variant="outline-secondary" onClick={resetInputHandler}>
-                            Reset
-                        </Button>
+
+                    <Col sm={12} className="mb-2">
+                        <div>
+                            <Typeahead
+                                id="faq-typeahead"
+                                onChange={setSelectedQuestion}
+                                options={faqQuestions}
+                                placeholder="Select or Type a Question or Category"
+                                selected={selectedQuestion}
+                                filterBy={['question', 'categoryLabel', 'sourceName']}
+                                labelKey="question"
+                                ref={refTypeaheadFAQ}
+                                clearButton
+                                renderMenuItemChildren={questionSelectionRendererHandler}
+                            />
+                        </div>
+
                     </Col>
                 </Form.Row>
-            </div>
 
-        </Form>
+                <div className="float-right">
+                    <Form.Row className="align-items-center">
+                        <Col xs="auto">
+                            <Button
+                                disabled={selectedQuestion && (selectedQuestion.length === 0)}
+                                onClick={onSubmit}>
+                                Submit
+                            </Button>
+                        </Col>
+                        <Col xs="auto">
+                            <Button variant="outline-secondary" onClick={resetInputHandler}>
+                                Reset
+                            </Button>
+                        </Col>
+                    </Form.Row>
+                </div>
 
-        <p>
-            FAQ Sources:&nbsp;
+            </Form>
+
+        </div>
+
+        <div className={classes['faq-source-container']}>
+            Sources:&nbsp;
             <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/question-and-answers-hub" target="_blank" rel="noreferrer">WHO</a>,&nbsp;
             <a href="https://www.cdc.gov/coronavirus/2019-ncov/faq.html" target="_blank" rel="noreferrer">CDC</a>,&nbsp;
             <a href="https://www.fda.gov/emergency-preparedness-and-response/coronavirus-disease-2019-covid-19/covid-19-frequently-asked-questions" target="_blank" rel="noreferrer">FDA</a>
-        </p>
+        </div>
 
 
 
