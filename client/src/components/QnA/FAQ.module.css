@@ -1,0 +1,21 @@
+.cat-selection-label-container {
+    width: 20%;
+}
+
+.cat-selection-search-container {
+    width: 80%;
+}
+
+@media screen and (max-width: 1100px) {
+    .cat-selection-label {
+        display: none;
+    }
+
+    .cat-selection-label-container {
+        width: 10%;
+    }
+    
+    .cat-selection-search-container {
+        width: 90%;
+    }
+}

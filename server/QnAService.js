@@ -12,6 +12,7 @@ const getFAQQuestions = (category = 'All') => {
             id: item.id,
             category: item.category,
             question: item.question,
+            source: item.source
         };
     });
 

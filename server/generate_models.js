@@ -9,10 +9,12 @@ const cheerio = require('cheerio');
 // --- Load & Manipulate data - To replace with a rest api
 const data_raw_who = require('./../data/qna/who.json');
 const data_raw_cdc = require('./../data/qna/cdc.json');
+const data_raw_fda = require('./../data/qna/fda.json');
 
 const data_raw = [
     ...data_raw_who,
-    ...data_raw_cdc
+    ...data_raw_cdc,
+    ...data_raw_fda
 ];
 
 // data_raw.sort((a, b) => (a.category > b.category) ? 1 : -1)

@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Form, Col, Button } from 'react-bootstrap';
+import { Form, InputGroup, Col, Button } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 import { getFAQQuestions, getFAQResponseById } from '../../services/QnAService';
 
 // Icons
 import { GrFilter } from 'react-icons/gr';
+
+// Styling
+import classes from './FAQ.module.css';
 
 const FAQ = (props) => {
     const refTypeaheadFAQ = useRef(null);
@@ -16,26 +19,72 @@ const FAQ = (props) => {
     const [selectedCategory, setSelectedCategory] = useState([]);
     const [selectedQuestion, setSelectedQuestion] = useState([]);
 
+    const getFAQQuestionsWithSourceName = async (curSeletedCat) => {
+
+        let options;
+        if (curSeletedCat) {
+            options = await getFAQQuestions(curSeletedCat);
+        } else {
+            options = await getFAQQuestions();
+
+        }
+        
+        options.forEach(item => item['sourceName'] = getSourceName(item.source));
+        options.forEach(item => item['categoryLabel'] = `${item.category} (${item.sourceName})`);
+        
+        return options
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
-        const curSeletedCat = selectedCategory[0];
-        const newQuestions = await getFAQQuestions(curSeletedCat);
-        setFAQQuestions(newQuestions)
-        
+        if (selectedCategory.length > 0) {
+            const curSeletedCat = selectedCategory[0];
+            // let newQuestions = await getFAQQuestions(curSeletedCat.category);
+            const newQuestions = await getFAQQuestionsWithSourceName(curSeletedCat.category);
+            setFAQQuestions(newQuestions)
+
+        }
+
     }, [selectedCategory]);
 
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
-        const options = await getFAQQuestions();
+        // const options = await getFAQQuestions();
+        // options.forEach(item => item['sourceName'] = getSourceName(item.source));
+
+        const options = await getFAQQuestionsWithSourceName();
+
         setFAQQuestions(options);
-        
-        const uniqueCategories = new Set(options.map(item => item.category));
-        const categories = ['All', ...uniqueCategories];
+
+        const dataCat = options.map(item => {
+            return {
+                category: item.category,
+                categoryLabel: item.categoryLabel,
+                sourceName: item.sourceName
+            };
+        });
+
+        // https://codeburst.io/javascript-array-distinct-5edc93501dc4
+        let categories = [];
+        const map = new Map();
+        for (const item of dataCat) {
+            if (!map.has(item.category)) {
+                map.set(item.category, true);
+                categories.push({
+                    ...item
+                })
+            }
+
+        }
+
+        categories = [
+            { category: 'All', categoryLabel: 'All', sourceName: '' },
+            ...categories
+        ];
 
         setCategories(categories);
-        
+
     }, []);
 
     // --------------
@@ -65,78 +114,74 @@ const FAQ = (props) => {
 
         setSelectedQuestion([]);
         // refTypeaheadFAQ.current.clear();
-        
+
 
     };
 
     const onSubmit = () => {
         props.onSubmitDataHandler(submitQuestionHandler);
         setSelectedQuestion([]);
-        // setSelectedCategory([]);
 
     };
 
-    const filterByFields = ['question', 'category'];
 
-    
+    const getSourceName = (url) => {
+
+        let sourceName = '';
+
+        if (url.includes('www.who.int')) {
+            sourceName = 'WHO'
+        } else if (url.includes('www.cdc.gov')) {
+            sourceName = 'CDC'
+        } else if (url.includes('www.fda.gov')) {
+            sourceName = 'FDA'
+        }
+
+        return sourceName
+
+    }
+
+    const questionSelectionRendererHandler = (option) => (
+        <div>
+            {option.question}
+            <div>
+                <small>Category: {option.categoryLabel}</small>
+            </div>
+        </div>
+    );
 
 
     return (<div>
 
+        <Form.Group>
+            <InputGroup>
+                <div className={classes['cat-selection-label-container']}>
+                    <InputGroup.Prepend>
+                        <InputGroup.Text>
+                            <GrFilter /> &nbsp; <span className={classes['cat-selection-label']}>Filter by Category: </span>
+                        </InputGroup.Text>
+                    </InputGroup.Prepend>
+
+                </div>
+
+                <div className={classes['cat-selection-search-container']}>
+                    <Typeahead
+                        id="faqcat-typeahead"
+                        onChange={selectionChangeHandler}
+                        options={categories}
+                        selected={selectedCategory}
+                        filterBy={['categoryLabel', 'sourceName']}
+                        labelKey="categoryLabel"
+                        placeholder="(Optional) Select or Type a Category"
+                        ref={refTypeaheadCat}
+                    />
+
+                </div>
+
+            </InputGroup>
+        </Form.Group>
+
         <Form>
-
-            {/* <Form.Row className="align-items-center">
-                <Col sm={12} className="mb-2">
-                    <div>
-
-                        <label>
-                            <GrFilter /> Filter FAQs by Category: <select
-                                value={selectedCategory}
-                                className="mb-2"
-                                style={{maxWidth: "85vw"}}
-                                onChange={selectionChangeHandler}
-                            >
-                                <option key='All' value='All'>All</option>
-                                {
-                                    categories.map((item, index) => {
-                                        return (
-                                            <option key={index} value={item}>{item}</option>
-                                        );
-                                    })
-                                }
-                            </select>
-                        </label>
-                    </div>
-
-                </Col>
-
-
-
-            </Form.Row> */}
-
-
-            <Form.Row className="align-items-center">
-
-                <Col sm={4} className="mb-2">
-                    <div><GrFilter />  Filter by Category:</div>
-                </Col>
-                
-
-                <Col sm={8} className="mb-2">
-                    <div>
-                        <Typeahead
-                            id="faqcat-typeahead"
-                            onChange={selectionChangeHandler}
-                            options={categories}
-                            selected={selectedCategory}
-                            placeholder="Select or Type a Category"
-                            ref={refTypeaheadCat}
-                            clearButton
-                        />
-                    </div>
-                    
-                </Col>
-            </Form.Row>
 
             <Form.Row className="align-items-center">
 
@@ -148,18 +193,11 @@ const FAQ = (props) => {
                             options={faqQuestions}
                             placeholder="Select or Type a Question or Category"
                             selected={selectedQuestion}
-                            filterBy={filterByFields}
+                            filterBy={['question', 'categoryLabel', 'sourceName']}
                             labelKey="question"
                             ref={refTypeaheadFAQ}
                             clearButton
-                            renderMenuItemChildren={(option) => (
-                                <div>
-                                    {option.question}
-                                    <div>
-                                        <small>Category: {option.category}</small>
-                                    </div>
-                                </div>
-                            )}
+                            renderMenuItemChildren={questionSelectionRendererHandler}
                         />
                     </div>
 
@@ -173,12 +211,12 @@ const FAQ = (props) => {
                             disabled={selectedQuestion && (selectedQuestion.length === 0)}
                             onClick={onSubmit}>
                             Submit
-                    </Button>
+                        </Button>
                     </Col>
                     <Col xs="auto">
                         <Button variant="outline-secondary" onClick={resetInputHandler}>
                             Reset
-                    </Button>
+                        </Button>
                     </Col>
                 </Form.Row>
             </div>
