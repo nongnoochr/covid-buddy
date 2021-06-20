@@ -117,23 +117,6 @@ const FAQ = (props) => {
 
     };
 
-
-    const getSourceName = (url) => {
-
-        let sourceName = '';
-
-        if (url.includes('www.who.int')) {
-            sourceName = 'WHO'
-        } else if (url.includes('www.cdc.gov')) {
-            sourceName = 'CDC'
-        } else if (url.includes('www.fda.gov')) {
-            sourceName = 'FDA'
-        }
-
-        return sourceName
-
-    }
-
     const questionSelectionRendererHandler = (option) => (
         <div>
             {option.question}
@@ -215,6 +198,13 @@ const FAQ = (props) => {
             </div>
 
         </Form>
+
+        <p>
+            FAQ Sources:&nbsp;
+            <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/question-and-answers-hub" target="_blank" rel="noreferrer">WHO</a>,&nbsp;
+            <a href="https://www.cdc.gov/coronavirus/2019-ncov/faq.html" target="_blank" rel="noreferrer">CDC</a>,&nbsp;
+            <a href="https://www.fda.gov/emergency-preparedness-and-response/coronavirus-disease-2019-covid-19/covid-19-frequently-asked-questions" target="_blank" rel="noreferrer">FDA</a>
+        </p>
 
 
 

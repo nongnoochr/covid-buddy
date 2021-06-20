@@ -62,7 +62,7 @@ app.get('/getfaqresponse', (req, res) => {
     res.send(faqresponse);
 });
 
-app.get('/getqnaresponse', timeout('120s'), bodyParser.json(), haltOnTimedout, async (req, res) => {
+app.get('/getqnaresponse', timeout('120s'), bodyParser.json(), haltOnTimedout, async (req, res, next) => {
 
     const msg = req.query.msg || '';
     let ansRes = null;

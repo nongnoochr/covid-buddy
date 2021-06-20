@@ -5,6 +5,57 @@ let { qnaData } = require('./qna.data.json');
 const { embeddingMap } = require('./qna.embedding.json');
 
 
+const loadModel = async () => {
+    console.log('* Load model when the server start');
+    
+    console.time('Model creation time');
+    localModel = await use.load();
+    console.timeEnd('Model creation time');
+
+    return localModel;
+};
+
+
+let model;
+loadModel().then((initModel) => {
+
+    model = initModel;
+});
+
+
+const getResponse = async (inputQuery) => {
+    
+    if (!model) {
+        console.log('Creating a model inside getResponse');
+        model = await use.load();
+    }
+
+    let queryEmbedding = await model.embed([inputQuery]);
+    const queryArrays = await queryEmbedding.array();
+
+    const scores = [];
+
+    for (const potentialMatch of Object.keys(embeddingMap)) {
+        // Calculate a similarity score by taking the dot product of the player's
+        // encoded query with the encoded candidate query
+        const score = dotProduct(queryArrays[0], embeddingMap[potentialMatch]);
+        scores.push(score);
+    }
+
+    let finalResults = qnaData.map((res, i) => {
+        return {
+            ...res,
+            score: scores[i]
+        };
+    });
+
+    finalResults.sort((a, b) => (a.score > b.score) ? -1 : 1)
+
+    return finalResults;
+
+};
+
+
 const getSourceName = (url) => {
 
     let sourceName = '';
@@ -61,44 +112,16 @@ const getFAQResponseById = (id) => {
 
 // ---------------
 
-let model;
-
-const getResponse = async (inputQuery) => {
-
-    if (!model) {
-        model = await use.load();
-    }
-
-    let queryEmbedding = await model.embed([inputQuery]);
-    const queryArrays = await queryEmbedding.array();
-
-    const scores = [];
-
-    for (const potentialMatch of Object.keys(embeddingMap)) {
-        // Calculate a similarity score by taking the dot product of the player's
-        // encoded query with the encoded candidate query
-        const score = dotProduct(queryArrays[0], embeddingMap[potentialMatch]);
-        scores.push(score);
-    }
-
-    let finalResults = qnaData.map((res, i) => {
-        return {
-            ...res,
-            score: scores[i]
-        };
-    });
-
-    finalResults.sort((a, b) => (a.score > b.score) ? -1 : 1)
-
-    return finalResults;
-
-};
 
 module.exports = {
     getFAQQuestions,
     getFAQResponseById,
     getResponse
 };
+
+
+
+
 
 // ---------
 
