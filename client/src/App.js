@@ -87,7 +87,7 @@ function App() {
   };
 
   const getLinkFindHCP = (qs='All') => {
-    return (<div>
+    return (<div style={{marginTop: '1em'}}>
       <Link
           to={{
               pathname: location.pathname
