@@ -5,12 +5,8 @@ import { Badge, Form, Col } from 'react-bootstrap';
 import HCPContext from '../../store/hcp-context';
 import HCPMapContext from '../../store/hcpmap-context';
 
+import { defaultSDKConfig } from '../../services/HCLSDKService';
 
-const defaultSDKConfig = {
-    apiKey: '30008a88a12364f2',
-    // appName: 'https://github.com/nongnoochr',
-    // appURL: 'https://github.com/nongnoochr'
-};
 // debugger
 // // eslint-disable-next-line no-undef
 // const api = new HclAPI(defaultSDKConfig);
@@ -37,10 +33,9 @@ const HCLSDK = (props) => {
 
 
     useEffect(() => {
-        debugger
 
         setAppliedQuickSearch(ctx.quickSearch);
-        debugger
+
         const HCLSDK = document.querySelector('hcl-sdk');
 
         let curSDKConfig = {
@@ -69,28 +64,9 @@ const HCLSDK = (props) => {
 
         }
 
-        setTimeout(() => {
-            HCLSDK.init(curSDKConfig);
-        }, 100);
+        HCLSDK.init(curSDKConfig);
 
-
-
-        // HCLSDK.init({
-        //     apiKey: '30008a88a12364f2',
-        //     appName: 'https://github.com/nongnoochr',
-        //     appURL: 'https://github.com/nongnoochr'
-        //     // entry: {
-        //     //     screenName: 'searchNearMe',
-        //     //     specialtyCode: 'SP.WUS.DGP' // DENTIST
-        //     //     // specialtyCode: 'SP.WUS.GS'
-        //     //     // specialtyLabel: 'GENERAL SURGERY'
-        //     // }
-        // });
-
-
-
-
-    }, [ctx.quickSearch])
+    }, [ctx.quickSearch, ctxMap.quicksearch])
 
     // customElements.whenDefined('hcl-sdk').then(function () {
     //         debugger

@@ -59,7 +59,7 @@ function Layout(props) {
             active={ctx.showhcp}
           >
             {ctx.showhcp ? <BiHide /> : <GrMapLocation />}
-            <span> {prefixHCPButtonLabel} Healthcare Provider</span>
+            <span> {prefixHCPButtonLabel} Healthcare Providers</span>
           </Button>
         </Form>
       </Navbar>

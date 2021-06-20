@@ -79,6 +79,7 @@ function App() {
 
   useEffect(() => {
     addQuickSearchToUrl(quickSearch);
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [quickSearch])
 
   const linkFindHCPHandler = (qs='All') => {
@@ -120,7 +121,7 @@ const handleHideModal = () => {
 const addQuickSearchToUrl = (qs) => {
   const queryParams = new URLSearchParams(location.search);
   // Only add quicksearch when dialog is shown
-  if (qs) {
+  if (showhcp && Boolean(qs)) {
     queryParams.set('quicksearch', qs);  
   } else {
     queryParams.delete('quicksearch');
@@ -158,7 +159,7 @@ const addQuickSearchToUrl = (qs) => {
               centered
               >
               <Modal.Header closeButton>
-                <Modal.Title><GrMapLocation /> Find Healthcare Provider</Modal.Title>
+                <Modal.Title><GrMapLocation /> Find Healthcare Providers</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <div>

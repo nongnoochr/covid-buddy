@@ -49,7 +49,7 @@ const Landing = (props) => {
                 </Button>
                 <Button variant="success"
                     onClick={ctx.linkFindHCPHandler}>
-                    <GrMapLocation /> <span>Find Healthcare Provider</span>
+                    <GrMapLocation /> <span>Find Healthcare Providers</span>
                 </Button>
             </div>
         </Jumbotron>
