@@ -55,11 +55,18 @@ app.get('/getfaqquestions', (req, res) => {
     res.send(faqquestions);
 });
 
-app.get('/getfaqresponse', (req, res) => {
+app.get('/getfaqresponse', timeout('120s'), bodyParser.json(), haltOnTimedout, async (req, res, next) => {
 
     const id = req.query.id || -1;
-    const faqresponse = getFAQResponseById(id);
-    res.send(faqresponse);
+
+    try {
+        const faqresponse = await getFAQResponseById(id);
+        res.send(faqresponse);
+
+    } catch(err) {
+        return next(err)
+    }
+
 });
 
 app.get('/getqnaresponse', timeout('120s'), bodyParser.json(), haltOnTimedout, async (req, res, next) => {
@@ -69,11 +76,11 @@ app.get('/getqnaresponse', timeout('120s'), bodyParser.json(), haltOnTimedout, a
     if (msg) {
         try {
             ansRes = await getResponse(msg);
+            res.send(ansRes);
         } catch(err) {
             return next(err)
         }
     }
-    res.send(ansRes);
 });
 
 // for any other requests, send `index.html` as a response

@@ -1,4 +1,4 @@
-const specialistGroupToWorlds = {
+const specialistToSentencesMap = {
     'PEDIATRICS': [
         "Can adolescents catch COVID-19?",
         "Can adolescents spread COVID-19 to other people even if they have mild or no symptoms?",
@@ -68,5 +68,5 @@ const specialistGroupToWorlds = {
 }
 
 module.exports = {
-    specialistGroupToWorlds
+    specialistToSentencesMap
 };

@@ -5,6 +5,6 @@ const {getFAQQuestions,  getFAQResponseById, getResponse } =
 (async () => {
     console.time('getResponse Time');
     const q = await getResponse('what is covid');
-    console.log(q)
+    console.log(q.slice(0,5))
     console.timeEnd('getResponse Time');
 })();

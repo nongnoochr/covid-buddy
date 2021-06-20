@@ -93,7 +93,7 @@ function App() {
               pathname: location.pathname
           }}
           onClick={() => linkFindHCPHandler(qs)}>
-          <GrMapLocation /> { (qs === 'All') ? 'Find Healthcare Providers Near You' : 
+          <GrMapLocation /> { (!qs || (qs === 'All')) ? 'Find Healthcare Providers Near You' : 
               `Find suggested Healthcare Providers Near You - ${qs}`}
       </Link>
 

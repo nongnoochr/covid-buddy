@@ -106,6 +106,7 @@ const QnA = (props) => {
                             <div>{res.answer}</div>
                         </div>
 
+                        <div className={classes['answer-findhcp-container']}>{ctx.getLinkFindHCP(res.predictedHCP)}</div>
 
                         {
                             (res.top5 && res.top5.length > 1) ?
@@ -149,7 +150,6 @@ const QnA = (props) => {
                                 : null
                         }
 
-                        <div className={classes['answer-findhcp-container']}>{ctx.getLinkFindHCP(res.predictedHCP)}</div>
                     </div>
                 </div>
             );
