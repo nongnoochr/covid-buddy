@@ -66,11 +66,15 @@ qnaData.forEach(item => {
     item['predictedHCP'] = '';
 });
 
+const getQnAData = () => {
+    return qnaData;
+};
+
 
 const setAllPredictedSpecialists = async () => {
 
     console.log('Computed predicted sp for all FAQs')
-
+    
     const allQuestions = qnaData.map(item => item.question);
 
     console.time('getAllPredictedSpecialists');
@@ -107,7 +111,8 @@ setAllPredictedSpecialists();
 // ---------
 // ------ Required method
 const getFAQQuestions = (category = 'All') => {
-    let allQuestions = qnaData.map(item => {
+    const data = getQnAData();
+    let allQuestions = data.map(item => {
         return {
             id: item.id,
             category: item.category,
@@ -153,8 +158,8 @@ const getResponse = async (inputQuery) => {
         scores.push(score);
     }
 
-
-    let finalResults = qnaData.map((res, i) => {
+    const data = getQnAData();
+    let finalResults = data.map((res, i) => {
         return {
             ...res,
             score: scores[i]
@@ -175,7 +180,8 @@ const getResponse = async (inputQuery) => {
 // Also add a prediction for a type of doctor
 
 const getFAQResponseById = async (id) => {
-    const res = qnaData.find(item => item.id === +id); // Must compare with a numeric value
+    const data = getQnAData();
+    const res = data.find(item => item.id === +id); // Must compare with a numeric value
     return res;
 };
 

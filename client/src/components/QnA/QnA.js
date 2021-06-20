@@ -139,6 +139,7 @@ const QnA = (props) => {
                                                                 <div>
                                                                     {item.response}
                                                                 </div>
+                                                                <div className={classes['answer-findhcp-container']}>{ctx.getLinkFindHCP(item.predictedHCP)}</div>
                                                             </Card.Body>
                                                         </Accordion.Collapse>
                                                     </Card>
@@ -155,9 +156,21 @@ const QnA = (props) => {
             );
         } else {
             resJSX = (
-                <div style={{ color: 'red' }}>
-                    <i>{res.answer || 'Something is wrong. Please try again later.'}</i>
+                <div>
+                    <div>
+                        <div><span className={classes['answer-user-user']}><RiUserVoiceLine /> You:</span> <b>{res.question}</b> </div>
+                    </div>
+                    <div>
+                        <div><span className={classes['answer-user-buddy']}><SiProbot /> Buddy:</span> </div>
+
+                        <div style={{ color: 'red' }}>
+                            <i>{res.answer || 'Something is wrong. Please try again later.'}</i>
+                        </div>
+                    </div>
+
                 </div>
+
+                
             );
 
         }

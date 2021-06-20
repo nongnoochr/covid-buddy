@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button, Col, Form } from 'react-bootstrap';
 import { getResponse } from '../../services/QnAService';
 
-
 const Buddy = (props) => {
 
     const [inputQuestion, setInputQuestion] = useState('');
@@ -39,9 +38,8 @@ const Buddy = (props) => {
                 top5: []
             };
             if (result.length > 0) {
-                
-                if (result[0].score < 0.3) {
-                    response.answer = "Sorry, I don't know the answer.";
+                if (result[0].score < 0.5) {
+                    response.answer = "Sorry, I don't know the answer :(";
                 } else {
                     const resTop5 = result.slice(0,5);
                     console.log('Top-5 results:', resTop5);
