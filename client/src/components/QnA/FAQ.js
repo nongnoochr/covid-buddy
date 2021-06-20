@@ -51,7 +51,6 @@ const FAQ = (props) => {
         // options.forEach(item => item['sourceName'] = getSourceName(item.source));
 
         const options = await getUpdatedFAQQuestions();
-
         setFAQQuestions(options);
 
         const dataCat = options.map(item => {
@@ -100,13 +99,18 @@ const FAQ = (props) => {
 
     };
 
-    const resetInputHandler = () => {
+    const resetInputHandler = async () => {
 
         setSelectedCategory([]);
         // refTypeaheadCat.current.clear();
 
         setSelectedQuestion([]);
         // refTypeaheadFAQ.current.clear();
+
+
+        // Reset questions to 'All'
+        const options = await getUpdatedFAQQuestions();
+        setFAQQuestions(options);
 
 
     };
