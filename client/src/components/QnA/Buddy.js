@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Col, Form } from 'react-bootstrap';
 import { getResponse } from '../../services/QnAService';
 
+
 const Buddy = (props) => {
 
     const [inputQuestion, setInputQuestion] = useState('');
@@ -25,28 +26,33 @@ const Buddy = (props) => {
             // const cleanInputQuestion = inputQuestion.replaceAll(regex, 'coronavirus');
             // const result = await getResponse(cleanInputQuestion);
             const result = await getResponse(inputQuestion);
-
             let response = {
                 id: -1,
                 source: '',
+                sourceName: '',
                 category: '',
+                categoryLabel: '',
                 question: inputQuestion,
-                answer: ''
+                origquestion: '',
+                answer: '',
+                score: -Infinity,
+                top5: []
             };
             if (result.length > 0) {
                 
-                if (result[0].score < 0.1) {
-                    response.answer = "Sorry, your question does not seem to be related to COVID-19 and I don't know the answer.";
+                if (result[0].score < 0.3) {
+                    response.answer = "Sorry, I don't know the answer.";
                 } else {
-                    console.log('Top-5 results:', result.slice(0,5));
+                    const resTop5 = result.slice(0,5);
+                    console.log('Top-5 results:', resTop5);
     
                     response = {
-                        id: result[0].id,
-                        source: result[0].source,
-                        category: result[0].category,
+                        ...resTop5[0],
                         question: inputQuestion,
-                        origquestion: result[0].question,
-                        answer: result[0].response
+                        origquestion: resTop5[0].question,
+                        answer: resTop5[0].response,
+                        score: resTop5[0].score,
+                        top5: resTop5
                     };
                 }
             }

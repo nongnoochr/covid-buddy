@@ -1,21 +1,44 @@
 const tf = require('@tensorflow/tfjs-node');
 const use = require('@tensorflow-models/universal-sentence-encoder');
 
-const { qnaData } = require('./qna.data.json');
+let { qnaData } = require('./qna.data.json');
 const { embeddingMap } = require('./qna.embedding.json');
+
+
+const getSourceName = (url) => {
+
+    let sourceName = '';
+
+    if (url.includes('www.who.int')) {
+        sourceName = 'WHO'
+    } else if (url.includes('www.cdc.gov')) {
+        sourceName = 'CDC'
+    } else if (url.includes('www.fda.gov')) {
+        sourceName = 'FDA'
+    }
+
+    return sourceName
+
+}
+
+qnaData.forEach(item => {
+    item['sourceName'] = getSourceName(item.source);
+    item['categoryLabel'] = `${item.category} (${item.sourceName})`;
+});
 
 
 // ------ Required method
 const getFAQQuestions = (category = 'All') => {
-    const allQuestions = qnaData.map(item => {
+    let allQuestions = qnaData.map(item => {
         return {
             id: item.id,
             category: item.category,
+            categoryLabel: item.categoryLabel,
             question: item.question,
-            source: item.source
+            source: item.source,
+            sourceName: item.sourceName
         };
     });
-
     if (category === 'All') {
         return allQuestions
     } else {

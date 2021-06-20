@@ -19,7 +19,7 @@ const FAQ = (props) => {
     const [selectedCategory, setSelectedCategory] = useState([]);
     const [selectedQuestion, setSelectedQuestion] = useState([]);
 
-    const getFAQQuestionsWithSourceName = async (curSeletedCat) => {
+    const getUpdatedFAQQuestions = async (curSeletedCat) => {
 
         let options;
         if (curSeletedCat) {
@@ -28,10 +28,7 @@ const FAQ = (props) => {
             options = await getFAQQuestions();
 
         }
-        
-        options.forEach(item => item['sourceName'] = getSourceName(item.source));
-        options.forEach(item => item['categoryLabel'] = `${item.category} (${item.sourceName})`);
-        
+
         return options
     }
 
@@ -40,7 +37,7 @@ const FAQ = (props) => {
         if (selectedCategory.length > 0) {
             const curSeletedCat = selectedCategory[0];
             // let newQuestions = await getFAQQuestions(curSeletedCat.category);
-            const newQuestions = await getFAQQuestionsWithSourceName(curSeletedCat.category);
+            const newQuestions = await getUpdatedFAQQuestions(curSeletedCat.category);
             setFAQQuestions(newQuestions)
 
         }
@@ -53,7 +50,7 @@ const FAQ = (props) => {
         // const options = await getFAQQuestions();
         // options.forEach(item => item['sourceName'] = getSourceName(item.source));
 
-        const options = await getFAQQuestionsWithSourceName();
+        const options = await getUpdatedFAQQuestions();
 
         setFAQQuestions(options);
 
@@ -92,12 +89,8 @@ const FAQ = (props) => {
     const submitQuestionHandler = async () => {
         const res = await getFAQResponseById(selectedQuestion[0].id);
         return {
-            id: res.id,
-            source: res.source,
-            category: res.category,
-            question: res.question,
-            answer: res.response,
-            predictedHCP: res.predictedHCP
+            ...res,
+            answer: res.response
         };
     };
 

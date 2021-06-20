@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { Spinner, Tabs, Tab } from 'react-bootstrap';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Spinner, Tabs, Tab, Accordion, Card, Button } from 'react-bootstrap';
 
 import FAQ from './FAQ';
 import Buddy from './Buddy';
@@ -47,7 +47,6 @@ const QnA = (props) => {
         setTimeout(async () => {
 
             const res = await fcn();
-
             setAllResponses(prevState => {
                 // Show the latest question first
                 return [
@@ -78,10 +77,16 @@ const QnA = (props) => {
         </div>
     );
 
-    // const parser = new DOMParser();
+
+    const getFromFAQJsx = (res) => (<div>
+        <i>From FAQ: {res.origquestion || res.question} (Confidence: {(res.score * 100).toFixed(1)}%)</i>
+    </div>);
+
+    const getSourceJsx = (res) => (<div>
+        <a href={res.source} target="_blank" rel="noreferrer">source - {res.sourceName}</a>
+    </div>);
 
     const jsxResponseHandler = (res) => {
-
         let resJSX;
 
         if (res.id > -1) {
@@ -93,24 +98,68 @@ const QnA = (props) => {
                     <div>
                         <div><span className={classes['answer-user-buddy']}><SiProbot /> Buddy:</span> </div>
                         <div>
-                            <p>
-                                {res.origquestion ? (<div><i>From FAQ: {res.origquestion}</i></div>) : null }
-                                {res.source ? (<div><a href={res.source} target="_blank" rel="noreferrer">source</a></div>) : null}
-                            </p>
-                            
+                            <div className={classes['answer-question-container']}>
+                                {res.origquestion ? getFromFAQJsx(res) : null}
+                                {res.source ? getSourceJsx(res) : null}
+                            </div>
+
                             <div>{res.answer}</div>
                         </div>
-    
+
+
+                        {
+                            (res.top5 && res.top5.length > 1) ?
+                                (
+                                    <div className={classes['answer-additional-faqs-container']}>
+
+                                        <h6>Other related FAQs </h6>
+                                        <div>
+                                            <Accordion>
+                                                {res.top5.slice(1).map((item, index) => (
+
+                                                
+                                                    <Card key={index}>
+                                                        <Card.Header>
+                                                            <Accordion.Toggle 
+                                                                as={Button}
+                                                                variant="link" 
+                                                                eventKey={`"${index}"`}
+                                                                style={{textAlign: "left"}}
+                                                                size="sm"
+                                                                >
+                                                                {getFromFAQJsx(item)}
+                                                            </Accordion.Toggle>
+                                                        </Card.Header>
+                                                        <Accordion.Collapse eventKey={`"${index}"`}>
+                                                            <Card.Body>
+                                                                <div className={classes['answer-question-container']}>
+                                                                    {getSourceJsx(item)}
+                                                                </div>
+                                                                <div>
+                                                                    {item.response}
+                                                                </div>
+                                                            </Card.Body>
+                                                        </Accordion.Collapse>
+                                                    </Card>
+                                                )
+                                            )}
+                                            </Accordion>
+                                        </div>
+                                    </div>)
+                                : null
+                        }
+
                         <div className={classes['answer-findhcp-container']}>{ctx.getLinkFindHCP(res.predictedHCP)}</div>
                     </div>
                 </div>
             );
         } else {
             resJSX = (
-                <div style={{color: 'red'}}>
-                    <i>Something is wrong. Please try again later.</i>
+                <div style={{ color: 'red' }}>
+                    <i>{res.answer || 'Something is wrong. Please try again later.'}</i>
                 </div>
             );
+
         }
 
         // // In case a patch for DOMParser does not work
@@ -124,7 +173,7 @@ const QnA = (props) => {
         //     </>
         // );
 
-        
+
         return resJSX;
     };
 
@@ -193,8 +242,8 @@ const QnA = (props) => {
                             <div>
                                 <div>
                                     <i><b>(Unvaccinated people ONLY)</b> Not sure what to do? Chat with the CDC HealthBot below
-                                    to help you make decisions on when to seek testing and
-                                    medical care :</i>
+                                        to help you make decisions on when to seek testing and
+                                        medical care :</i>
                                 </div>
                                 <div>
                                     <div ref={refSelfChecker} data-cdc-widget='healthBot' data-cdc-theme='theme3' className='cdc-widget-color-white' data-cdc-language='en-us'></div>
