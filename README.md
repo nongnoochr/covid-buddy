@@ -1,3 +1,11 @@
 # covid19-buddy
  
-TO add
+To add
+
+
+
+## Licensing, Authors, Acknowledgements<a name="licensing"></a>
+
+Source to images
+
+This project is [MIT licensed](./LICENSE).
