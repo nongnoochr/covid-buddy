@@ -2,10 +2,10 @@ import React from 'react';
 
 const HCPMapContext = React.createContext({
     quicksearch: [
-        {
-            specialtyCode: '',
-            specialtyLabel: 'All'
-        },
+        // {
+        //     specialtyCode: '',
+        //     specialtyLabel: 'All'
+        // },
         {
             specialtyCode: 'SP.WUS.PD',
             specialtyLabel: 'PEDIATRICS'

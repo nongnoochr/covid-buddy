@@ -17,7 +17,7 @@ const HCPMap = (props) => {
     // const quickSearchValues = ['GENERAL PRACTICE', 'PEDIATRICS', 'OBSTETRICS', 'PSYCHIATRY'];
     const quickSearchValues = ctxMap.quicksearch.map(item => item.specialtyLabel);
 
-    const [selectedQuickSearch, setSelectedQuickSearch] = useState(ctx.quickSearch);
+    const [selectedQuickSearch, setSelectedQuickSearch] = useState('All');
     // const [appliedQuickSearch, setAppliedQuickSearch] = useState(ctx.quickSearch);
 
    
@@ -49,6 +49,8 @@ const HCPMap = (props) => {
                                 className="mb-2"
                                 onChange={selectionChangeHandler}
                             >
+                                <option selected value="All"> - select an option - </option>
+
                                 {
                                     quickSearchValues.map((item, index) => {
                                         return (

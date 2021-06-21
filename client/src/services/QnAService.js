@@ -1,6 +1,14 @@
+// This module provides apis to make a GET request to retrieve data from the server
+
 import axios from 'axios';
 
-// ------ Required method
+/**
+ * Request FAQ Questions data from the server
+ * @param {string} category Category name. 
+ * This value can be one of the followings: 'All' (default), or a category name 
+ * in the FAQ data
+ * @returns {[object]} FAQ Questions data sorted by category name
+ */
 const getFAQQuestions = async (category = 'All') => {
     const res = await axios.get(`/getfaqquestions?category=${category}`)
     res.data.sort((a, b) => (a.category > b.category) ? 1 : -1)
@@ -9,6 +17,11 @@ const getFAQQuestions = async (category = 'All') => {
 
 };
 
+/**
+ * Request FAQ Response data for a particular FAQ
+ * @param {string} id Identifier of a requested FAQ
+ * @returns {[object]} FAQ Response data
+ */
 const getFAQResponseById = async (id) => {
 
     const res = await axios.get(`/getfaqresponse?id=${id}`)
