@@ -50,6 +50,10 @@ Below are python libraries that are used to run Jupyter Notebooks in `./data` to
 
 ## Instructions:
 
+**IMPORTANT**: Before running the app, you will need to update `./client/src/services/HCLSDKService.js` to use a valid HealthcareLocator's `apiKey` in order to enable the **Find Healthcare Providers** feature.
+
+To obtain a HealthcareLocator's apiKey, you can create your free HCL SDK account [here](https://www.healthcarelocator.com/en/pricing)
+
 #### Start App in Production mode - NodeJS
 
 Use the following command to start a server to run this app in a production mode (using the build app)

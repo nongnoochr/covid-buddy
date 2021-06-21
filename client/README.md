@@ -1,6 +1,17 @@
 # Client-side Source: COVID-19 Buddy
 
-To see how to run the client app, see `./README.md` and additional information in the **Getting Started with Create React App** section below
+To see how to run the client app, see `./README.md` and additional information in the **Getting Started with Create React App** section below.
+
+In order to use `hcl-sdk/HealthCareLocatorWebSDK`, the following `<script>` tags are added to `client/public/index.html` to use the SDK from CDN
+
+```
+<script src="https://static.healthcarelocator.com/v1/hcl-sdk-web-ui/hcl-sdk.js"></script>
+<script src="https://static.healthcarelocator.com/v1/hcl-sdk-api/hcl-sdk-api.js"></script>
+```
+
+**IMPORTANT**: You will need to update `./client/src/services/HCLSDKService.js` to use a valid HealthcareLocator's `apiKey` in order to enable the **Find Healthcare Providers** feature.
+
+To obtain a HealthcareLocator's apiKey, you can create your free HCL SDK account [here](https://www.healthcarelocator.com/en/pricing)
 
 
 
