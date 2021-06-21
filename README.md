@@ -16,7 +16,7 @@ This app is deployed at: https://covid-buddy.herokuapp.com/
 | Buddy  | ![Buddy-Desktop](artifacts/images/buddy_desktop.png) | ![Buddy-Mobile](artifacts/images/buddy_mobile.png)  |
 | Checker  | ![Checker-Desktop](artifacts/images/checker_desktop.png) | ![Checker-Mobile](artifacts/images/checker_mobile.png)  |
 
-
+See more details about this project in [devpost_project.md](./devpost_project.md)
 ## Installation
 
 #### Installing the App - JavaScript + NodeJS
