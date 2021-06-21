@@ -33,10 +33,10 @@ let model, spModel;
  * Return a copy of qnaData.
  * All functions in this file must use this getQnAData to get a copy of
  * qnaData to prevent an unintented change to the original qnaData
- * @returns a copy of qnaData
+ * @returns {[object]} a copy of qnaData
  */
 const getQnAData = () => {
-    return {...qnaData};
+    return [...qnaData];
 };
 
 // ---------
@@ -148,7 +148,7 @@ const getFAQResponseById = async (id) => {
 };
 
 /**
- * 
+ * Return a sorted list of FAQ data with a similarity score (sorted descendingly)
  * @param {string} inputQuery user input question/query
  * @returns 
  */
@@ -159,18 +159,19 @@ const getResponse = async (inputQuery) => {
         model = await use.load();
     }
 
+    // Get an embedding of the input query
     let queryEmbedding = await model.embed([inputQuery]);
     const queryArrays = await queryEmbedding.array();
 
+    // Calculate a similarity score by taking the dot product of the user input
+    // encoded query with the encoded of each FAQ question
     const scores = [];
-
-    for (const potentialMatch of Object.keys(embeddingMap)) {
-        // Calculate a similarity score by taking the dot product of the player's
-        // encoded query with the encoded candidate query
+    for (const potentialMatch of Object.keys(embeddingMap)) {    
         const score = dotProduct(queryArrays[0], embeddingMap[potentialMatch]);
         scores.push(score);
     }
 
+    // Add a score to a copy of qnaData
     const data = getQnAData();
     let finalResults = data.map((res, i) => {
         return {
@@ -179,21 +180,20 @@ const getResponse = async (inputQuery) => {
         };
     });
 
+    // Then sorted it based on a score descendingly
     finalResults.sort((a, b) => (a.score > b.score) ? -1 : 1);
 
-
-    // --- Only updated the predictedSPs for the top response
+    // --- Only updated the predictedSPs for the top response since we will only
+    // return a top response to a user (Predicting a specialist takes memory and time!)
     const predictedSPs = await predictSpecialist([inputQuery]);
     finalResults[0]['predictedHCP'] = predictedSPs[0];
 
     return finalResults;
-
 };
 
-
 // ---------------
-
-
+// Export modules
+// ---------------
 module.exports = {
     startService,
     getFAQQuestions,
@@ -202,7 +202,7 @@ module.exports = {
 };
 
 // =============
-// ---- Helpers
+// ---- Local Helpers
 // =============
 
 function getSourceName (url) {
@@ -265,9 +265,11 @@ async function predictSpecialist(queries) {
         spModel = await use.load();
     }
 
+    // Compute embedding of a list of input queries
     let queryEmbedding = await spModel.embed(queries);
     const queryArrays = await queryEmbedding.array();
 
+    // Calculate a similarity score for each input query
     let allPredictedSPs = []; 
     queryArrays.forEach((curQueryArray, index) => {
 
@@ -302,6 +304,4 @@ async function predictSpecialist(queries) {
     return allPredictedSPs;
 }
 
-
 // ---------
-
