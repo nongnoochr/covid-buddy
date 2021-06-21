@@ -91,7 +91,7 @@ const HCLSDK = (props) => {
                 : null
             }
 
-            <div className="sdk-parent-element" style={{ height: "75vh" }}>
+            <div className="sdk-parent-element" style={{ width: "100%", height: "75vh" }}>
                 <hcl-sdk></hcl-sdk>
             </div>
         </div>

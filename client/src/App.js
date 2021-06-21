@@ -156,10 +156,20 @@ const addQuickSearchToUrl = (qs) => {
               onHide={handleHideModal}
               animation={false}
               scrollable={true}
+
+              // Note:
+              // 1. dialogClassName won't be applied if fullscreen prop is set
+              // 2. The back button won't be availble in a larger screen. 
+              // We need a back button now because we can't programmatically reset
+              // view to the home screen after initializing SDK
+              
+              // dialogClassName="modal-90w"
+              // size="lg"
+
               centered
               >
               <Modal.Header closeButton>
-                <Modal.Title><GrMapLocation /> Find Healthcare Providers</Modal.Title>
+                <Modal.Title><span className="icon-text"><GrMapLocation /> </span>Find Healthcare Providers</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <div>

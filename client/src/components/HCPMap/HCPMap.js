@@ -44,12 +44,12 @@ const HCPMap = (props) => {
                 <Form.Row>
                     <Col xs="auto">
                         <label>
-                            <FaUserMd /> Quick Search Near Me: <select
+                            <FaUserMd /> <span className="icon-text">Quick Search Near Me:</span> <select
                                 value={selectedQuickSearch}
                                 className="mb-2"
                                 onChange={selectionChangeHandler}
                             >
-                                <option selected value="All"> - select an option - </option>
+                                <option selected value="All"> select option... </option>
 
                                 {
                                     quickSearchValues.map((item, index) => {
