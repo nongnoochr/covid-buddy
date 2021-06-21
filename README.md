@@ -95,6 +95,7 @@ The client report will be automatically launched at `http://localhost:3000`
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
 
+* The [HealthCareLocatorSDK](https://www.healthcarelocator.com/en/developers) is used to deliver the "Find Healthcare Providers" features. All credits must go to them.
 * Images used in the Landing page were downloaded from https://www.freepik.com/free-vector. All credits must go to them.
 * The CDC HealthBot embedded in the Checker tab was taken from the CDC website https://tools.cdc.gov/medialibrary/index.aspx#/media/id/405848. All credits must go to them.
 

@@ -88,7 +88,7 @@ There are quite a few challenges I ran into while working on this project but th
 ##### Lack of Documentation
 The current [Healthcare Locator documentation](https://docs.healthcarelocator.com/index.htm#t=index_1.html) is still evolving and either provided 
 * incorrect information, e.g. 
-  * incorrect path to cdn, 
+  * incorrect path to cdn
 * insufficient information
   * very little information about how to programatically customize the SDK or update its state
   * No information about a url to make a GraphQL query and how to to specify a subscription key to a request 
@@ -101,7 +101,7 @@ At the beginning of the Hackathon period, I was playing around with the GraphQL 
 ##### Systemic issues
 In addition to the issues mentioned above, during the last 2 weeks of the hackathon period, I encountered an issue where I could neither customize the prebuilt screen to searchNearMe nor make any query from my app due to a CORS issue from a request made in the underlying JavaScriptSDK provided by the cdn and there is no documentation / help for this issue from the Discussions tab in the Hackathon page, and even the provided examples in the HealthCareLocatorWebSDK in [github](https://github.com/hcl-sdk/HealthCareLocatorWebSDK) also encounters the same issue. 
 
-I was eventually got this issue resolved during the last week of the hackathon by creating a new HealthcareLocator account to get a new apiKey :\
+I eventually got this issue resolved during the last week of the hackathon by creating a new HealthcareLocator account to get a new apiKey :\
 
 
 ## Accomplishments that we're proud of
