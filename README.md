@@ -1,10 +1,13 @@
 # COVID-19 Buddy App
  
+Visit https://covid-buddy.herokuapp.com/
+
 The COVID-19 pandemic has greatly impact every life on earth, especially underserved communities who were significantly impacted by COVID-19 due to a lack of access to medical facilities and misleading and disinformation about COVID-19 and the vaccines. 
 
 The goal of this **COVID-19 Buddy** app is to assist a user by providing accurate information about COVID-19 from trustworthy sources and organizations as well as leveraging AI to suggest nearby Healthcare providers (HCPs) for user based on his/her input to enable greater access to healthcare providers for all.
 
-This app is deployed at: https://covid-buddy.herokuapp.com/
+This project was developed to submit for the DEVPOST Hackathon - Code for COVID Relief (https://healthcareappchallenge.devpost.com/).
+* To learn more about this project, see [devpost_project.md](./devpost_project.md)
 
 | Features      | Desktop App   | Mobile App    |
 | ------------- | :---------:   | :----------:  |
@@ -16,7 +19,6 @@ This app is deployed at: https://covid-buddy.herokuapp.com/
 | Buddy  | ![Buddy-Desktop](artifacts/images/buddy_desktop.png) | ![Buddy-Mobile](artifacts/images/buddy_mobile.png)  |
 | Checker  | ![Checker-Desktop](artifacts/images/checker_desktop.png) | ![Checker-Mobile](artifacts/images/checker_mobile.png)  |
 
-This project was developed to submit for the DEVPOST Hackathon - Code for COVID Relief (https://healthcareappchallenge.devpost.com/). * To learn more about this project, see [devpost_project.md](./devpost_project.md)
 ## Installation
 
 #### Installing the App - JavaScript + NodeJS
