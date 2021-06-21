@@ -175,16 +175,6 @@ const QnA = (props) => {
 
         }
 
-        // // In case a patch for DOMParser does not work
-        // // Roll back to remove all HTMLtags
-        // const regex = /(<([^>]+)>)/ig;
-        // const innerText = res.answer.replace(regex, "");
-
-        // jsxAnswer = (
-        //     <>
-        //         <div>{ innerText }</div>
-        //     </>
-        // );
 
 
         return resJSX;

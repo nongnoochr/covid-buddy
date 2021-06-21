@@ -33,15 +33,6 @@ const loadSPModel = async () => {
 };
 
 
-let model;
-loadModel().then((initModel) => {
-    model = initModel;
-});
-
-let spModel;
-loadSPModel().then((initModel) => {
-    model = initModel;
-});
 // ---------
 // --- Reformat data before proceeding
 const getSourceName = (url) => {
@@ -60,16 +51,9 @@ const getSourceName = (url) => {
 
 }
 
-qnaData.forEach(item => {
-    item['sourceName'] = getSourceName(item.source);
-    item['categoryLabel'] = `${item.category} (${item.sourceName})`;
-    item['predictedHCP'] = '';
-});
-
 const getQnAData = () => {
     return qnaData;
 };
-
 
 const setAllPredictedSpecialists = async () => {
 
@@ -105,8 +89,38 @@ const setAllPredictedSpecialists = async () => {
     });
 }
 
-setAllPredictedSpecialists();
+// -----
 
+// --- Update data
+qnaData.forEach(item => {
+    item['sourceName'] = getSourceName(item.source);
+    item['categoryLabel'] = `${item.category} (${item.sourceName})`;
+    item['predictedHCP'] = '';
+});
+
+let model;
+// loadModel().then((initModel) => {
+//     model = initModel;
+// });
+
+let spModel;
+
+// // Don't load a model here since we are going to load it anyway in setAllPredictedSpecialists();
+// loadSPModel().then((initModel) => {
+//     model = initModel;
+// });
+
+
+const startService = async () => {
+    console.log('* Start Service');
+    
+    console.time('startService');
+
+    model = await loadModel();
+    await setAllPredictedSpecialists();
+
+    console.timeEnd('startService');
+}
 
 // ---------
 // ------ Required method
@@ -189,6 +203,7 @@ const getFAQResponseById = async (id) => {
 
 
 module.exports = {
+    startService,
     getFAQQuestions,
     getFAQResponseById,
     getResponse

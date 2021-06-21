@@ -5,7 +5,7 @@ const cors = require('cors');
 const timeout = require('connect-timeout');
 var bodyParser = require('body-parser');
 
-const {getFAQQuestions,  getFAQResponseById, getResponse } = 
+const {startService, getFAQQuestions,  getFAQResponseById, getResponse } = 
     require('./server/QnAService');
 
 // ------------
@@ -48,11 +48,15 @@ function haltOnTimedout (req, res, next) {
     if (!req.timedout) next()
   }
 
-app.get('/getfaqquestions', (req, res) => {
+app.get('/getfaqquestions', timeout('120s'), bodyParser.json(), haltOnTimedout, async (req, res, next) => {
 
-    const category = req.query.category || 'All' ;
-    const faqquestions = getFAQQuestions(category);
-    res.send(faqquestions);
+    try {
+        const category = req.query.category || 'All' ;
+        const faqquestions = getFAQQuestions(category);
+        res.send(faqquestions);
+    } catch(err) {
+        return next(err)
+    }
 });
 
 app.get('/getfaqresponse', timeout('120s'), bodyParser.json(), haltOnTimedout, async (req, res, next) => {
@@ -98,104 +102,17 @@ app.use( '*', ( req, res ) => {
     return res.send( indexHTML );
 } );
 
-// run express server on port 9000
-app.listen( PORT, host, () => {
-    console.log( `Express server started at http://localhost:${PORT}` );
-} );
+// -------------
+const startApp = async () => {
+    await startService();
 
-// -------------------
-// const express = require('express');
-// const path = require('path');
-// const app = express();
-// // const helmet = require('helmet') // creates headers that protect from attacks (security)
-// // const cors = require('cors')  // allows/disallows cross-site communication
-// app.use(express.json()); // Used to parse JSON bodies
-// app.use(express.urlencoded({ extended: true })); 
+    // run express server on port 9000
+    app.listen( PORT, host, () => {
+        console.log( `Express server started at http://localhost:${PORT}` );
+    } );
 
-// // --> Add this
-// // ** MIDDLEWARE ** //
-// // const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://shrouded-journey-38552.herokuapp.com']
-// // const corsOptions = {
-// //   origin: function (origin, callback) {
-// //     console.log("** Origin of request " + origin)
-// //     if (whitelist.indexOf(origin) !== -1 || !origin) {
-// //       console.log("Origin acceptable")
-// //       callback(null, true)
-// //     } else {
-// //       console.log("Origin rejected")
-// //       callback(new Error('Not allowed by CORS'))
-// //     }
-// //   }
-// // }
-// // app.use(helmet())
-// // --> Add this
-// // app.use(cors(corsOptions))
+}
 
-// app.use(express.static(path.join(__dirname, 'client/build')));
-// // Handle React routing, return all requests to React app
-//   app.get('*', function(req, res) {
-//     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-//   });
+startApp();
 
-// // // --> Add this
-// // if (process.env.NODE_ENV === 'production') {
-// //   // Serve any static files
-// //   app.use(express.static(path.join(__dirname, 'client/build')));
-// // // Handle React routing, return all requests to React app
-// //   app.get('*', function(req, res) {
-// //     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-// //   });
-// // }
-
-// const PORT = process.env.PORT || 8080
-// app.listen(PORT, (req, res) => {
-//     console.log(`server listening on port: ${PORT}`)
-//   });
-
-
-
-// ------------
-
-// // // Create express app
-// // const path = require('path');
-
-// // const express = require('express');
-// // const app = express();
-
-// // // -------
-// // // Server port
-// // const port = 8080;
-// // // var port = process.env.PORT || curPort;
-// // app.set('port', (port));
-
-// // app.listen(port, () => {
-// //     console.log(`Server now listening at http://localhost:${port}`);
-// //  });
-
-// // // -------
-
-// // const pathIndex = path.join(__dirname, './client/build/index.html');
-// // console.log('pathIndex', pathIndex);
-
-// // app.use('./client/build', express.static(path.join(__dirname,'public')));
-
-
-// // // Root endpoint
-// // app.get('/', (req, res, next) => {
-// //     res.sendFile(pathIndex);
-// // });
-
-// // // Root endpoint
-// // app.get('*', (req, res, next) => {
-// //     res.sendFile(pathIndex);
-// // });
-
-// // // Default response for any other request
-// // app.use((req, res) => {
-// //     res.status(404);
-// // });
-
-
-
-// // // app.use(express.json()); // Used to parse JSON bodies
 
