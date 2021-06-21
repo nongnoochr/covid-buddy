@@ -1,3 +1,9 @@
+# Client-side Source: COVID-19 Buddy
+
+To see how to run the client app, see `./README.md` and additional information in the **Getting Started with Create React App** section below
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

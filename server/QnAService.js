@@ -184,10 +184,12 @@ const getResponse = async (inputQuery) => {
     // Then sorted it based on a score descendingly
     finalResults.sort((a, b) => (a.score > b.score) ? -1 : 1);
 
-    // --- Only updated the predictedSPs for the top response since we will only
-    // return a top response to a user (Predicting a specialist takes memory and time!)
-    const predictedSPs = await predictSpecialist([inputQuery]);
-    finalResults[0]['predictedHCP'] = predictedSPs[0];
+    // --- No longer needs to do this because we already make a prediction for all
+    // FAQs at the start of the server
+    // // --- Only updated the predictedSPs for the top response since we will only
+    // // return a top response to a user (Predicting a specialist takes memory and time!)
+    // const predictedSPs = await predictSpecialist([inputQuery]);
+    // finalResults[0]['predictedHCP'] = predictedSPs[0];
 
     return finalResults;
 };
