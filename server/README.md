@@ -1,12 +1,10 @@
 # Server scripts
 
-## Overview
+This folder includes NodeJS scripts to
+* Perform server operations (aka services)
+* Generate AI models and data that are used by the server
 
-## What are available
-
-### Server services
-
-To add
+### Server services - `QnAService.js`
 
 
 ### AI models generation

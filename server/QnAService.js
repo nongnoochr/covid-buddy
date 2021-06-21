@@ -1,60 +1,51 @@
+// Import "universal-sentence-encoder" lite (USE) model from tensorflow.js
+// Note that this step requires an internet connection
 const tf = require('@tensorflow/tfjs-node');
 const use = require('@tensorflow-models/universal-sentence-encoder');
 
+// ---------------
+// Import Data
+// ---------------
+
+
 // --- QnA data
 let { qnaData } = require('./data/qna.data.json');
-const { embeddingMap } = require('./data/qna.embedding.json');
+// Update data to include fields that are required by the client
+qnaData.forEach(item => {
+    item['sourceName'] = getSourceName(item.source);
+    item['categoryLabel'] = `${item.category} (${item.sourceName})`;
+    item['predictedHCP'] = '';
+});
 
 // --- Specialist Data
 const spData = require('./data/sp.data.json')['outData'];
+
+// --- Embedding data that will be used to compute a score of an output
+// of the USE models
+const { embeddingMap } = require('./data/qna.embedding.json');
 const spEmbData = require('./data/sp.embedding.json');
 const spEmbeddingMap = spEmbData['embeddingMap'];
 
-// --- Load models when server starts
+// --- Initialize variables for models
+let model, spModel;
 
-const loadModel = async () => {
-    console.log('* Load QnA model when the server start');
-    
-    console.time('QnA Model creation time');
-    localModel = await use.load();
-    console.timeEnd('QnA Model creation time');
-
-    return localModel;
+/**
+ * Return a copy of qnaData.
+ * All functions in this file must use this getQnAData to get a copy of
+ * qnaData to prevent an unintented change to the original qnaData
+ * @returns a copy of qnaData
+ */
+const getQnAData = () => {
+    return {...qnaData};
 };
-
-const loadSPModel = async () => {
-    console.log('* Load SP model when the server start');
-    
-    console.time('SP Model creation time');
-    localModel = await use.load();
-    console.timeEnd('SP Model creation time');
-
-    return localModel;
-};
-
 
 // ---------
-// --- Reformat data before proceeding
-const getSourceName = (url) => {
-
-    let sourceName = '';
-
-    if (url.includes('www.who.int')) {
-        sourceName = 'WHO'
-    } else if (url.includes('www.cdc.gov')) {
-        sourceName = 'CDC'
-    } else if (url.includes('www.fda.gov')) {
-        sourceName = 'FDA'
-    }
-
-    return sourceName
-
-}
-
-const getQnAData = () => {
-    return qnaData;
-};
-
+/**
+ * Predict a suggested specialist for all FAQs and set it to qnaData
+ * This operation only needs to be done onces in a server session 
+ * and it is invoked in the startService method
+ * @async
+ */
 const setAllPredictedSpecialists = async () => {
 
     console.log('Computed predicted sp for all FAQs')
@@ -89,30 +80,18 @@ const setAllPredictedSpecialists = async () => {
     });
 }
 
-// -----
+// ----------------------
+// Exported functions
+// ----------------------
 
-// --- Update data
-qnaData.forEach(item => {
-    item['sourceName'] = getSourceName(item.source);
-    item['categoryLabel'] = `${item.category} (${item.sourceName})`;
-    item['predictedHCP'] = '';
-});
-
-let model;
-// loadModel().then((initModel) => {
-//     model = initModel;
-// });
-
-let spModel;
-
-// // Don't load a model here since we are going to load it anyway in setAllPredictedSpecialists();
-// loadSPModel().then((initModel) => {
-//     model = initModel;
-// });
-
-
+/**
+ * A function to start initializing model objects and set a predicted suggested
+ * specialist to all FAQ data
+ * @async
+ * @function
+ */
 const startService = async () => {
-    console.log('* Start Service');
+    console.log('* Initialize the server service...');
     
     console.time('startService');
 
@@ -122,9 +101,15 @@ const startService = async () => {
     console.timeEnd('startService');
 }
 
-// ---------
-// ------ Required method
+/**
+ * Get FAQ data (no response) for all categories or for a particular category
+ * @param {string} category Category name. 
+ * This value can be one of the followings: 'All' (default), or a category name 
+ * in qnaData
+ * @returns {[object]} A list of FAQ data object
+ */
 const getFAQQuestions = (category = 'All') => {
+    // Retrieve only interested fields of qnaData
     const data = getQnAData();
     let allQuestions = data.map(item => {
         return {
@@ -136,10 +121,11 @@ const getFAQQuestions = (category = 'All') => {
             sourceName: item.sourceName
         };
     });
+
     if (category === 'All') {
         return allQuestions
     } else {
-
+        // Only return a subset of data when a user specifies a category value
         const catQuestions = allQuestions.filter(item => {
             return item.category === category;
         });
@@ -149,10 +135,23 @@ const getFAQQuestions = (category = 'All') => {
 
 };
 
-// -----------------
-// predict apis
-// -----------------
+/**
+ * Return a FAQ response based on id
+ * @param {string} id Identifier of qnaData
+ * @async
+ * @returns {object} A FAQ response object based on the specified id
+ */
+const getFAQResponseById = async (id) => {
+    const data = getQnAData();
+    const res = data.find(item => item.id === +id); // Must compare with a numeric value
+    return res;
+};
 
+/**
+ * 
+ * @param {string} inputQuery user input question/query
+ * @returns 
+ */
 const getResponse = async (inputQuery) => {
     
     if (!model) {
@@ -191,13 +190,6 @@ const getResponse = async (inputQuery) => {
 
 };
 
-// Also add a prediction for a type of doctor
-
-const getFAQResponseById = async (id) => {
-    const data = getQnAData();
-    const res = data.find(item => item.id === +id); // Must compare with a numeric value
-    return res;
-};
 
 // ---------------
 
@@ -212,6 +204,60 @@ module.exports = {
 // =============
 // ---- Helpers
 // =============
+
+function getSourceName (url) {
+
+    let sourceName = '';
+
+    if (url.includes('www.who.int')) {
+        sourceName = 'WHO'
+    } else if (url.includes('www.cdc.gov')) {
+        sourceName = 'CDC'
+    } else if (url.includes('www.fda.gov')) {
+        sourceName = 'FDA'
+    }
+
+    return sourceName
+
+}
+
+// zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+function zipWith(f, xs, ys) {
+    const ny = ys.length;
+    return (xs.length <= ny ? xs : xs.slice(0, ny))
+        .map((x, i) => f(x, ys[i]));
+}
+
+// dotProduct :: [Int] -> [Int] -> Int
+function dotProduct(xs, ys) {
+    const sum = xs => xs ? xs.reduce((a, b) => a + b, 0) : undefined;
+
+    return xs.length === ys.length ? (sum(zipWith((a, b) => a * b, xs, ys))) :
+        undefined;
+}
+
+// ----------------
+// --- Async helpers
+// ----------------
+async function loadModel () {
+    console.log('* Load QnA model when the server start');
+    
+    console.time('QnA Model creation time');
+    localModel = await use.load();
+    console.timeEnd('QnA Model creation time');
+
+    return localModel;
+};
+
+async function loadSPModel () {
+    console.log('* Load SP model when the server start');
+    
+    console.time('SP Model creation time');
+    localModel = await use.load();
+    console.timeEnd('SP Model creation time');
+
+    return localModel;
+};
 
 async function predictSpecialist(queries) {
     if (!spModel) {
@@ -259,17 +305,3 @@ async function predictSpecialist(queries) {
 
 // ---------
 
-// zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-function zipWith(f, xs, ys) {
-    const ny = ys.length;
-    return (xs.length <= ny ? xs : xs.slice(0, ny))
-        .map((x, i) => f(x, ys[i]));
-}
-
-// dotProduct :: [Int] -> [Int] -> Int
-function dotProduct(xs, ys) {
-    const sum = xs => xs ? xs.reduce((a, b) => a + b, 0) : undefined;
-
-    return xs.length === ys.length ? (sum(zipWith((a, b) => a * b, xs, ys))) :
-        undefined;
-}
