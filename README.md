@@ -9,7 +9,9 @@ This app is deployed at: https://covid-buddy.herokuapp.com/
 | Features      | Desktop App   | Mobile App    |
 | ------------- | :---------:   | :----------:  |
 | Landing Page  | ![Landing Page-Desktop](artifacts/images/landing_desktop.png) | ![Landing Page-Mobile](artifacts/images/landing_mobile.png)  |
-| Find Healthcare Providers  | ![Find Healthcare Providers-Desktop](artifacts/images/findhcp_desktop.png) | ![Find Healthcare Providers-Mobile](artifacts/images/findhcp_mobile.png)  |
+| Find Healthcare Providers (HCPs)  | ![Find Healthcare Providers-Desktop](artifacts/images/findhcp_desktop.png) | ![Find Healthcare Providers-Mobile](artifacts/images/findhcp_mobile.png)  |
+| Find HCPs - Quick Search (Map)  | ![Find Healthcare Providers-Desktop](artifacts/images/findhcp_quicksearch_map_desktop.png) | ![Find Healthcare Providers-Mobile](artifacts/images/findhcp_quicksearch_map_mobile.png)  |
+| Find HCPs - Quick Search (List)  | ![Find Healthcare Providers-Desktop](artifacts/images/findhcp_quicksearch_list_desktop.png) | ![Find Healthcare Providers-Mobile](artifacts/images/findhcp_quicksearch_list_mobile.png)  |
 | FAQs  | ![FAQs-Desktop](artifacts/images/faqs_desktop.png) | ![FAQs-Mobile](artifacts/images/faqs_mobile.png) |
 | Buddy  | ![Buddy-Desktop](artifacts/images/buddy_desktop.png) | ![Buddy-Mobile](artifacts/images/buddy_mobile.png)  |
 | Checker  | ![Checker-Desktop](artifacts/images/checker_desktop.png) | ![Checker-Mobile](artifacts/images/checker_mobile.png)  |
