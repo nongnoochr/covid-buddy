@@ -1,3 +1,7 @@
+// Mapping of a specialist to sentences
+// This mapping will be used to create an embedding from a USE model in the 
+// generate_specialist_models.js script
+
 const specialistToSentencesMap = {
     'PEDIATRICS': [
         "Can adolescents catch COVID-19?",
@@ -36,7 +40,6 @@ const specialistToSentencesMap = {
         "If I am pregnant, can I get a COVID-19 vaccine?",
         "Can pregnant women pass COVID-19 to unborn children?",
         "Is it safe for a mother to breastfeed if she is infected with COVID-19?",
-
     ],
     // Mostly from: https://www.heretohelp.bc.ca/questions-and-answers
     'PSYCHIATRY': [
@@ -62,10 +65,9 @@ const specialistToSentencesMap = {
         "What's the difference between anxiety and stress?",
         "What's the difference between sadness and depression?",
         "Where can I find information and help for borderline personality disorder?",
-        "What happens during a counseling appointment? How do counseling appointments work now because of the coronavirus?"
-
-    ],
-}
+        "What happens during a counseling appointment? How do counseling appointments work now because of the coronavirus?",
+    ]
+};
 
 module.exports = {
     specialistToSentencesMap

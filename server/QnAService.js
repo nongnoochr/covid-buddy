@@ -3,6 +3,7 @@
 const tf = require('@tensorflow/tfjs-node');
 const use = require('@tensorflow-models/universal-sentence-encoder');
 
+const { dotProduct } = require('./Utils');
 // ---------------
 // Import Data
 // ---------------
@@ -205,7 +206,12 @@ module.exports = {
 // ---- Local Helpers
 // =============
 
-function getSourceName (url) {
+/**
+ * Get a source name of a specified URL from FAQ
+ * @param {string} url URL of a FAQ source
+ * @returns {string} Source name of the specified URL
+ */
+function getSourceName (url='') {
 
     let sourceName = '';
 
@@ -221,48 +227,30 @@ function getSourceName (url) {
 
 }
 
-// zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-function zipWith(f, xs, ys) {
-    const ny = ys.length;
-    return (xs.length <= ny ? xs : xs.slice(0, ny))
-        .map((x, i) => f(x, ys[i]));
-}
-
-// dotProduct :: [Int] -> [Int] -> Int
-function dotProduct(xs, ys) {
-    const sum = xs => xs ? xs.reduce((a, b) => a + b, 0) : undefined;
-
-    return xs.length === ys.length ? (sum(zipWith((a, b) => a * b, xs, ys))) :
-        undefined;
-}
-
 // ----------------
 // --- Async helpers
 // ----------------
+/**
+ * Load a pretrained USE model
+ * @returns {object} a pretrained USE model
+ */
 async function loadModel () {
-    console.log('* Load QnA model when the server start');
-    
-    console.time('QnA Model creation time');
+    console.log('* Load USE model');
     localModel = await use.load();
-    console.timeEnd('QnA Model creation time');
 
     return localModel;
 };
 
-async function loadSPModel () {
-    console.log('* Load SP model when the server start');
-    
-    console.time('SP Model creation time');
-    localModel = await use.load();
-    console.timeEnd('SP Model creation time');
-
-    return localModel;
-};
-
+/**
+ * Predict a suggested specilist for the input question/query
+ * @async
+ * @param {[string]} queries An array of query string 
+ * @returns {[string]} An array of predicted specialists
+ */
 async function predictSpecialist(queries) {
     if (!spModel) {
         console.log('Creating a model inside predictSpecialist');
-        spModel = await use.load();
+        spModel = await loadModel();
     }
 
     // Compute embedding of a list of input queries
@@ -271,15 +259,15 @@ async function predictSpecialist(queries) {
 
     // Calculate a similarity score for each input query
     let allPredictedSPs = []; 
-    queryArrays.forEach((curQueryArray, index) => {
+    queryArrays.forEach((curQueryArray) => {
 
         const scores = [];
         let maxScore = -Infinity;
         let bestMatch = '';
 
+        // Calculate a similarity score by taking the dot product of the user input
+        // encoded query with the encoded specialist query
         for (const potentialMatch of Object.keys(spEmbeddingMap)) {
-            // Calculate a similarity score by taking the dot product of the player's
-            // encoded query with the encoded candidate query
             const score = dotProduct(curQueryArray, spEmbeddingMap[potentialMatch]);
             scores.push(score);
 
