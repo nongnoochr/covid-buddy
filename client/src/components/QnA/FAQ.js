@@ -10,49 +10,55 @@ import { GrFilter } from 'react-icons/gr';
 // Styling
 import classes from './FAQ.module.css';
 
+// ==================
+// Helpers
+// ==================
+/**
+ * Get Questions data based on the input category name
+ * @param {string} curSeletedCat Selected category name
+ * @returns {[object]} An array of questions data
+ */
+const getUpdatedFAQQuestions = async (curSeletedCat) => {
+
+    let options;
+    if (curSeletedCat) {
+        options = await getFAQQuestions(curSeletedCat);
+    } else {
+        options = await getFAQQuestions();
+
+    }
+    return options
+}
+
+// ==================
+
 const FAQ = (props) => {
+
+    // --- refs
     const refTypeaheadFAQ = useRef(null);
     const refTypeaheadCat = useRef(null);
 
+    // --- states
     const [faqQuestions, setFAQQuestions] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState([]);
     const [selectedQuestion, setSelectedQuestion] = useState([]);
 
-    const getUpdatedFAQQuestions = async (curSeletedCat) => {
 
-        let options;
-        if (curSeletedCat) {
-            options = await getFAQQuestions(curSeletedCat);
-        } else {
-            options = await getFAQQuestions();
+    // ---------------
+    // --- useEffects
+    // ---------------
 
-        }
-
-        return options
-    }
+    // --- Initialize the categories and FAQs widgets
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
-        if (selectedCategory.length > 0) {
-            const curSeletedCat = selectedCategory[0];
-            // let newQuestions = await getFAQQuestions(curSeletedCat.category);
-            const newQuestions = await getUpdatedFAQQuestions(curSeletedCat.category);
-            setFAQQuestions(newQuestions)
 
-        }
-
-    }, [selectedCategory]);
-
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(async () => {
-        // const options = await getFAQQuestions();
-        // options.forEach(item => item['sourceName'] = getSourceName(item.source));
-
+        // Get all FAQ Questions
         const options = await getUpdatedFAQQuestions();
         setFAQQuestions(options);
 
+        // Get categories data
         const dataCat = options.map(item => {
             return {
                 category: item.category,
@@ -60,6 +66,8 @@ const FAQ = (props) => {
                 sourceName: item.sourceName
             };
         });
+
+        // Get only unique category names
 
         // https://codeburst.io/javascript-array-distinct-5edc93501dc4
         let categories = [];
@@ -71,9 +79,9 @@ const FAQ = (props) => {
                     ...item
                 })
             }
-
         }
 
+        // Prepend with the 'All' categories to show all FAQs
         categories = [
             { category: 'All', categoryLabel: 'All', sourceName: '' },
             ...categories
@@ -83,8 +91,44 @@ const FAQ = (props) => {
 
     }, []);
 
+    // --- Update FAQQuestions listed in the search dropdown after a selected
+    // category is updated
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(async () => {
+        if (selectedCategory.length > 0) {
+            const curSeletedCat = selectedCategory[0];
+            const newQuestions = await getUpdatedFAQQuestions(curSeletedCat.category);
+            setFAQQuestions(newQuestions);
+        }
+    }, [selectedCategory]);
+
     // --------------
 
+    // --- Handlers
+
+    /**
+     * Set properties after changing a category
+     * @param {string} newCat category name
+     */
+    const selectionChangeHandler = (newCat) => {
+        setSelectedCategory(newCat);
+        setSelectedQuestion([]);
+    };
+
+    /**
+     * Pass the submit handler to the parent handler and reset the selected question
+     */
+    const onSubmit = () => {
+        props.onSubmitDataHandler(submitQuestionHandler);
+        setSelectedQuestion([]);
+    };
+
+    /**
+     * Return a response data for the selected FAQ
+     * @async
+     * @returns {object} a response data
+     */
     const submitQuestionHandler = async () => {
         const res = await getFAQResponseById(selectedQuestion[0].id);
         return {
@@ -93,12 +137,10 @@ const FAQ = (props) => {
         };
     };
 
-    const selectionChangeHandler = (newCat) => {
-        setSelectedCategory(newCat);
-        setSelectedQuestion([]);
-
-    };
-
+    /**
+     * Reset property values when pressing the Reset button
+     * @async
+     */
     const resetInputHandler = async () => {
 
         setSelectedCategory([]);
@@ -107,20 +149,17 @@ const FAQ = (props) => {
         setSelectedQuestion([]);
         // refTypeaheadFAQ.current.clear();
 
-
         // Reset questions to 'All'
         const options = await getUpdatedFAQQuestions();
         setFAQQuestions(options);
 
-
     };
 
-    const onSubmit = () => {
-        props.onSubmitDataHandler(submitQuestionHandler);
-        setSelectedQuestion([]);
-
-    };
-
+    /**
+     * Custom renderer for the FAQ Selection dropdown
+     * @param {object} option FAQ data object
+     * @returns {JSX} Rendered JSX 
+     */
     const questionSelectionRendererHandler = (option) => (
         <div>
             {option.question}
@@ -130,18 +169,19 @@ const FAQ = (props) => {
         </div>
     );
 
+    // -----------
 
-    return (<div className={classes['faq-selection-container']}>
-        <div>
+    return (
+        <div className={classes['faq-selection-container']}>
             <Form.Group>
                 <InputGroup>
                     <div className={classes['cat-selection-label-container']}>
                         <InputGroup.Prepend>
                             <InputGroup.Text>
-                                <GrFilter /> &nbsp; <span className={classes['cat-selection-label']}>Filter by Category: </span>
+                                <GrFilter /> &nbsp;
+                                <span className={classes['cat-selection-label']}>Filter by Category:</span>
                             </InputGroup.Text>
                         </InputGroup.Prepend>
-
                     </div>
 
                     <div className={classes['cat-selection-search-container']}>
@@ -152,35 +192,29 @@ const FAQ = (props) => {
                             selected={selectedCategory}
                             filterBy={['categoryLabel', 'sourceName']}
                             labelKey="categoryLabel"
-                            placeholder="(Optional) Select or Type a Category"
+                            placeholder="(Optional) Select or type category..."
                             ref={refTypeaheadCat}
+                            clearButton
                         />
-
                     </div>
-
                 </InputGroup>
             </Form.Group>
 
             <Form>
-
                 <Form.Row className="align-items-center">
-
                     <Col sm={12} className="mb-2">
-                        <div>
-                            <Typeahead
-                                id="faq-typeahead"
-                                onChange={setSelectedQuestion}
-                                options={faqQuestions}
-                                placeholder="Select or Type a Question or Category"
-                                selected={selectedQuestion}
-                                filterBy={['question', 'categoryLabel', 'sourceName']}
-                                labelKey="question"
-                                ref={refTypeaheadFAQ}
-                                clearButton
-                                renderMenuItemChildren={questionSelectionRendererHandler}
-                            />
-                        </div>
-
+                        <Typeahead
+                            id="faq-typeahead"
+                            onChange={setSelectedQuestion}
+                            options={faqQuestions}
+                            placeholder="Select or type question or category..."
+                            selected={selectedQuestion}
+                            filterBy={['question', 'categoryLabel', 'sourceName']}
+                            labelKey="question"
+                            renderMenuItemChildren={questionSelectionRendererHandler}
+                            ref={refTypeaheadFAQ}
+                            clearButton
+                        />
                     </Col>
                 </Form.Row>
 
@@ -200,22 +234,15 @@ const FAQ = (props) => {
                         </Col>
                     </Form.Row>
                 </div>
-
             </Form>
 
-        </div>
-
-        <div className={classes['faq-source-container']}>
-            Sources:&nbsp;
-            <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/question-and-answers-hub" target="_blank" rel="noreferrer">WHO</a>,&nbsp;
-            <a href="https://www.cdc.gov/coronavirus/2019-ncov/faq.html" target="_blank" rel="noreferrer">CDC</a>,&nbsp;
-            <a href="https://www.fda.gov/emergency-preparedness-and-response/coronavirus-disease-2019-covid-19/covid-19-frequently-asked-questions" target="_blank" rel="noreferrer">FDA</a>
-        </div>
-
-
-
-
-    </div>);
+            <div className={classes['faq-source-container']}>
+                Sources:&nbsp;
+                <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/question-and-answers-hub" target="_blank" rel="noreferrer">WHO</a>,&nbsp;
+                <a href="https://www.cdc.gov/coronavirus/2019-ncov/faq.html" target="_blank" rel="noreferrer">CDC</a>,&nbsp;
+                <a href="https://www.fda.gov/emergency-preparedness-and-response/coronavirus-disease-2019-covid-19/covid-19-frequently-asked-questions" target="_blank" rel="noreferrer">FDA</a>
+            </div>
+        </div>);
 };
 
 export default FAQ;
