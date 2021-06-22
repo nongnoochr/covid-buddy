@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Spinner, Tabs, Tab, Accordion, Card, Button } from 'react-bootstrap';
+import { useHistory, useLocation } from 'react-router-dom';
+import { Spinner, Tabs, Tab } from 'react-bootstrap';
 
 import FAQ from './FAQ';
 import Buddy from './Buddy';
@@ -15,10 +15,7 @@ import classes from './QnA.module.css';
 import { BsCardChecklist } from 'react-icons/bs';
 import { FaQuestionCircle } from 'react-icons/fa';
 import { FcFaq } from 'react-icons/fc';
-import { RiUserVoiceLine, RiQuestionAnswerLine } from 'react-icons/ri';
-import { SiProbot } from 'react-icons/si';
-
-
+import { RiQuestionAnswerLine } from 'react-icons/ri';
 
 const QnA = (props) => {
 

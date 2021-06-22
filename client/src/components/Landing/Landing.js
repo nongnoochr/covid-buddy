@@ -1,10 +1,3 @@
-// Images:
-// Mask:
-// https://www.freepik.com/free-vector/people-wearing-medical-mask_7311135.htm#page=1&query=wear%20mask&position=4
-// Cough:
-// https://www.freepik.com/free-vector/young-female-with-symptoms-coughing_7385461.htm#page=1&query=cough&position=3
-
-// https://tools.cdc.gov/medialibrary/index.aspx#/media/id/405848
 import React, { useContext } from 'react';
 import { useHistory} from 'react-router-dom';
 import { Button, CardGroup, Card, Jumbotron } from 'react-bootstrap';

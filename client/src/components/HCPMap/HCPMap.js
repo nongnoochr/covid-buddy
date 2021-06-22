@@ -13,13 +13,9 @@ const HCPMap = (props) => {
     const ctx = useContext(HCPContext);
     const ctxMap = useContext(HCPMapContext);
 
-    //ADOLESCENT MEDICINE - (Pediatric)
-    // const quickSearchValues = ['GENERAL PRACTICE', 'PEDIATRICS', 'OBSTETRICS', 'PSYCHIATRY'];
     const quickSearchValues = ctxMap.quicksearch.map(item => item.specialtyLabel);
 
     const [selectedQuickSearch, setSelectedQuickSearch] = useState(ctx.quickSearch);
-    // const [appliedQuickSearch, setAppliedQuickSearch] = useState(ctx.quickSearch);
-
    
     const selectionChangeHandler = (ev) => {
 

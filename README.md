@@ -16,6 +16,8 @@ This project was developed to submit for the DEVPOST Hackathon - Code for COVID 
 | Find HCPs - Quick Search (Map)  | ![Find Healthcare Providers-Desktop](artifacts/images/findhcp_quicksearch_map_desktop.png) | ![Find Healthcare Providers-Mobile](artifacts/images/findhcp_quicksearch_map_mobile.png)  |
 | Find HCPs - Quick Search (List)  | ![Find Healthcare Providers-Desktop](artifacts/images/findhcp_quicksearch_list_desktop.png) | ![Find Healthcare Providers-Mobile](artifacts/images/findhcp_quicksearch_list_mobile.png)  |
 | FAQs  | ![FAQs-Desktop](artifacts/images/faqs_desktop.png) | ![FAQs-Mobile](artifacts/images/faqs_mobile.png) |
+| FAQs - Collapsed Suggested Specialists | ![FAQs-Desktop-Collapsed Suggestions](artifacts/images/faqs_desktop_collapsed_sps.png) | ![FAQs-Mobile-Collapsed Suggestions](artifacts/images/faqs_mobile_collapsed_sps.png) |
+| FAQs - Expanded Suggested Specialists  | ![FAQs-Desktop-Expanded Suggestions](artifacts/images/faqs_desktop_expand_sps.png) | ![FAQs-Mobile-Expanded Suggestions](artifacts/images/faqs_mobile_expand_sps.png) |
 | Buddy  | ![Buddy-Desktop](artifacts/images/buddy_desktop.png) | ![Buddy-Mobile](artifacts/images/buddy_mobile.png)  |
 | Checker  | ![Checker-Desktop](artifacts/images/checker_desktop.png) | ![Checker-Mobile](artifacts/images/checker_mobile.png)  |
 

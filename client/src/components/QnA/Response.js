@@ -1,22 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Accordion, Card, Button } from 'react-bootstrap';
 
 import classes from './Response.module.css';
 import HCPContext from '../../store/hcp-context.js';
 import HCPMapContext from '../../store/hcpmap-context';
 
+import { defaultSDKConfig } from '../../services/HCLSDKService';
+
+// Icons
 import { BiHide } from 'react-icons/bi';
 import { FaUserMd } from 'react-icons/fa';
 import { MdMyLocation } from 'react-icons/md';
-
-
-
-import { defaultSDKConfig } from '../../services/HCLSDKService';
-
-
-
-import { Accordion, Card, Button } from 'react-bootstrap';
-
 import { RiUserVoiceLine } from 'react-icons/ri';
 import { SiProbot } from 'react-icons/si';
 
