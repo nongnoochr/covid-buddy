@@ -56,3 +56,8 @@
     color: chocolate;
     font-weight: bold;
 }
+
+.query-error-container {
+    color: red;
+    font-style: italic;
+}

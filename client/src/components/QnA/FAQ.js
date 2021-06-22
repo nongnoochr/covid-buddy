@@ -39,11 +39,11 @@ const FAQ = (props) => {
     const refTypeaheadCat = useRef(null);
 
     // --- states
-    const [faqQuestions, setFAQQuestions] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState([]);
-    const [selectedQuestion, setSelectedQuestion] = useState([]);
 
+    const [faqQuestions, setFAQQuestions] = useState([]);
+    const [selectedQuestion, setSelectedQuestion] = useState([]);
 
     // ---------------
     // --- useEffects
