@@ -18,37 +18,3 @@
     font-size: smaller;
     color: gray;
 }
-
-
-.answer-question-container {
-    margin-bottom: 1em;
-}
-
-.answer-additional-faqs-container {
-    margin: 1em 0;
-}
-
-.answer-see-additional-faqs {
-    text-decoration: underline;
-}
-
-.answer-findhcp-container {
-    margin-top: 1em;
-}
-
-.answer-user-user {
-    font-weight: bold;
-    color: salmon;
-}
-
-.answer-user-buddy {
-    font-weight: bold;
-    color: blue;
-}
-
-/* Remove styling for anchor elements */
-a.answer-link {
-    text-decoration: none;
-    pointer-events: none;
-    color: black;
-  }

@@ -7,22 +7,6 @@ import HCPMapContext from '../../store/hcpmap-context';
 
 import { defaultSDKConfig } from '../../services/HCLSDKService';
 
-// debugger
-// // eslint-disable-next-line no-undef
-// const api = new HclAPI(defaultSDKConfig);
-// const params = {
-//     id: 'WCAM0000048701',
-//   };
-//   api.activityByID(params)
-//     .then(res => {
-//         debugger
-//       console.log("activityByID", res)
-//     })
-//     .catch(err => {
-//         debugger
-//       alert('activityByID error', err.message);
-//     })
-  
 
 const HCLSDK = (props) => {
 
@@ -34,6 +18,7 @@ const HCLSDK = (props) => {
 
     useEffect(() => {
 
+        // eslint-disable-next-line no-undef
         setAppliedQuickSearch(ctx.quickSearch);
 
         const HCLSDK = document.querySelector('hcl-sdk');

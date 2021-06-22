@@ -4,6 +4,7 @@ import { Spinner, Tabs, Tab, Accordion, Card, Button } from 'react-bootstrap';
 
 import FAQ from './FAQ';
 import Buddy from './Buddy';
+import Response from './Response';
 
 import HCPContext from '../../store/hcp-context.js';
 
@@ -16,6 +17,8 @@ import { FaQuestionCircle } from 'react-icons/fa';
 import { FcFaq } from 'react-icons/fc';
 import { RiUserVoiceLine, RiQuestionAnswerLine } from 'react-icons/ri';
 import { SiProbot } from 'react-icons/si';
+
+
 
 const QnA = (props) => {
 
@@ -60,9 +63,11 @@ const QnA = (props) => {
             });
 
             setIsFindingAnswer('');
+            
+            refResponse.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
             // Always scroll to the latest response
             window.scrollTo(0, 0);
-            refResponse.current.scrollTo(0, 0);
         }, 100);
 
     };
@@ -77,119 +82,25 @@ const QnA = (props) => {
         </div>
     );
 
-
-    const getFromFAQJsx = (res) => (<div>
-        <i>From FAQ: {res.origquestion || res.question} (Confidence: {(res.score * 100).toFixed(1)}%)</i>
-    </div>);
-
-    const getSourceJsx = (res) => (<div>
-        <a href={res.source} target="_blank" rel="noreferrer">source - {res.sourceName}</a>
-    </div>);
-
     const jsxResponseHandler = (res) => {
-        let resJSX;
 
-        if (res.id > -1) {
-            resJSX = (
-                <div>
-                    <div>
-                        <div><span className={classes['answer-user-user']}><RiUserVoiceLine /> You:</span> <b>{res.question}</b> </div>
-                    </div>
-                    <div>
-                        <div><span className={classes['answer-user-buddy']}><SiProbot /> Buddy:</span> </div>
-                        <div>
-                            <div className={classes['answer-question-container']}>
-                                {res.origquestion ? getFromFAQJsx(res) : null}
-                                {res.source ? getSourceJsx(res) : null}
-                            </div>
-
-                            <div>{res.answer}</div>
-                        </div>
-
-                        <div className={classes['answer-findhcp-container']}>{ctx.getLinkFindHCP(res.predictedHCP)}</div>
-
-                        {
-                            (res.top5 && res.top5.length > 1) ?
-                                (
-                                    <div className={classes['answer-additional-faqs-container']}>
-
-                                        <h6>Other related FAQs </h6>
-                                        <div>
-                                            <Accordion>
-                                                {res.top5.slice(1).map((item, index) => (
-
-                                                
-                                                    <Card key={index}>
-                                                        <Card.Header>
-                                                            <Accordion.Toggle 
-                                                                as={Button}
-                                                                variant="link" 
-                                                                eventKey={`"${index}"`}
-                                                                style={{textAlign: "left"}}
-                                                                size="sm"
-                                                                >
-                                                                {getFromFAQJsx(item)}
-                                                            </Accordion.Toggle>
-                                                        </Card.Header>
-                                                        <Accordion.Collapse eventKey={`"${index}"`}>
-                                                            <Card.Body>
-                                                                <div className={classes['answer-question-container']}>
-                                                                    {getSourceJsx(item)}
-                                                                </div>
-                                                                <div>
-                                                                    {item.response}
-                                                                </div>
-                                                                <div className={classes['answer-findhcp-container']}>{ctx.getLinkFindHCP(item.predictedHCP)}</div>
-                                                            </Card.Body>
-                                                        </Accordion.Collapse>
-                                                    </Card>
-                                                )
-                                            )}
-                                            </Accordion>
-                                        </div>
-                                    </div>)
-                                : null
-                        }
-
-                    </div>
-                </div>
-            );
-        } else {
-            resJSX = (
-                <div>
-                    <div>
-                        <div><span className={classes['answer-user-user']}><RiUserVoiceLine /> You:</span> <b>{res.question}</b> </div>
-                    </div>
-                    <div>
-                        <div><span className={classes['answer-user-buddy']}><SiProbot /> Buddy:</span> </div>
-
-                        <div style={{ color: 'red' }}>
-                            <i>{res.answer || 'Something is wrong. Please try again later.'}</i>
-                        </div>
-                    </div>
-
-                </div>
-
-                
-            );
-
-        }
-
-
-
+        const resJSX = (<Response data={res} />);
         return resJSX;
     };
 
     useEffect(() => {
-        const newResJsx = allResponses.map((curRes, index) => {
-            return (
-                <div key={index}>
-                    <div className={classes['answer-item-timestamp']}>{curRes.timestamp.toLocaleString()}</div>
-                    {jsxResponseHandler(curRes)}
-                    <hr />
-                </div>
-            );
-        });
+        const newResJsx = (<div ref={refResponse}>
+            {allResponses.map((curRes, index) => {
+                return (
+                    <div key={index}>
+                        <div className={classes['answer-item-timestamp']}>{curRes.timestamp.toLocaleString()}</div>
+                        {jsxResponseHandler(curRes)}
+                        <hr />
+                    </div>
+                );
+            })}
+        </div>)
+
         setJSXResponse(newResJsx);
 
     }, [allResponses]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -266,7 +177,7 @@ const QnA = (props) => {
 
                     {
                         activeKey === 'selfchecker' ? ctx.getLinkFindHCP() :
-                            (<div ref={refResponse} >
+                            (<div>
                                 <h5><RiQuestionAnswerLine /> Responses:</h5>
                                 <div className={classes['answer-contents']}>
 

@@ -1,0 +1,58 @@
+
+.answer-question-container {
+    margin-bottom: 1em;
+}
+
+.answer-additional-faqs-container {
+    margin: 1em 0;
+}
+
+.answer-findhcp-container {
+    margin-top: 1em;
+}
+
+.answer-user-user {
+    font-weight: bold;
+    color: salmon;
+}
+
+.answer-user-buddy {
+    font-weight: bold;
+    color: blue;
+}
+
+.answer-showsps-container {
+    margin-top: 0.5em;
+    padding: 0.5em;
+    border-style: solid;
+    border-width: thin;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+
+.current-location-container {
+    font-size: small;
+}
+
+.specialist-container {
+    margin: 1em 0;
+}
+.individual-name {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.individual-prof {
+    /* font-style: italic; */
+    font-size: small;
+}
+
+.workplace-address {
+    color: grey;
+    margin-top:0.5em;
+}
+
+.no-specialists-container {
+    color: chocolate;
+    font-weight: bold;
+}

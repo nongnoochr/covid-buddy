@@ -24,7 +24,7 @@ function Layout(props) {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
+      <Navbar bg="dark" variant="dark" expand="lg" sticky="top" >
         <Navbar.Brand as={Link} 
           to={
             {

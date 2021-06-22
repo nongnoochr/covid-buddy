@@ -85,6 +85,7 @@ function App() {
   const linkFindHCPHandler = (qs='All') => {
       setQuickSearch(qs);
       handleShowModal();
+      
   };
 
   const getLinkFindHCP = (qs='All') => {
