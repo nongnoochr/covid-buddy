@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import classes from './Response.module.css';
@@ -36,7 +36,7 @@ const Response = (props) => {
     const findSpecialistsNearMe = (spCode) => {
         navigator.geolocation.getCurrentPosition(position => {
             setIsGeoLocationOn(true);
-            
+
             const curCoords = position.coords;
 
             const curLat = curCoords.latitude;
@@ -95,13 +95,8 @@ const Response = (props) => {
 
             const spCode = ctxMap.quicksearch.find(item => item.specialtyLabel === res.predictedHCP)['specialtyCode'];
             findSpecialistsNearMe(spCode);
-
-
-
-
         }
     }, []);
-
 
 
     const getSourceJsx = (res) => (<div>
@@ -111,6 +106,70 @@ const Response = (props) => {
     const getFromFAQJsx = (res) => (<div>
         <i>From FAQ: {res.origquestion || res.question} (Confidence: {(res.score * 100).toFixed(1)}%)</i>
     </div>);
+
+
+    const getJsxBottom = (inPredictedHCP) => {
+        return (
+            <div>
+                <div className={classes['answer-findhcp-container']}>{ctx.getLinkFindHCP(inPredictedHCP)}</div>
+
+                <div>
+                    {isGeoLocationOn ?
+                        (<div>
+                            {(doneGetSPs && res && (inPredictedHCP !== 'All') && (suggestedSPs.length > 0)) ?
+                                <div>
+                                    <div onClick={() => setShowSPs(!showSPs)}>
+                                        {showSPs ?
+                                            (<><BiHide /> <Link><span>Click to hide...</span></Link></>)
+                                            : (<><FaUserMd /> <Link><span>Click to see specialists ({inPredictedHCP}) near you...</span>
+                                            </Link></>)}
+                                    </div>
+                                    {
+                                        showSPs ? (
+                                            <div className={classes['answer-showsps-container']}>
+                                                <div className={classes['current-location-container']}>
+                                                    <MdMyLocation /> <b>Your location</b> Latitude: {currentCoords.lat ? currentCoords.lat.toFixed(4) : ''} , Longitude: {currentCoords.lon ? currentCoords.lon.toFixed(4) : ''}
+                                                </div>
+
+                                                <div>
+                                                    {suggestedSPs.map((curData, index) => {
+                                                        return (
+                                                            <div className={classes['specialist-container']} key={index}>
+                                                                <div className={classes['individual-name']}>{curData.activity.individual.firstName} {curData.activity.individual.middleName} {curData.activity.individual.lastName}</div>
+                                                                <div className={classes['individual-prof']}>{curData.activity.individual.professionalType.label} ({curData.activity.individual.specialties.map(item => item.label).join(', ')})</div>
+                                                                <div className={classes['workplace-address']}>{curData.activity.workplace.address.buildingLabel}
+                                                                    {curData.activity.workplace.address.longLabel}  {curData.activity.workplace.address.city.label},  {curData.activity.workplace.address.county.label}
+                                                                </div>
+                                                                <div>{curData.distance}m</div>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+
+                                            </div>) : null
+                                    }
+                                </div>
+                                : null
+                            }
+
+                            {(doneGetSPs && res && (inPredictedHCP !== 'All') && (suggestedSPs.length === 0)) ?
+                                (<div className={classes['no-specialists-container']}>
+                                    There are <b>no {inPredictedHCP}</b> near you
+                                </div>)
+                                : null
+                            }
+                        </div>)
+                        : <div className={classes['no-specialists-container']}>
+                            Turn on your location to find {inPredictedHCP} near you
+                        </div>
+                    }
+
+                </div>
+
+
+            </div>
+        );
+    }
 
     if (res.id > -1) {
         return (
@@ -129,64 +188,10 @@ const Response = (props) => {
                         <div>{res.answer}</div>
                     </div>
 
-                    <div>
-                        <div className={classes['answer-findhcp-container']}>{ctx.getLinkFindHCP(res.predictedHCP)}</div>
+                    {
+                        getJsxBottom(res.predictedHCP)
+                    }
 
-                        <div>
-                            {isGeoLocationOn ?
-                                (<div>
-                                    {(doneGetSPs && res && (res.predictedHCP !== 'All') && (suggestedSPs.length > 0)) ?
-                                        <div>
-                                            <div onClick={() => setShowSPs(!showSPs)}>
-                                                {showSPs ?
-                                                    (<><BiHide /> <Link><span>Click to hide...</span></Link></>)
-                                                    : (<><FaUserMd /> <Link><span>Click to see specialists ({res.predictedHCP}) near you...</span>
-                                                    </Link></>)}
-                                            </div>
-                                            {
-                                                showSPs ? (
-                                                    <div className={classes['answer-showsps-container']}>
-                                                        <div className={classes['current-location-container']}>
-                                                            <MdMyLocation /> <b>Your location</b> Latitude: {currentCoords.lat ? currentCoords.lat.toFixed(4) : ''} , Longitude: {currentCoords.lon ? currentCoords.lon.toFixed(4) : ''}
-                                                        </div>
-
-                                                        <div>
-                                                            {suggestedSPs.map((curData, index) => {
-                                                                return (
-                                                                    <div className={classes['specialist-container']} key={index}>
-                                                                        <div className={classes['individual-name']}>{curData.activity.individual.firstName} {curData.activity.individual.middleName} {curData.activity.individual.lastName}</div>
-                                                                        <div className={classes['individual-prof']}>{curData.activity.individual.professionalType.label} ({curData.activity.individual.specialties.map(item => item.label).join(', ')})</div>
-                                                                        <div className={classes['workplace-address']}>{curData.activity.workplace.address.buildingLabel}
-                                                                            {curData.activity.workplace.address.longLabel}  {curData.activity.workplace.address.city.label},  {curData.activity.workplace.address.county.label}
-                                                                        </div>
-                                                                        <div>{curData.distance}m</div>
-                                                                    </div>
-                                                                );
-                                                            })}
-                                                        </div>
-
-                                                    </div>) : null
-                                            }
-                                        </div>
-                                        : null
-                                    }
-
-                                    {(doneGetSPs && res && (res.predictedHCP !== 'All') && (suggestedSPs.length === 0)) ?
-                                        (<div className={classes['no-specialists-container']}>
-                                            There are <b>no {res.predictedHCP}</b> near you
-                                        </div>)
-                                        : null
-                                    }
-                                </div>)
-                                : <div className={classes['no-specialists-container']}> 
-                                    Turn on your location to find {res.predictedHCP} near you
-                                </div>
-                            }
-
-                        </div>
-
-
-                    </div>
 
                     {
                         (res.top5 && res.top5.length > 1) ?
@@ -219,7 +224,9 @@ const Response = (props) => {
                                                             <div>
                                                                 {item.response}
                                                             </div>
-                                                            <div className={classes['answer-findhcp-container']}>{ctx.getLinkFindHCP(item.predictedHCP)}</div>
+                                                            {
+                                                                getJsxBottom(item.predictedHCP)
+                                                            }
                                                         </Card.Body>
                                                     </Accordion.Collapse>
                                                 </Card>
