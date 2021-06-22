@@ -104,7 +104,6 @@ const FAQ = (props) => {
     }, [selectedCategory]);
 
     // --------------
-
     // --- Handlers
 
     /**

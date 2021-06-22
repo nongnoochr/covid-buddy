@@ -191,7 +191,8 @@ const getResponse = async (inputQuery) => {
     // const predictedSPs = await predictSpecialist([inputQuery]);
     // finalResults[0]['predictedHCP'] = predictedSPs[0];
 
-    return finalResults;
+    // Only return the Top-5 results
+    return finalResults.slice(0, 5);
 };
 
 // ---------------

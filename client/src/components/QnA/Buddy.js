@@ -4,12 +4,21 @@ import { getResponse } from '../../services/QnAService';
 
 const Buddy = (props) => {
 
+    // --- states
     const [inputQuestion, setInputQuestion] = useState('');
 
+    // --- Handlers
+    /**
+     * Set inputQuestions as user types into the input widget
+     * @param {object} ev Event object
+     */
     const inputQuestionHandler = (ev) => {
         setInputQuestion(ev.target.value);
     };
 
+    /**
+     * Pass the submit handler to the parent handler and reset the selected question
+     */
     const onSubmit = async (event) => {
 
         event.preventDefault();
@@ -19,12 +28,16 @@ const Buddy = (props) => {
             return;
         }
 
+        /**
+         * Get a buddy response based on the current input question
+         * @async
+         * @returns {object} Response from server
+         */
         const fcn = async () => {
-            // https://towardsdatascience.com/how-we-created-an-open-source-covid-19-chatbot-c5c900b382df
-            // const regex = /(covid-19|covid)/ig;
-            // const cleanInputQuestion = inputQuestion.replaceAll(regex, 'coronavirus');
-            // const result = await getResponse(cleanInputQuestion);
+
             const result = await getResponse(inputQuestion);
+
+            // Default output response
             let response = {
                 id: -1,
                 source: '',
@@ -37,31 +50,34 @@ const Buddy = (props) => {
                 score: -Infinity,
                 top5: []
             };
+
+            // If a response is returned successfully
             if (result.length > 0) {
+
                 if (result[0].score < 0.5) {
+                    // Don't show any response if the score is lower than a threshold
                     response.answer = "Sorry, I don't know the answer :(";
                 } else {
-                    const resTop5 = result.slice(0,5);
-                    console.log('Top-5 results:', resTop5);
-    
+                    // Only the Top-5 results are returned from the server
+
                     response = {
-                        ...resTop5[0],
+                        ...result[0],
                         question: inputQuestion,
-                        origquestion: resTop5[0].question,
-                        answer: resTop5[0].response,
-                        score: resTop5[0].score,
-                        top5: resTop5
+                        origquestion: result[0].question,
+                        answer: result[0].response,
+                        score: result[0].score,
+                        top5: result
                     };
                 }
             }
-
             return response;
-
         };
 
-        props.onSubmitDataHandler(fcn);
-
+        // Reset the input widget
         setInputQuestion('');
+
+        // Pass the function to the parent submitHandler
+        props.onSubmitDataHandler(fcn);
 
     };
 
@@ -77,28 +93,27 @@ const Buddy = (props) => {
                             value={inputQuestion}
                         />
                     </Col>
-
                 </Form.Row>
 
-                <div className="float-right">
-                    <Form.Row className="align-items-center">
-                        <Col xs="auto">
-                            <Button className="mb-2"
-                                disabled={!inputQuestion}
-                                onClick={onSubmit}>
-                                Submit
-                            </Button>
-                        </Col>
-                        <Col xs="auto">
-                            <Button className="mb-2" variant="outline-secondary" onClick={() => setInputQuestion('')}>
-                                Reset
-                            </Button>
-                        </Col>
-                    </Form.Row>
-                </div>
-
+                <Form.Row className="align-items-center float-right">
+                    <Col xs="auto">
+                        <Button 
+                            className="mb-2"
+                            disabled={!inputQuestion}
+                            onClick={onSubmit}>
+                            Submit
+                        </Button>
+                    </Col>
+                    <Col xs="auto">
+                        <Button 
+                            className="mb-2" 
+                            variant="outline-secondary" 
+                            onClick={() => setInputQuestion('')}>
+                            Reset
+                        </Button>
+                    </Col>
+                </Form.Row>
             </Form>
-
         </div>
     )
 };
