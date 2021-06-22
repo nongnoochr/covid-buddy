@@ -1,26 +1,18 @@
+.card-container {
+  margin: 0.5em;
+}
+
 .jumbotron-button-container {
-    display: flex;
+  display: flex;
 }
 
 .jumbotron-button-container button {
-    margin-right: 1em;
-    width: 15em;    
-}
-
-.card-container {
-    margin: 0.5em;
+  margin-right: 1em;
+  width: 15em;
 }
 
 @media screen and (max-width: 600px) {
-    .jumbotron-button-container button {
-        width: 50%;    
-    }
-
-    /* Make the card center-aligned on a smaller screen */
-    .card-group-landing {
-        flex-direction: column;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+  .jumbotron-button-container button {
+    width: 50%;
+  }
 }

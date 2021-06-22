@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
-import { useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Button, CardGroup, Card, Jumbotron } from 'react-bootstrap';
 
 import HCPContext from '../../store/hcp-context.js';
+
+import CardBody from './CardBody';
 
 // Styling
 import classes from './Landing.module.css';
@@ -17,6 +19,8 @@ const Landing = (props) => {
     const ctx = useContext(HCPContext);
     const history = useHistory();
 
+    // --- Handlers
+    // For Jumbotron's Buddy button
     const btnBuddyHandler = () => {
         history.push({
             pathname: '/askbuddy',
@@ -24,17 +28,25 @@ const Landing = (props) => {
         });
     };
 
+    // --- Common Jsx
+    const jsxFindHCPs = (<div>{ctx.getLinkFindHCP()}</div>);
+
+    // ---------------------------
+
     return (<>
 
         <Jumbotron>
             <h1>COVID-19 Buddy: Your Trustworthy Assistant</h1>
-            <p>
-                Do you have doubts about COVID-19? Do need help to make decisions on when to seek medical care? <br />
-                No worries. COVID-19 Buddy can help you with it! <br />
-            </p>
-            <p>
-                Simply chat with the Buddy for assistant or talk to a healthcare provider near you.
-            </p>
+            <div>
+                <p>
+                    Do you have doubts about COVID-19? Do you need help to make decisions on when to seek medical care? <br />
+                    No worries. COVID-19 Buddy can help you with it! <br />
+                </p>
+                <p>
+                    Simply chat with the Buddy for assistant or talk to a healthcare provider near you.
+                </p>
+            </div>
+
             <div className={classes['jumbotron-button-container']}>
                 <Button variant="primary"
                     onClick={btnBuddyHandler}>
@@ -49,10 +61,9 @@ const Landing = (props) => {
         <section className="container main-container">
             <CardGroup className={classes['card-group-landing']}>
 
-                <Card style={{ width: '20rem' }}>
+                <Card className={classes['card-container-outer']}>
                     <Card.Img variant="top" src="images/vaccine.jpg" height="150" />
-                    <div className={classes['card-container']}>
-                        <h5>Why Getting a COVID-19 Vaccine</h5>
+                    <CardBody title="Why Getting a COVID-19 Vaccine">
                         <div>
                             <ul>
                                 <li>Help keep you from getting COVID-19</li>
@@ -66,68 +77,51 @@ const Landing = (props) => {
                         <div>
                             <div>For more details, visit</div>
                             <div><a href="https://www.cdc.gov/coronavirus/2019-ncov/vaccines/index.html" target="_blank" rel="noreferrer">CDC: Vaccines for COVID-19</a></div>
-
-                            <div>
-                                {ctx.getLinkFindHCP()}
-                            </div>
+                            {jsxFindHCPs}
                         </div>
-                    </div>
-
+                    </CardBody>
                 </Card>
 
-                <Card style={{ width: '20rem' }}>
+                <Card className={classes['card-container-outer']}>
                     <Card.Img variant="top" src="images/cough.jpg" height="150" />
-                    <div className={classes['card-container']}>
-                        <h5>When You Are Sick - Monitor your symptoms</h5>
-
+                    <CardBody title="When You Are Sick - Monitor your symptoms">
                         <div>
                             Symptoms of COVID-19 include
-                                <ul>
+                            <ul>
                                 <li>Fever</li>
                                 <li>Cough</li>
                                 <li>Shortness of breath </li>
                                 <li>...and more...</li>
                             </ul>
-                                Follow instructions from your healthcare provider and local health department.
-
-                                </div>
-
-                        <div>
-                            {ctx.getLinkFindHCP()}
+                            Follow instructions from your healthcare provider and local health department.
                         </div>
-                        
-                    </div>
+                        {jsxFindHCPs}
+                    </CardBody>
                 </Card>
 
-                <Card style={{ width: '20rem' }}>
+                <Card className={classes['card-container-outer']}>
                     <Card.Img variant="top" src="images/ambulance.jpg" height="150" />
-                    <div className={classes['card-container']}>
-                        <h5>When to seek emergency medical attention</h5>
+                    <CardBody title="When to seek emergency medical attention">
                         <div>
                             If someone is having
-                                    <ul>
+                            <ul>
                                 <li>Trouble breathing</li>
                                 <li>Persistent pain or pressure in the chest</li>
                                 <li>Inability to wake or stay awake</li>
                                 <li>Pale, gray, or blue-colored skin, lips, or
-                                        nail beds depending on skin tone</li>
+                                    nail beds depending on skin tone</li>
                             </ul>
                         </div>
-
-
                         <div>
                             <div><FiPhoneCall /> Call <strong>911</strong> or</div>
-                            <div>{ctx.getLinkFindHCP()}</div>
+                            {jsxFindHCPs}
                         </div>
-                    </div>
-
+                    </CardBody>
                 </Card>
 
-
-                <Card style={{ width: '20rem' }}>
+                <Card className={classes['card-container-outer']}>
                     <Card.Img variant="top" src="images/mask.jpg" height="150" />
-                    <div className={classes['card-container']}>
-                        <h5>To prevent the spread of COVID-19</h5>
+                    <CardBody title="To prevent the spread of COVID-19">
                         <div>
                             <ul>
                                 <li>Wear a mask</li>
@@ -141,22 +135,14 @@ const Landing = (props) => {
                         <div>
                             <div>For more details, see</div>
                             <div><a href="https://www.cdc.gov/coronavirus/2019-ncov/downloads/sick-with-2019-nCoV-fact-sheet.pdf" target="_blank" rel="noreferrer">COVID-19 Fact Sheet</a></div>
-                            <div>
-                                {ctx.getLinkFindHCP()}
-                            </div>
                         </div>
-                    </div>
-
+                    </CardBody>
                 </Card>
 
             </CardGroup>
         </section>
 
-
-
-
     </>);
 };
-
 
 export default Landing;

@@ -24,13 +24,15 @@ The Ask Buddy page provides 3 modes of assistance which are:
 #### - FAQs
 For the **FAQs** mode, a user can choose or search for a Frequently Asked Question (FAQ) that he/she is interested in. The FAQs were collected from trustworthy organizations which are WHO, CDC (US), and FDA (US).
 
-In addition to providing a response from a selected FAQ, the app also provides a suggestion to find particular specialists nearby if applicable or default to provide a link any HCP near a user.
+In addition to providing a response from a selected FAQ, the app also 
+* Provides a suggestion to find particular specialists nearby in a map if applicable or default to provide a link any HCP near a user.
+* Provides a list of nearby specialists nearby in a response map if applicable
 
 #### - Buddy
 
 For the **Buddy** mode, a user can enter any questions that he/she has about COVID-19 and the app will let an AI respond with an answer from a FAQ that is closest to a user question and also provides additional responses that are closely related to a user question.
 
-Similar to the FAQs mode, the app will also provides a suggestion to find particular specialists nearby based on a user question or default to provide a link any HCP near a user.
+Similar to the FAQs mode, the app will also provides a suggestion to find particular specialists nearby in a map and in a response text
 
 #### - Checker
 
