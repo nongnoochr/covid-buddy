@@ -53,7 +53,8 @@ const Response = (props) => {
     // --- useEffects
     // Only suggested specialists if a predictedHCP is provided by AI
     useEffect(() => {
-        if (res && (res.predictedHCP !== 'All')) {
+
+        if (res.predictedHCP && (res.predictedHCP !== 'All')) {
             const spCode = ctxMap.quicksearch.find(item => item.specialtyLabel === res.predictedHCP)['specialtyCode'];
             findSpecialistsNearMe(spCode);
         }
@@ -61,7 +62,6 @@ const Response = (props) => {
     }, []);
 
     // --- Helpers
-
     const findSpecialistsNearMe = (spCode) => {
         // If a current location is available
         navigator.geolocation.getCurrentPosition(
@@ -131,6 +131,35 @@ const Response = (props) => {
 
     // --- Helpers
     /**
+     * Get JSX for a user question
+     * @returns {JSX} JSX User Question
+     */
+    const getJsxUserQuestion = () => {
+        return (
+            <div>
+                <div>
+                    <span className={classes['answer-user-user']}>
+                        <RiUserVoiceLine /> You:&nbsp;
+                    </span>
+                    <b>{res.question}</b>
+                </div>
+            </div>
+        );
+    };
+
+    /**
+     * Get JSX for a robot header
+     * @returns {JSX} JSX Robot Header
+     */
+    const getJsxRobotHeader = () => {
+        return (<div>
+            <span className={classes['answer-user-buddy']}>
+                <SiProbot /> Buddy:&nbsp;
+            </span>
+        </div>);
+    }
+
+    /**
      * Get JSX for the bottom section of the response
      * @param {string} inPredictedHCP Predicted HCP
      * @returns {JSX} JSX for the bottom section of the response
@@ -146,8 +175,8 @@ const Response = (props) => {
                     {isGeoLocationOn ?
                         (<div>
                             {/* Still making a query to find nearest specialists */}
-                            { (!doneGetSPs && res && (inPredictedHCP !== 'All')) ?
-                            (<div>Finding specialists near you...</div>) : null }
+                            {(!doneGetSPs && res && (inPredictedHCP !== 'All')) ?
+                                (<div>Finding specialists near you...</div>) : null}
 
                             {/* Show nearby specialists if a suggested specialist is provided */}
                             {(doneGetSPs && res && (inPredictedHCP !== 'All') && (suggestedSPs.length > 0)) ?
@@ -200,19 +229,20 @@ const Response = (props) => {
                             {/* No nearby specialists */}
                             {(doneGetSPs && res && (inPredictedHCP !== 'All') && (suggestedSPs.length === 0)) ?
                                 (
-                                <>
-                                 {isQueryError ? 
-                                    (<div className={classes['query-error-container']}>Error occurred when querying for nearby specialists</div>) 
-                                    : (<div className={classes['no-specialists-container']}>
-                                        There are <b>no {inPredictedHCP}</b> near you
-                                    </div>)
-                                }
-                                </>
+                                    <>
+                                        {isQueryError ?
+                                            (<div className={classes['query-error-container']}>
+                                                Error occurred when querying for nearby specialists</div>)
+                                            : (<div className={classes['no-specialists-container']}>
+                                                There are <b>no {inPredictedHCP}</b> near you
+                                            </div>)
+                                        }
+                                    </>
                                 )
                                 : null
                             }
                         </div>)
-                        
+
                         // Location is currently turned off
                         : <div className={classes['no-specialists-container']}>
                             Turn on your location to find {inPredictedHCP} near you
@@ -220,45 +250,40 @@ const Response = (props) => {
                     }
 
                 </div>
-
-
             </div>
         );
-    }
+    };
 
+    // --- If a result is valid (id > -1)
     if (res.id > -1) {
         return (
             <div>
+                {/* User Question */}
+                {getJsxUserQuestion()}
+                {/* --------------------------- */}
+
+                {/* Buddy Response */}
                 <div>
-                    <div><span className={classes['answer-user-user']}><RiUserVoiceLine /> You:</span> <b>{res.question}</b> </div>
-                </div>
-                <div>
-                    <div><span className={classes['answer-user-buddy']}><SiProbot /> Buddy:</span> </div>
+                    {getJsxRobotHeader()}
                     <div>
                         <div className={classes['answer-question-container']}>
                             {res.origquestion ? getFromFAQJsx(res) : null}
                             {res.source ? getSourceJsx(res) : null}
                         </div>
-
                         <div>{res.answer}</div>
                     </div>
 
-                    {
-                        getJsxBottom(res.predictedHCP)
-                    }
+                    {getJsxBottom(res.predictedHCP)}
 
-
+                    {/* Show Top-5 FAQs if data is available (Only available in the Buddy mode) */}
                     {
                         (res.top5 && res.top5.length > 1) ?
                             (
                                 <div className={classes['answer-additional-faqs-container']}>
-
                                     <h6>Other related FAQs </h6>
                                     <div>
                                         <Accordion>
                                             {res.top5.slice(1).map((item, index) => (
-
-
                                                 <Card key={index}>
                                                     <Card.Header>
                                                         <Accordion.Toggle
@@ -276,45 +301,36 @@ const Response = (props) => {
                                                             <div className={classes['answer-question-container']}>
                                                                 {getSourceJsx(item)}
                                                             </div>
-                                                            <div>
-                                                                {item.response}
-                                                            </div>
-                                                            {
-                                                                getJsxBottom(item.predictedHCP)
-                                                            }
+                                                            <div> {item.response} </div>
+                                                            {getJsxBottom(item.predictedHCP)}
                                                         </Card.Body>
                                                     </Accordion.Collapse>
                                                 </Card>
-                                            )
-                                            )}
+                                            ))}
                                         </Accordion>
                                     </div>
-                                </div>)
-                            : null
-                    }
-
+                                </div>) : null}
                 </div>
-            </div>
-        );
+            </div>);
     } else {
+        // Else, this result is invalid (id === -1)
         return (
             <div>
+                {/* User Question */}
+                {getJsxUserQuestion()}
+                {/* --------------------------- */}
+
+
+                {/* Buddy Response */}
                 <div>
-                    <div><span className={classes['answer-user-user']}><RiUserVoiceLine /> You:</span> <b>{res.question}</b> </div>
-                </div>
-                <div>
-                    <div><span className={classes['answer-user-buddy']}><SiProbot /> Buddy:</span> </div>
+                    {getJsxRobotHeader()}
 
                     <div style={{ color: 'red' }}>
                         <i>{res.answer || 'Something is wrong. Please try again later.'}</i>
                     </div>
                 </div>
-
             </div>
-
-
         );
-
     }
 };
 
