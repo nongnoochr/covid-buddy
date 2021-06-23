@@ -4,16 +4,15 @@ import { Button, Form, Col } from 'react-bootstrap';
 import { FaUserMd } from 'react-icons/fa';
 
 import HCPContext from '../../store/hcp-context';
-import HCPMapContext from '../../store/hcpmap-context';
+import { quickSearchData } from '../../services/HCLSDKService';
 
 
 import HCLSDK from './HCLSDK';
 
 const HCPMap = (props) => {
     const ctx = useContext(HCPContext);
-    const ctxMap = useContext(HCPMapContext);
 
-    const quickSearchValues = ctxMap.quicksearch.map(item => item.specialtyLabel);
+    const quickSearchValues = quickSearchData.map(item => item.specialtyLabel);
 
     const [selectedQuickSearch, setSelectedQuickSearch] = useState(ctx.quickSearch);
    

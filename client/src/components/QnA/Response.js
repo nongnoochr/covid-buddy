@@ -1,12 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Accordion, Card, Button } from 'react-bootstrap';
 
 import classes from './Response.module.css';
 import HCPContext from '../../store/hcp-context.js';
-import HCPMapContext from '../../store/hcpmap-context';
-
-import { defaultSDKConfig } from '../../services/HCLSDKService';
 
 // Icons
 import { BiHide } from 'react-icons/bi';
@@ -36,98 +33,17 @@ const Response = (props) => {
 
     const res = props.data;
 
+    const isNearMeSPsApplicable = res.specialistsNearMe.applicable;
+    const currentCoords = { ...res.specialistsNearMe.data.coords };
+    const suggestedSPs = [...res.specialistsNearMe.data.activities];
+    const statusNearMeSPs = res.specialistsNearMe.data.status;
+    const messageNearMeSPs = res.specialistsNearMe.data.message;
+
     // --- contexts
     const ctx = useContext(HCPContext);
-    const ctxMap = useContext(HCPMapContext);
 
     // --- states
-    const [isGeoLocationOn, setIsGeoLocationOn] = useState(true);
     const [showSPs, setShowSPs] = useState(false);
-    const [suggestedSPs, setSuggestedSPs] = useState([]);
-    const [currentCoords, setCurrentCoords] = useState({});
-    const [doneGetSPs, setDoneGetSPs] = useState(false);
-
-    const [isQueryError, setIsQueryError] = useState(false);
-
-
-    // --- useEffects
-    // Only suggested specialists if a predictedHCP is provided by AI
-    useEffect(() => {
-
-        if (res.predictedHCP && (res.predictedHCP !== 'All')) {
-            const spCode = ctxMap.quicksearch.find(item => item.specialtyLabel === res.predictedHCP)['specialtyCode'];
-            findSpecialistsNearMe(spCode);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    // --- Helpers
-    const findSpecialistsNearMe = (spCode) => {
-        // If a current location is available
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                setIsGeoLocationOn(true);
-
-                // Get the current coordinates
-                const curCoords = position.coords;
-
-                const curLat = curCoords.latitude;
-                const curLon = curCoords.longitude;
-
-                // // Test: Natick!
-                // const curLat = 42.2775;
-                // const curLon = -71.3468;
-
-                setCurrentCoords({
-                    lat: curLat,
-                    lon: curLon
-                });
-
-                // ---------
-
-                // --- Then, make a query to find the 10 closest specialists from
-                // the current location
-
-                // eslint-disable-next-line no-undef
-                const api = new HclAPI(defaultSDKConfig);
-
-                // Query parameters for the activities api
-                const params = {
-                    first: 10,
-                    offset: 0,
-                    specialties: [spCode],
-                    location: { lat: curLat, lon: curLon }
-                };
-
-                api.activities(params)
-                    .then(result => {
-                        // Set the suggested specialists data
-                        setSuggestedSPs(result.activities);
-                        setDoneGetSPs(true);
-
-                    })
-                    .catch(err => {
-                        // An error happened.
-                        setSuggestedSPs([]);
-                        setDoneGetSPs(true);
-                        setIsQueryError(true);
-
-                        console.error('Error while querying activities');
-                    });
-            },
-            error => {
-                // Cannot retrieve user's location
-                setIsGeoLocationOn(false);
-                setDoneGetSPs(false);
-                setSuggestedSPs([]);
-                setIsQueryError(true);
-
-                if (error.code === error.PERMISSION_DENIED) {
-                    console.log("you denied me :-(");
-                }
-
-            });
-    }
 
     // --- Helpers
     /**
@@ -171,86 +87,79 @@ const Response = (props) => {
                 <div className={classes['answer-findhcp-container']}>{ctx.getLinkFindHCP(inPredictedHCP)}</div>
 
                 {/* Suggested specialists */}
-                <div>
-                    {isGeoLocationOn ?
-                        (<div>
-                            {/* Still making a query to find nearest specialists */}
-                            {(!doneGetSPs && res && (inPredictedHCP !== 'All')) ?
-                                (<div>Finding specialists near you...</div>) : null}
 
-                            {/* Show nearby specialists if a suggested specialist is provided */}
-                            {(doneGetSPs && res && (inPredictedHCP !== 'All') && (suggestedSPs.length > 0)) ?
-                                <div>
-                                    {/* Link to Show/Hide nearby specialists */}
-                                    <div onClick={() => setShowSPs(!showSPs)}>
-                                        {showSPs ?
-                                            (<><BiHide /> <Link to="#"><span>Click to hide...</span></Link></>)
-                                            : (<><FaUserMd /> <Link to="#"><span>Click to see specialists ({inPredictedHCP}) near you...</span>
-                                            </Link></>)}
-                                    </div>
+                {inPredictedHCP !== 'All' ? (
 
-                                    {/* Nearby specialists section */}
-                                    {
-                                        showSPs ? (
-                                            <div className={classes['answer-showsps-container']}>
-                                                {/* Show current location */}
-                                                <div className={classes['current-location-container']}>
-                                                    <MdMyLocation /> <b>Your location</b> Latitude: {currentCoords.lat ? currentCoords.lat.toFixed(4) : ''} , Longitude: {currentCoords.lon ? currentCoords.lon.toFixed(4) : ''}
-                                                </div>
+                    <div>
 
-                                                {/* Show a list of nearby specialists */}
-                                                <div>
-                                                    {suggestedSPs.map((curData, index) => {
-                                                        return (
-                                                            <div className={classes['specialist-container']} key={index}>
-                                                                {/* Specialist name */}
-                                                                <div className={classes['individual-name']}>{curData.activity.individual.firstName} {curData.activity.individual.middleName} {curData.activity.individual.lastName}</div>
-
-                                                                {/* Professional info */}
-                                                                <div className={classes['individual-prof']}>{curData.activity.individual.professionalType.label} ({curData.activity.individual.specialties.map(item => item.label).join(', ')})</div>
-
-                                                                {/* Workplace address */}
-                                                                <div className={classes['workplace-address']}>{curData.activity.workplace.address.buildingLabel}
-                                                                    {curData.activity.workplace.address.longLabel}  {curData.activity.workplace.address.city.label},  {curData.activity.workplace.address.county.label}
-                                                                </div>
-
-                                                                {/* Distance from the current location in meters */}
-                                                                <div>{curData.distance.toLocaleString()}m</div>
-                                                            </div>
-                                                        );
-                                                    })}
-                                                </div>
-                                            </div>) : null
-                                    }
+                        {/* Show nearby specialists if a suggested specialist is provided */}
+                        {(res && isNearMeSPsApplicable && (suggestedSPs.length > 0)) ?
+                            <div>
+                                {/* Link to Show/Hide nearby specialists */}
+                                <div onClick={() => setShowSPs(!showSPs)}>
+                                    {showSPs ?
+                                        (<><BiHide /> <Link to="#"><span>Click to hide...</span></Link></>)
+                                        : (<><FaUserMd /> <Link to="#"><span>Click to see specialists ({inPredictedHCP}) near you...</span>
+                                        </Link></>)}
                                 </div>
-                                : null
-                            }
 
-                            {/* No nearby specialists */}
-                            {(doneGetSPs && res && (inPredictedHCP !== 'All') && (suggestedSPs.length === 0)) ?
-                                (
-                                    <>
-                                        {isQueryError ?
-                                            (<div className={classes['query-error-container']}>
-                                                Error occurred while retrieving nearby specialists</div>)
-                                            : (<div className={classes['no-specialists-container']}>
-                                                There are <b>no {inPredictedHCP}</b> near you
-                                            </div>)
-                                        }
-                                    </>
-                                )
-                                : null
-                            }
-                        </div>)
+                                {/* Nearby specialists section */}
+                                {
+                                    showSPs ? (
+                                        <div className={classes['answer-showsps-container']}>
+                                            {/* Show current location */}
+                                            <div className={classes['current-location-container']}>
+                                                <MdMyLocation /> <b>Your location</b> Latitude: {currentCoords.lat ? currentCoords.lat.toFixed(4) : ''} , Longitude: {currentCoords.lon ? currentCoords.lon.toFixed(4) : ''}
+                                            </div>
 
-                        // Location is currently turned off
-                        : <div className={classes['no-specialists-container']}>
-                            Turn on your location to find {inPredictedHCP} near you
-                        </div>
-                    }
+                                            {/* Show a list of nearby specialists */}
+                                            <div>
+                                                {suggestedSPs.map((curData, index) => {
+                                                    return (
+                                                        <div className={classes['specialist-container']} key={index}>
+                                                            {/* Specialist name */}
+                                                            <div className={classes['individual-name']}>{curData.activity.individual.firstName} {curData.activity.individual.middleName} {curData.activity.individual.lastName}</div>
 
-                </div>
-            </div>
+                                                            {/* Professional info */}
+                                                            <div className={classes['individual-prof']}>{curData.activity.individual.professionalType.label} ({curData.activity.individual.specialties.map(item => item.label).join(', ')})</div>
+
+                                                            {/* Workplace address */}
+                                                            <div className={classes['workplace-address']}>{curData.activity.workplace.address.buildingLabel}
+                                                                {curData.activity.workplace.address.longLabel}  {curData.activity.workplace.address.city.label},  {curData.activity.workplace.address.county.label}
+                                                            </div>
+
+                                                            {/* Distance from the current location in meters */}
+                                                            <div>{curData.distance.toLocaleString()}m</div>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>) : null
+                                }
+                            </div>
+                            : null
+                        }
+
+
+                        {/* No nearby specialists */}
+                        {(res && isNearMeSPsApplicable && statusNearMeSPs && (suggestedSPs.length === 0)) ?
+                            (<div className={classes['no-specialists-container']}>
+                                There are <b>no {inPredictedHCP}</b> near you
+                            </div>)
+                            : null
+                        }
+
+                        {/* Error in finding nearby specialist */}
+                        {(res && isNearMeSPsApplicable && !statusNearMeSPs) ?
+                            (<div className={classes['query-error-container']}>
+                                {messageNearMeSPs}</div>)
+                            : null
+                        }
+
+                    </div>
+                ) : null}
+
+            </div >
         );
     };
 
@@ -333,5 +242,6 @@ const Response = (props) => {
         );
     }
 };
+const areEqual = (prevProps, nextProps) => true;
 
-export default Response;
+export default React.memo(Response, areEqual);

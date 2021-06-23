@@ -1,3 +1,7 @@
+.nav-container {
+    max-height: 100px;
+}
+
 .nav-icon-home {
     display: none;
 }

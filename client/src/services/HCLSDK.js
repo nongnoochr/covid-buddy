@@ -10,7 +10,6 @@ import { defaultSDKConfig, quickSearchData } from '../../services/HCLSDKService'
 const HCLSDK = (props) => {
 
     const ctx = useContext(HCPContext);
-
     const [appliedQuickSearch, setAppliedQuickSearch] = useState(ctx.quickSearch);
 
 
@@ -51,9 +50,6 @@ const HCLSDK = (props) => {
 
     }, [ctx.quickSearch])
 
-    // customElements.whenDefined('hcl-sdk').then(function () {
-    //         debugger
-    // });    
 
     return (
         <div>

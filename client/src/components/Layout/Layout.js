@@ -12,29 +12,38 @@ import { RiQuestionAnswerLine } from 'react-icons/ri';
 import { GrMapLocation } from 'react-icons/gr';
 import { BiHome, BiHide } from 'react-icons/bi';
 
-function Layout(props) {
+const Layout = (props) => {
+
+  // --- Contexts
 
   const ctx = useContext(HCPContext);
 
+  // --- Handlers
   const toggleMapStateHandler = () => {
     ctx.setShowHCPMap(!ctx.showhcp);
   };
+
+  // --- Helpers
 
   const prefixHCPButtonLabel = ctx.showhcp ? 'Hide' : 'Find';
 
   return (
     <>
       <Navbar bg="dark" variant="dark" expand="lg" sticky="top" >
-        <Navbar.Brand as={Link} 
+        <Navbar.Brand 
+          as={Link} 
           to={
             {
               pathname: '/',
               search: ctx.appQueryParams
             }
           }
-        ><span className={classes['nav-icon-home']}><BiHome /></span><span className="icon-text"><b>COVID-19 BUDDY</b></span></Navbar.Brand>
-        <Nav className="mr-auto"
-          style={{ maxHeight: '100px' }}
+        >
+          <span className={classes['nav-icon-home']}><BiHome /></span>
+          <span className="icon-text"><b>COVID-19 BUDDY</b></span>
+        </Navbar.Brand>
+
+        <Nav className={`mr-auto ${classes['nav-container']}`}
           navbarScroll
         >
           <Navbar.Text title="Ask Buddy">
@@ -53,7 +62,7 @@ function Layout(props) {
 
         </Nav>
         <Form className="d-flex">
-          <Button title={`${prefixHCPButtonLabel} Healthcare Provider`}
+          <Button title={`${prefixHCPButtonLabel} Healthcare Providers`}
             variant="success"
             onClick={toggleMapStateHandler}
             active={ctx.showhcp}

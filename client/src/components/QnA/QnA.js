@@ -7,6 +7,8 @@ import Buddy from './Buddy';
 import Response from './Response';
 
 import HCPContext from '../../store/hcp-context.js';
+import { getSuggestedSPsNearMe } from '../../services/HCLSDKService';
+
 
 // Styling
 import classes from './QnA.module.css';
@@ -19,19 +21,31 @@ import { RiQuestionAnswerLine } from 'react-icons/ri';
 
 const QnA = (props) => {
 
-    const refSelfChecker = useRef(null);
-    const refResponse = useRef(null);
-
-    const ctx = useContext(HCPContext);
     const location = useLocation();
     const history = useHistory();
 
+    // --- refs
+    const refSelfChecker = useRef(null);
+    const refResponse = useRef(null);
+
+    // --- contexts
+    const ctx = useContext(HCPContext);
+
+    // --- states
     const [isFindingAnswer, setIsFindingAnswer] = useState('');
     const [activeKey, setActiveKey] = useState('faq');
 
     const [allResponses, setAllResponses] = useState([]);
-    const [jsxResponse, setJSXResponse] = useState(null);
 
+    const [jsxResponse, setJSXResponse] = useState([]);
+
+    // --- Effects
+
+    // Update the active tab key when a hash value is change
+    // This is required since we need to see whether the 'Checker' tab is active
+    // If so, the page needs to be reloaded to ensure that the CDC-Healthbot is
+    // added/rendered properly (It sometimes does not show up if the 'Checker' 
+    // tab is not active)
     useEffect(() => {
         if (location.hash) {
             const key = location.hash.slice(1);
@@ -40,18 +54,55 @@ const QnA = (props) => {
 
     }, [location.hash]);
 
+
+    useEffect(() => {
+        if (allResponses.length > 0) {
+            const curRes = allResponses[0];
+                const newResJsx = (<>
+                    <div key={Date.now()}>
+                        <div className={classes['answer-item-timestamp']}>{curRes.timestamp.toLocaleString()}</div>
+                        <Response data={curRes} />
+                        <hr />
+                    </div>
+                </>);
+        
+                setJSXResponse(prev => {
+
+                    return [
+                        newResJsx,
+                        ...prev
+                    ];
+                });
+            
+        }
+
+    }, [allResponses]); 
+
+    // --- Handlers
+
+    /**
+     * Invoke the input async function callback when the submit button is clicked
+     * @async
+     * @param {object} fcn Asycn callback that will be executed after the submit
+     * button is clicked
+     */
     const submitQuestionHandler = async (fcn) => {
 
         setIsFindingAnswer('Finding answer...');
 
         setTimeout(async () => {
-
             const res = await fcn();
+
+            // Get SpecialistNearme info
+            const specialistsNearMe = await getSuggestedSPsNearMe(res);
+
+            // Append allResponses with the new result + timestamp
             setAllResponses(prevState => {
-                // Show the latest question first
+
                 return [
                     {
                         ...res,
+                        specialistsNearMe: { ...specialistsNearMe },
                         timestamp: new Date()
                     },
                     ...prevState
@@ -60,49 +111,23 @@ const QnA = (props) => {
             });
 
             setIsFindingAnswer('');
-            
-            refResponse.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
             // Always scroll to the latest response
             window.scrollTo(0, 0);
+
+            // Scroll to the last response
+            refResponse.current.scrollTo(0, 0);
+ 
         }, 100);
 
     };
 
-    // ---------
-
-    const jsSpinner = (
-        <div>
-            <Spinner animation="border" role="status" variant="primary" />
-            {isFindingAnswer}
-            <hr />
-        </div>
-    );
-
-    const jsxResponseHandler = (res) => {
-
-        const resJSX = (<Response data={res} />);
-        return resJSX;
-    };
-
-    useEffect(() => {
-        const newResJsx = (<div ref={refResponse}>
-            {allResponses.map((curRes, index) => {
-                return (
-                    <div key={index}>
-                        <div className={classes['answer-item-timestamp']}>{curRes.timestamp.toLocaleString()}</div>
-                        {jsxResponseHandler(curRes)}
-                        <hr />
-                    </div>
-                );
-            })}
-        </div>)
-
-        setJSXResponse(newResJsx);
-
-    }, [allResponses]); // eslint-disable-line react-hooks/exhaustive-deps
-
-
+    /**
+     * Set the hash value when selecting a tab
+     * If the 'Checker' tab is selected, refresh the page to re-render
+     * the CDC Healthbot if it is not already rendered
+     * @param {string} key Hash value for the tab
+     */
     const handleSelect = (key) => {
         history.push({
             pathname: location.pathname,
@@ -119,6 +144,9 @@ const QnA = (props) => {
 
         }
     };
+
+    // ---------
+
     return (
         <div className="container main-container">
             <div>
@@ -129,7 +157,11 @@ const QnA = (props) => {
                     id="uncontrolled-tab-example">
                     <Tab
                         eventKey="faq"
-                        title={(<span title="Frequency Asked Questions"><FaQuestionCircle /> <span>FAQs</span></span>)}
+                        title={(
+                            <span title="Frequency Asked Questions">
+                                <FaQuestionCircle />&nbsp;
+                                <span>FAQs</span>
+                            </span>)}
                     >
                         <div className={classes['question-container']}>
                             <FAQ onSubmitDataHandler={submitQuestionHandler} />
@@ -137,7 +169,11 @@ const QnA = (props) => {
                     </Tab>
                     <Tab
                         eventKey="buddy"
-                        title={(<span title="Ask Buddy Anything"><FcFaq /> <span>Buddy</span></span>)}
+                        title={(
+                            <span title="Ask Buddy Anything">
+                                <FcFaq />&nbsp;
+                                <span>Buddy</span>
+                            </span>)}
                     >
                         <div className={classes['question-container']}>
                             <Buddy onSubmitDataHandler={submitQuestionHandler} />
@@ -147,7 +183,11 @@ const QnA = (props) => {
 
                     <Tab
                         eventKey="selfchecker"
-                        title={(<span title="COVID-19 Self-Checker"><BsCardChecklist /> <span>Checker</span></span>)}
+                        title={(
+                            <span title="COVID-19 Self-Checker">
+                                <BsCardChecklist />&nbsp;
+                                <span>Checker</span>
+                            </span>)}
                     >
                         <div className={classes['question-container']}>
                             <div>
@@ -157,36 +197,45 @@ const QnA = (props) => {
                                         medical care :</i>
                                 </div>
                                 <div>
-                                    <div ref={refSelfChecker} data-cdc-widget='healthBot' data-cdc-theme='theme3' className='cdc-widget-color-white' data-cdc-language='en-us'></div>
+                                    <div ref={refSelfChecker} 
+                                        data-cdc-widget='healthBot' 
+                                        data-cdc-theme='theme3' 
+                                        className='cdc-widget-color-white' 
+                                        data-cdc-language='en-us'>    
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </Tab>
-
                 </Tabs>
-
-
             </div>
 
             <div>
                 <div className={classes['answer-container']}>
-
                     {
-                        activeKey === 'selfchecker' ? ctx.getLinkFindHCP() :
-                            (<div>
+                        activeKey === 'selfchecker' ? 
+                            ctx.getLinkFindHCP() 
+                            : (<div>
                                 <h5><RiQuestionAnswerLine /> Responses:</h5>
-                                <div className={classes['answer-contents']}>
-
+                                <div className={classes['answer-contents']}
+                                     ref={refResponse}>
                                     <div>
-                                        {!isFindingAnswer || jsSpinner}
+                                        {!isFindingAnswer || (
+                                            <div>
+                                                <Spinner animation="border" role="status" variant="primary" />
+                                                {isFindingAnswer}
+                                                <hr />
+                                            </div>
+                                        )}
+
                                         {((allResponses.length === 0) && !isFindingAnswer) ?
                                             (<span><i>No questions asked yet</i></span>) : null}
-
-
                                     </div>
 
-                                    {jsxResponse}
+                                    <div>
+                                        {jsxResponse}
+                                    </div>
+                                    
                                 </div>
                             </div>)
                     }
