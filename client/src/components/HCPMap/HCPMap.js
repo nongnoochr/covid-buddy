@@ -1,23 +1,26 @@
 import React, { useContext, useState } from 'react';
 import { Button, Form, Col } from 'react-bootstrap';
 
-import { FaUserMd } from 'react-icons/fa';
+import HCLSDK from './HCLSDK';
 
 import HCPContext from '../../store/hcp-context';
 import { quickSearchData } from '../../services/HCLSDKService';
 
-
-import HCLSDK from './HCLSDK';
+// icons
+import { FaUserMd } from 'react-icons/fa';
 
 const HCPMap = (props) => {
-    const ctx = useContext(HCPContext);
 
     const quickSearchValues = quickSearchData.map(item => item.specialtyLabel);
 
+    // --- Contexts
+    const ctx = useContext(HCPContext);
+
+    // --- states
     const [selectedQuickSearch, setSelectedQuickSearch] = useState(ctx.quickSearch);
    
+    // --- handlers
     const selectionChangeHandler = (ev) => {
-
         const newCat = ev.target.value;
         setSelectedQuickSearch(newCat);
     }
@@ -31,6 +34,7 @@ const HCPMap = (props) => {
         ctx.setQuickSearch('All');
     };
 
+    // ---------------------
 
     return (<div>
 
@@ -39,13 +43,14 @@ const HCPMap = (props) => {
                 <Form.Row>
                     <Col xs="auto">
                         <label>
-                            <FaUserMd /> <span className="icon-text">Quick Search Near Me:</span> <select
+                            <FaUserMd />&nbsp;
+                            <span className="icon-text">Quick Search Near Me:&nbsp;</span>
+                            <select
                                 value={selectedQuickSearch}
                                 className="mb-2"
                                 onChange={selectionChangeHandler}
                             >
                                 <option value="All"> select option... </option>
-
                                 {
                                     quickSearchValues.map((item, index) => {
                                         return (
@@ -59,7 +64,6 @@ const HCPMap = (props) => {
                     <Col xs="auto">
                         <Button
                             size="sm"
-                            variant={ (selectedQuickSearch === ctx.quickSearch) ? 'dark' : 'primary' }
                             disabled={ selectedQuickSearch === ctx.quickSearch }
                             onClick={quickSearchHandler}>
                             GO

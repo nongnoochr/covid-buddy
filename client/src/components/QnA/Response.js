@@ -9,8 +9,6 @@ import HCPContext from '../../store/hcp-context.js';
 import { BiHide } from 'react-icons/bi';
 import { FaUserMd } from 'react-icons/fa';
 import { MdMyLocation } from 'react-icons/md';
-
-
 import { RiUserVoiceLine } from 'react-icons/ri';
 import { SiProbot } from 'react-icons/si';
 
@@ -86,14 +84,14 @@ const Response = (props) => {
                 {/* Find HCP link */}
                 <div className={classes['answer-findhcp-container']}>{ctx.getLinkFindHCP(inPredictedHCP)}</div>
 
-                {/* Suggested specialists */}
+                {/* Show suggested nearby specialists if provided by AI */}
 
                 {inPredictedHCP !== 'All' ? (
 
                     <div>
 
                         {/* Show nearby specialists if a suggested specialist is provided */}
-                        {(res && isNearMeSPsApplicable && (suggestedSPs.length > 0)) ?
+                        {(isNearMeSPsApplicable && (suggestedSPs.length > 0)) ?
                             <div>
                                 {/* Link to Show/Hide nearby specialists */}
                                 <div onClick={() => setShowSPs(!showSPs)}>
@@ -140,9 +138,8 @@ const Response = (props) => {
                             : null
                         }
 
-
                         {/* No nearby specialists */}
-                        {(res && isNearMeSPsApplicable && statusNearMeSPs && (suggestedSPs.length === 0)) ?
+                        {(isNearMeSPsApplicable && statusNearMeSPs && (suggestedSPs.length === 0)) ?
                             (<div className={classes['no-specialists-container']}>
                                 There are <b>no {inPredictedHCP}</b> near you
                             </div>)
@@ -150,7 +147,7 @@ const Response = (props) => {
                         }
 
                         {/* Error in finding nearby specialist */}
-                        {(res && isNearMeSPsApplicable && !statusNearMeSPs) ?
+                        {(isNearMeSPsApplicable && !statusNearMeSPs) ?
                             (<div className={classes['query-error-container']}>
                                 {messageNearMeSPs}</div>)
                             : null

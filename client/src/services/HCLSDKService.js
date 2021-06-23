@@ -1,6 +1,6 @@
 // Update the apiKey value below to a valid HealthcareLocator's apiKey
 const defaultSDKConfig = {
-    apiKey: '300142b840f95490',
+    apiKey: '300131ea848b420a',
     appName: 'COVID-19 Buddy',
     appURL: 'https://covid-buddy.herokuapp.com/'
 };
@@ -23,6 +23,11 @@ const quickSearchData = [
         specialtyLabel: 'PSYCHIATRY'
     }
 ]
+
+const getSpecialtyCode = (specialtyLabel) => {
+    const spCode = quickSearchData.find(item => item.specialtyLabel === specialtyLabel)['specialtyCode'];
+    return spCode;
+};
 
 /**
  * Get data of the suggested specialists near the user
@@ -47,7 +52,7 @@ const getSuggestedSPsNearMe = async (res) => {
     if (res.predictedHCP && (res.predictedHCP !== 'All')) {
         specialistsNearMe['applicable'] = true;
 
-        const spCode = quickSearchData.find(item => item.specialtyLabel === res.predictedHCP)['specialtyCode'];
+        const spCode = getSpecialtyCode(res.predictedHCP);
 
         // Get User's current location
         const getCoords = async () => {
@@ -140,5 +145,6 @@ const getSuggestedSPsNearMe = async (res) => {
 export {
     defaultSDKConfig,
     quickSearchData,
+    getSpecialtyCode,
     getSuggestedSPsNearMe
 }

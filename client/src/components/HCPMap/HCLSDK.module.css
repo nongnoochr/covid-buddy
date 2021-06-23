@@ -1,0 +1,9 @@
+.quicksearch-label {
+    font-size: smaller;
+    font-weight: bold;
+}
+
+.sdk-main-container { 
+    width: 100%; 
+    height: 100vh;
+}
