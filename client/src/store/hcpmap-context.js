@@ -1,3 +1,4 @@
+// Context specific for the HCLSDK
 import React from 'react';
 
 const HCPMapContext = React.createContext({

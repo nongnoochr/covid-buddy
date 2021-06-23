@@ -232,7 +232,7 @@ const Response = (props) => {
                                     <>
                                         {isQueryError ?
                                             (<div className={classes['query-error-container']}>
-                                                Error occurred when querying for nearby specialists</div>)
+                                                Error occurred while retrieving nearby specialists</div>)
                                             : (<div className={classes['no-specialists-container']}>
                                                 There are <b>no {inPredictedHCP}</b> near you
                                             </div>)
