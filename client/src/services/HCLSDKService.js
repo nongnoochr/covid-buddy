@@ -81,13 +81,13 @@ const getSuggestedSPsNearMe = async (res) => {
             return specialistsNearMe;
         }
 
-        // // Get the current coordinates
-        // const curLat = curCoords.lat;
-        // const curLon = curCoords.lon;
+        // Get the current coordinates
+        const curLat = curCoords.lat;
+        const curLon = curCoords.lon;
 
-        // Test: Natick!
-        const curLat = 42.2775;
-        const curLon = -71.3468;
+        // // Test: Natick!
+        // const curLat = 42.2775;
+        // const curLon = -71.3468;
 
         specialistsNearMe['data']['coords']['lat'] = curLat;
         specialistsNearMe['data']['coords']['lon'] = curLon;
