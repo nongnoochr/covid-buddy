@@ -115,7 +115,7 @@ const Response = (props) => {
                                             <div className={classes['header-container']}>
                                                 {/* Show current location */}
                                                 <div className={classes['current-location-container']}>
-                                                    <MdMyLocation /> <b>Your location</b> Latitude: {currentCoords.lat ? currentCoords.lat.toFixed(4) : ''} , Longitude: {currentCoords.lon ? currentCoords.lon.toFixed(4) : ''}
+                                                    <MdMyLocation /> <b>Your location</b> <span className="icon-text">Latitude: </span>{currentCoords.lat ? currentCoords.lat.toFixed(4) : ''} , <span className="icon-text">Longitude: </span>{currentCoords.lon ? currentCoords.lon.toFixed(4) : ''}
                                                 </div>
                                                 <div>
                                                     <ButtonToolbar className={classes['distance-unit-container']}>
