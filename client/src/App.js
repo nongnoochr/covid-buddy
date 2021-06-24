@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
+import GitHubButton from 'react-github-btn'
 
 // Components
 import Layout from './components/Layout/Layout';
@@ -178,65 +179,80 @@ function App() {
   // -------------------------
 
   return (
-    <HCPContext.Provider value={{
-      showhcp,
-      setShowHCPMap,
-      appQueryParams,
-      getLinkFindHCP,
-      linkFindHCPHandler,
-      quickSearch,
-      setQuickSearch,
-      addQuickSearchToUrl
-    }}>
+    <>
+      <HCPContext.Provider value={{
+        showhcp,
+        setShowHCPMap,
+        appQueryParams,
+        getLinkFindHCP,
+        linkFindHCPHandler,
+        quickSearch,
+        setQuickSearch,
+        addQuickSearchToUrl
+      }}>
 
-      <Layout>
+        <Layout>
 
-        {/* Route for SPA */}
-        <Switch>
-          <Route path='/' exact>
-            <Landing />
-          </Route>
-          <Route path="/askbuddy">
-            <QnA />
-          </Route>
-          <Route path='*'>
-            <Redirect to='/' />
-          </Route>
+          {/* Route for SPA */}
+          <Switch>
+            <Route path='/' exact>
+              <Landing />
+            </Route>
+            <Route path="/askbuddy">
+              <QnA />
+            </Route>
+            <Route path='*'>
+              <Redirect to='/' />
+            </Route>
 
-        </Switch>
-      
-      </Layout>
+          </Switch>
 
-      <Modal 
-        show={showModal}
-        fullscreen={fullscreenModal}
-        onHide={handleHideModal}
-        animation={false}
-        scrollable={true}
+        </Layout>
 
-        // Note:
-        // 1. dialogClassName won't be applied if fullscreen prop is set
-        // 2. The back button won't be availble in a larger screen. 
-        // We need a back button now because we can't programmatically reset
-        // view to the home screen after initializing SDK
+        <Modal
+          show={showModal}
+          fullscreen={fullscreenModal}
+          onHide={handleHideModal}
+          animation={false}
+          scrollable={true}
 
-        // dialogClassName="modal-90w"
-        // size="lg"
+          // Note:
+          // 1. dialogClassName won't be applied if fullscreen prop is set
+          // 2. The back button won't be availble in a larger screen. 
+          // We need a back button now because we can't programmatically reset
+          // view to the home screen after initializing SDK
 
-        centered
-      >
-        <Modal.Header 
-          closeButton>
-          <Modal.Title>
-            <span className="icon-text"><GrMapLocation />&nbsp;</span>
-            Find Healthcare Providers
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <HCPMap />
-        </Modal.Body>
-      </Modal>
-    </HCPContext.Provider>
+          // dialogClassName="modal-90w"
+          // size="lg"
+
+          centered
+        >
+          <Modal.Header
+            closeButton>
+            <Modal.Title>
+              <span className="icon-text"><GrMapLocation />&nbsp;</span>
+              Find Healthcare Providers
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <HCPMap />
+          </Modal.Body>
+        </Modal>
+      </HCPContext.Provider>
+
+      <div className="container">
+        <hr />
+      </div>
+
+      <section className="container bottom-section">
+        <GitHubButton href="https://github.com/nongnoochr/covid-buddy" 
+          data-size="large"
+          data-show-count="true" 
+          aria-label="Star nongnoochr/covid-buddy on GitHub">
+          Star
+        </GitHubButton>
+      </section>
+    </>
   );
 }
 

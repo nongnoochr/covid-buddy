@@ -3,13 +3,13 @@
 }
 
 .answer-container {
-    max-height: 60vh;
+    max-height: 100%;
     border-bottom: 5em;
     margin-top: 2em;
 }
 
 .answer-contents {
-    height: 58vh;
+    height: 90%;
     overflow: auto;
     padding: 0.5em 0;
 }

@@ -30,8 +30,8 @@ const Layout = (props) => {
   return (
     <>
       <Navbar bg="dark" variant="dark" expand="lg" sticky="top" >
-        <Navbar.Brand 
-          as={Link} 
+        <Navbar.Brand
+          as={Link}
           to={
             {
               pathname: '/',
@@ -47,14 +47,14 @@ const Layout = (props) => {
           navbarScroll
         >
           <Navbar.Text title="Ask Buddy">
-            <NavLink className="nav-link" activeClassName="active" 
+            <NavLink className="nav-link" activeClassName="active"
               to={
                 {
                   pathname: '/askbuddy',
                   search: ctx.appQueryParams
                 }
               }
-              >
+            >
               <RiQuestionAnswerLine />
               <span className="icon-text">Ask Buddy</span>
             </NavLink>
@@ -75,8 +75,12 @@ const Layout = (props) => {
 
 
       <div>
+
         {props.children}
       </div>
+
+      
+
     </>
   );
 }

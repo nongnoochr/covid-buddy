@@ -1,3 +1,9 @@
+.bottom-section {
+  margin-top: 1em;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .main-container {
   margin-top: 20px;
 }
