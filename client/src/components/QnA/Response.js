@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Accordion, Card, Button } from 'react-bootstrap';
+import { Accordion, Card, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 
 import classes from './Response.module.css';
 import HCPContext from '../../store/hcp-context.js';
+
+import HCPCard from './HCPCard';
 
 // Icons
 import { BiHide } from 'react-icons/bi';
@@ -11,6 +13,9 @@ import { FaUserMd } from 'react-icons/fa';
 import { MdMyLocation } from 'react-icons/md';
 import { RiUserVoiceLine } from 'react-icons/ri';
 import { SiProbot } from 'react-icons/si';
+
+const distanceUnits = ['meters', 'miles'];
+
 
 // --- Helpers
 const getFromFAQJsx = (res) => (
@@ -42,6 +47,8 @@ const Response = (props) => {
 
     // --- states
     const [showSPs, setShowSPs] = useState(false);
+    const [distanceUnitValue, setDistanceUnitValue] = useState(distanceUnits[0]);
+
 
     // --- Helpers
     /**
@@ -105,29 +112,53 @@ const Response = (props) => {
                                 {
                                     showSPs ? (
                                         <div className={classes['answer-showsps-container']}>
-                                            {/* Show current location */}
-                                            <div className={classes['current-location-container']}>
-                                                <MdMyLocation /> <b>Your location</b> Latitude: {currentCoords.lat ? currentCoords.lat.toFixed(4) : ''} , Longitude: {currentCoords.lon ? currentCoords.lon.toFixed(4) : ''}
+                                            <div className={classes['header-container']}>
+                                                {/* Show current location */}
+                                                <div className={classes['current-location-container']}>
+                                                    <MdMyLocation /> <b>Your location</b> Latitude: {currentCoords.lat ? currentCoords.lat.toFixed(4) : ''} , Longitude: {currentCoords.lon ? currentCoords.lon.toFixed(4) : ''}
+                                                </div>
+                                                <div>
+                                                    <ButtonToolbar className={classes['distance-unit-container']}>
+                                                        <b>Distance:&nbsp;</b>
+                                                        <ToggleButtonGroup
+                                                            type="radio"
+                                                            name="options"
+                                                            size="sm"
+                                                            value={distanceUnitValue}
+                                                            onChange={(val) => setDistanceUnitValue(val)}
+                                                            defaultValue={distanceUnits[0]}>
+                                                            {
+                                                                distanceUnits.map((item, index) => {
+                                                                    return (
+                                                                        <ToggleButton
+                                                                            key={index}
+                                                                            value={item}
+                                                                            variant="outline-primary"
+                                                                        >
+                                                                            {item}
+                                                                        </ToggleButton>
+                                                                    );
+                                                                })
+                                                            }
+                                                        </ToggleButtonGroup>
+                                                    </ButtonToolbar>
+                                                </div>
+
                                             </div>
+
 
                                             {/* Show a list of nearby specialists */}
                                             <div>
                                                 {suggestedSPs.map((curData, index) => {
                                                     return (
                                                         <div className={classes['specialist-container']} key={index}>
-                                                            {/* Specialist name */}
-                                                            <div className={classes['individual-name']}>{curData.activity.individual.firstName} {curData.activity.individual.middleName} {curData.activity.individual.lastName}</div>
+                                                            <HCPCard
+                                                                activity={curData.activity}
+                                                                distance={curData.distance}
+                                                                distance-unit={distanceUnitValue} 
+                                                                current-coords={ {...currentCoords} }
+                                                                />
 
-                                                            {/* Professional info */}
-                                                            <div className={classes['individual-prof']}>{curData.activity.individual.professionalType.label} ({curData.activity.individual.specialties.map(item => item.label).join(', ')})</div>
-
-                                                            {/* Workplace address */}
-                                                            <div className={classes['workplace-address']}>{curData.activity.workplace.address.buildingLabel}
-                                                                {curData.activity.workplace.address.longLabel}  {curData.activity.workplace.address.city.label},  {curData.activity.workplace.address.county.label}
-                                                            </div>
-
-                                                            {/* Distance from the current location in meters */}
-                                                            <div>{curData.distance.toLocaleString()}m</div>
                                                         </div>
                                                     );
                                                 })}

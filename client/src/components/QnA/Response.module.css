@@ -32,16 +32,17 @@
     font-size: small;
 }
 
-.individual-name {
-    color: #007bff;
-    font-weight: bold;
+.distance-unit-container {
+    align-items: center;
+
 }
 
-.individual-prof {
-    /* font-style: italic; */
-    font-size: small;
-}
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
+}
 
 .no-specialists-container {
     color: chocolate;
@@ -55,9 +56,4 @@
 
 .specialist-container {
     margin: 1em 0;
-}
-
-.workplace-address {
-    color: grey;
-    margin-top:0.5em;
 }

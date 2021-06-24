@@ -1,0 +1,19 @@
+.distance-container {
+    display: flex;
+    color: grey;
+    font-size: small;
+}
+
+.individual-name {
+    color: #20368F;
+    font-weight: bold;
+}
+
+.individual-prof {
+    /* font-style: italic; */
+    font-size: small;
+}
+
+.workplace-address {
+    margin-top:0.5em;
+}

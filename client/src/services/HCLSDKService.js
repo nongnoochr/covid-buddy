@@ -1,6 +1,7 @@
 // Update the apiKey value below to a valid HealthcareLocator's apiKey
 const defaultSDKConfig = {
-    apiKey: '300131ea848b420a',
+    // apiKey: '300131ea848b420a', // Not working
+    apiKey: '300142b840f95490',
     appName: 'COVID-19 Buddy',
     appURL: 'https://covid-buddy.herokuapp.com/'
 };
@@ -98,9 +99,12 @@ const getSuggestedSPsNearMe = async (res) => {
         // eslint-disable-next-line no-undef
         const api = new HclAPI(defaultSDKConfig);
 
-        // Query parameters for the activities api - Only find 10 nearby specialists
+        // Query parameters for the activities api
+        // Find maximum of 50 nearby specialists - Match the default maximum number
+        // of results in Results screen in list mode
+        // https://docs.healthcarelocator.com/index.htm#t=RefGuide%2FHealthCare_Locator_features.htm
         const params = {
-            first: 10,
+            first: 50,
             offset: 0,
             specialties: [spCode],
             location: { lat: curLat, lon: curLon }
@@ -138,6 +142,7 @@ const getSuggestedSPsNearMe = async (res) => {
         }
 
     }
+    
     return specialistsNearMe;
 
 }
