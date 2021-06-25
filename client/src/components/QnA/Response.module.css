@@ -2,20 +2,8 @@
   margin: 1em 0;
 }
 
-.answer-findhcp-container {
-  margin-top: 1em;
-}
-
 .answer-question-container {
   margin-bottom: 1em;
-}
-
-.answer-showsps-container {
-  margin-top: 0.5em;
-  padding: 0.5em;
-  border-style: solid;
-  border-width: thin;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .answer-user-buddy {
@@ -26,44 +14,4 @@
 .answer-user-user {
   font-weight: bold;
   color: salmon;
-}
-
-.current-location-container {
-  font-size: small;
-}
-
-.distance-unit-container {
-  align-items: center;
-}
-
-.header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: smaller;
-}
-
-.no-specialists-container {
-  color: chocolate;
-  font-weight: bold;
-}
-
-.query-error-container {
-  color: red;
-  font-style: italic;
-}
-
-.specialist-container {
-  margin: 1em 0;
-}
-
-@media screen and (max-width: 600px) {
-    
-  .header-container {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    align-items: flex-start;
-
-  }
 }

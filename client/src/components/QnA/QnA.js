@@ -58,25 +58,24 @@ const QnA = (props) => {
     useEffect(() => {
         if (allResponses.length > 0) {
             const curRes = allResponses[0];
-                const newResJsx = (<>
-                    <div key={Date.now()}>
-                        <div className={classes['answer-item-timestamp']}>{curRes.timestamp.toLocaleString()}</div>
-                        <Response data={curRes} />
-                        <hr />
-                    </div>
-                </>);
-        
-                setJSXResponse(prev => {
+            const newResJsx = (
+                <div key={Date.now()}>
+                    <div className={classes['answer-item-timestamp']}>{curRes.timestamp.toLocaleString()}</div>
+                    <Response data={curRes} />
+                    <hr />
+                </div>);
 
-                    return [
-                        newResJsx,
-                        ...prev
-                    ];
-                });
-            
+            setJSXResponse(prev => {
+
+                return [
+                    newResJsx,
+                    ...prev
+                ];
+            });
+
         }
 
-    }, [allResponses]); 
+    }, [allResponses]);
 
     // --- Handlers
 
@@ -93,9 +92,33 @@ const QnA = (props) => {
         setTimeout(async () => {
             const res = await fcn();
 
+            // --- Main
             // Get SpecialistNearme info
             const specialistsNearMe = await getSuggestedSPsNearMe(res);
+            if (res.top5) {
+                let coords = { ...specialistsNearMe.data.coords };
+                for (let index = 0; index < res.top5.length; index++) {
+                    
+                    if (index === 0) {
+                        res.top5[index] = {
+                            ...res.top5[index],
+                            specialistsNearMe: { ...specialistsNearMe },
+                        };
 
+                    } else {
+                        const curSPNearMe = await getSuggestedSPsNearMe(res.top5[index], {coords});
+                        res.top5[index] = {
+                            ...res.top5[index],
+                            specialistsNearMe: { ...curSPNearMe },
+                        };
+
+                        // Save coords data if one found
+                        if (curSPNearMe.data.coords.lat !== -Infinity) {
+                            coords = { ...curSPNearMe.data.coords };
+                        }
+                    }
+                }
+            }
             // Append allResponses with the new result + timestamp
             setAllResponses(prevState => {
 
@@ -117,7 +140,7 @@ const QnA = (props) => {
 
             // Scroll to the last response
             refResponse.current.scrollTo(0, 0);
- 
+
         }, 100);
 
     };
@@ -197,11 +220,11 @@ const QnA = (props) => {
                                         medical care :</i>
                                 </div>
                                 <div>
-                                    <div ref={refSelfChecker} 
-                                        data-cdc-widget='healthBot' 
-                                        data-cdc-theme='theme3' 
-                                        className='cdc-widget-color-white' 
-                                        data-cdc-language='en-us'>    
+                                    <div ref={refSelfChecker}
+                                        data-cdc-widget='healthBot'
+                                        data-cdc-theme='theme3'
+                                        className='cdc-widget-color-white'
+                                        data-cdc-language='en-us'>
                                     </div>
                                 </div>
                             </div>
@@ -213,12 +236,12 @@ const QnA = (props) => {
             <div>
                 <div className={classes['answer-container']}>
                     {
-                        activeKey === 'selfchecker' ? 
-                            ctx.getLinkFindHCP() 
+                        activeKey === 'selfchecker' ?
+                            ctx.getLinkFindHCP()
                             : (<div>
                                 <h5><RiQuestionAnswerLine /> Responses:</h5>
                                 <div className={classes['answer-contents']}
-                                     ref={refResponse}>
+                                    ref={refResponse}>
                                     <div>
                                         {!isFindingAnswer || (
                                             <div>
@@ -235,7 +258,7 @@ const QnA = (props) => {
                                     <div>
                                         {jsxResponse}
                                     </div>
-                                    
+
                                 </div>
                             </div>)
                     }

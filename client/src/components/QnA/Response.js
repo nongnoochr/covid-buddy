@@ -1,20 +1,11 @@
-import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Accordion, Card, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Accordion, Card, Button } from 'react-bootstrap';
 
 import classes from './Response.module.css';
-import HCPContext from '../../store/hcp-context.js';
-
-import HCPCard from './HCPCard';
+import Suggestion from './Suggestion';
 
 // Icons
-import { BiHide } from 'react-icons/bi';
-import { FaUserMd } from 'react-icons/fa';
-import { MdMyLocation } from 'react-icons/md';
 import { RiUserVoiceLine } from 'react-icons/ri';
 import { SiProbot } from 'react-icons/si';
-
-const distanceUnits = ['meters', 'miles'];
 
 
 // --- Helpers
@@ -35,20 +26,6 @@ const getSourceJsx = (res) => (
 const Response = (props) => {
 
     const res = props.data;
-
-    const isNearMeSPsApplicable = res.specialistsNearMe.applicable;
-    const currentCoords = { ...res.specialistsNearMe.data.coords };
-    const suggestedSPs = [...res.specialistsNearMe.data.activities];
-    const statusNearMeSPs = res.specialistsNearMe.data.status;
-    const messageNearMeSPs = res.specialistsNearMe.data.message;
-
-    // --- contexts
-    const ctx = useContext(HCPContext);
-
-    // --- states
-    const [showSPs, setShowSPs] = useState(false);
-    const [distanceUnitValue, setDistanceUnitValue] = useState(distanceUnits[0]);
-
 
     // --- Helpers
     /**
@@ -80,117 +57,6 @@ const Response = (props) => {
         </div>);
     }
 
-    /**
-     * Get JSX for the bottom section of the response
-     * @param {string} inPredictedHCP Predicted HCP
-     * @returns {JSX} JSX for the bottom section of the response
-     */
-    const getJsxBottom = (inPredictedHCP) => {
-        return (
-            <div>
-                {/* Find HCP link */}
-                <div className={classes['answer-findhcp-container']}>{ctx.getLinkFindHCP(inPredictedHCP)}</div>
-
-                {/* Show suggested nearby specialists if provided by AI */}
-
-                {inPredictedHCP !== 'All' ? (
-
-                    <div>
-
-                        {/* Show nearby specialists if a suggested specialist is provided */}
-                        {(isNearMeSPsApplicable && (suggestedSPs.length > 0)) ?
-                            <div>
-                                {/* Link to Show/Hide nearby specialists */}
-                                <div onClick={() => setShowSPs(!showSPs)}>
-                                    {showSPs ?
-                                        (<><BiHide /> <Link to="#"><span>Click to hide...</span></Link></>)
-                                        : (<><FaUserMd /> <Link to="#"><span>Click to see specialists ({inPredictedHCP}) near you...</span>
-                                        </Link></>)}
-                                </div>
-
-                                {/* Nearby specialists section */}
-                                {
-                                    showSPs ? (
-                                        <div className={classes['answer-showsps-container']}>
-                                            <div className={classes['header-container']}>
-                                                {/* Show current location */}
-                                                <div className={classes['current-location-container']}>
-                                                    <MdMyLocation /> <b>Your location</b> <span className="icon-text">Latitude: </span>{currentCoords.lat ? currentCoords.lat.toFixed(4) : ''} , <span className="icon-text">Longitude: </span>{currentCoords.lon ? currentCoords.lon.toFixed(4) : ''}
-                                                </div>
-                                                <div>
-                                                    <ButtonToolbar className={classes['distance-unit-container']}>
-                                                        <b>Distance:&nbsp;</b>
-                                                        <ToggleButtonGroup
-                                                            type="radio"
-                                                            name="options"
-                                                            size="sm"
-                                                            value={distanceUnitValue}
-                                                            onChange={(val) => setDistanceUnitValue(val)}
-                                                            defaultValue={distanceUnits[0]}>
-                                                            {
-                                                                distanceUnits.map((item, index) => {
-                                                                    return (
-                                                                        <ToggleButton
-                                                                            key={index}
-                                                                            value={item}
-                                                                            variant="outline-primary"
-                                                                        >
-                                                                            {item}
-                                                                        </ToggleButton>
-                                                                    );
-                                                                })
-                                                            }
-                                                        </ToggleButtonGroup>
-                                                    </ButtonToolbar>
-                                                </div>
-
-                                            </div>
-
-
-                                            {/* Show a list of nearby specialists */}
-                                            <div>
-                                                {suggestedSPs.map((curData, index) => {
-                                                    return (
-                                                        <div className={classes['specialist-container']} key={index}>
-                                                            <HCPCard
-                                                                activity={curData.activity}
-                                                                distance={curData.distance}
-                                                                distance-unit={distanceUnitValue} 
-                                                                current-coords={ {...currentCoords} }
-                                                                />
-
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>) : null
-                                }
-                            </div>
-                            : null
-                        }
-
-                        {/* No nearby specialists */}
-                        {(isNearMeSPsApplicable && statusNearMeSPs && (suggestedSPs.length === 0)) ?
-                            (<div className={classes['no-specialists-container']}>
-                                There are <b>no {inPredictedHCP}</b> near you
-                            </div>)
-                            : null
-                        }
-
-                        {/* Error in finding nearby specialist */}
-                        {(isNearMeSPsApplicable && !statusNearMeSPs) ?
-                            (<div className={classes['query-error-container']}>
-                                {messageNearMeSPs}</div>)
-                            : null
-                        }
-
-                    </div>
-                ) : null}
-
-            </div >
-        );
-    };
-
     // --- If a result is valid (id > -1)
     if (res.id > -1) {
         return (
@@ -210,7 +76,7 @@ const Response = (props) => {
                         <div>{res.answer}</div>
                     </div>
 
-                    {getJsxBottom(res.predictedHCP)}
+                    <Suggestion data={res} />
 
                     {/* Show Top-5 FAQs if data is available (Only available in the Buddy mode) */}
                     {
@@ -239,7 +105,7 @@ const Response = (props) => {
                                                                 {getSourceJsx(item)}
                                                             </div>
                                                             <div> {item.response} </div>
-                                                            {getJsxBottom(item.predictedHCP)}
+                                                            <Suggestion data={item} />
                                                         </Card.Body>
                                                     </Accordion.Collapse>
                                                 </Card>
@@ -270,6 +136,5 @@ const Response = (props) => {
         );
     }
 };
-const areEqual = (prevProps, nextProps) => true;
 
-export default React.memo(Response, areEqual);
+export default Response;

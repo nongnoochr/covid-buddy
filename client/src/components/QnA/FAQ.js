@@ -100,6 +100,9 @@ const FAQ = (props) => {
             const curSeletedCat = selectedCategory[0];
             const newQuestions = await getUpdatedFAQQuestions(curSeletedCat.category);
             setFAQQuestions(newQuestions);
+        } else {
+            const options = await getUpdatedFAQQuestions();
+            setFAQQuestions(options);
         }
     }, [selectedCategory]);
 
