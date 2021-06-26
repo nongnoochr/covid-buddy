@@ -8,9 +8,9 @@
   margin-top: 20px;
 }
 
-.modal-90w {
-  width: 90vw; /* Occupy the 90% of the screen width */
-  max-width: 90vw;
+.modal-width {
+  width: 95vw; /* Occupy the 95% of the screen width */
+  max-width: 95vw;
 }
 
 @media screen and (max-width: 600px) {

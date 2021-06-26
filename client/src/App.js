@@ -211,7 +211,7 @@ function App() {
 
         <Modal
           show={showModal}
-          fullscreen={fullscreenModal}
+          // fullscreen={fullscreenModal}
           onHide={handleHideModal}
           animation={false}
           scrollable={true}
@@ -222,8 +222,8 @@ function App() {
           // We need a back button now because we can't programmatically reset
           // view to the home screen after initializing SDK
 
-          // dialogClassName="modal-90w"
-          // size="lg"
+          dialogClassName="modal-width"
+          size="lg"
 
           centered
         >
