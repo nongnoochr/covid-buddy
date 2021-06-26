@@ -98,7 +98,6 @@ const QnA = (props) => {
             if (res.top5) {
                 let coords = { ...specialistsNearMe.data.coords };
                 for (let index = 0; index < res.top5.length; index++) {
-                    
                     if (index === 0) {
                         res.top5[index] = {
                             ...res.top5[index],

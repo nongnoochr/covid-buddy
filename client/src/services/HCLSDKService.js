@@ -231,6 +231,7 @@ const getSuggestedSPsNearMe = async (res, { coords } = { coords: { lat: -Infinit
             curLat = curCoords.lat;
             curLon = curCoords.lon;
         } else {
+            curCoords = { ...coords };
             curLat = coords.lat;
             curLon = coords.lon;
         }
