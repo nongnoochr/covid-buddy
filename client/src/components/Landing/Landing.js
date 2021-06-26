@@ -53,7 +53,10 @@ const Landing = (props) => {
                     <RiQuestionAnswerLine /> <span>Ask Buddy</span>
                 </Button>
                 <Button variant="success"
-                    onClick={ctx.linkFindHCPHandler}>
+                    onClick={(ev) => {
+                        ev.preventDefault();
+                        ctx.linkFindHCPHandler();
+                    } }>
                     <GrMapLocation /> <span>Find Healthcare Providers</span>
                 </Button>
             </div>
