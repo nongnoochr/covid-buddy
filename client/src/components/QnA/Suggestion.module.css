@@ -37,6 +37,11 @@
 
 .specialist-container {
   margin: 1em 0;
+  padding: 0.5em;
+  border-style: solid;
+  border-width: thin;
+  border-color: gray;
+  box-shadow: gray 0px 3px 8px;
 }
 
 @media screen and (max-width: 750px) {

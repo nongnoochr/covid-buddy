@@ -14,6 +14,14 @@
     font-size: small;
 }
 
+.moreinfo-container {
+    padding: 0.5em;
+}
+
+.showmoreinfo-container {
+    margin-top: 1em;
+}
+
 .workplace-address {
     margin-top:0.5em;
 }

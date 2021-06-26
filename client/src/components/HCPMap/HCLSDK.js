@@ -39,6 +39,8 @@ const HCLSDK = (props) => {
                     specialtyCode: spCode
                 }
             };
+
+            HCLSDK.init(curSDKConfig);
         } else {
             // Use a default search screen by default (Including 'All)
             // Note that this setting currently does not re-render the SDK to the
@@ -51,9 +53,12 @@ const HCLSDK = (props) => {
                 }
             };
 
-        }
+            const p = HCLSDK.init(curSDKConfig);
+            p.then(() => {
+                HCLSDK.backToHome();
+            });            
 
-        HCLSDK.init(curSDKConfig);
+        }
 
     }, [ctx.quickSearch])
 

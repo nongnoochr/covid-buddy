@@ -61,15 +61,15 @@ const getDefaultCacheSpecialistData = () => {
  */
 const compareLocations = (loc1, loc2) => {
     const numFixed = 1;
-    
+
     const loc1_lat = loc1.lat.toFixed(numFixed);
     const loc1_lon = loc1.lon.toFixed(numFixed);
 
     const loc2_lat = loc2.lat.toFixed(numFixed);
     const loc2_lon = loc2.lon.toFixed(numFixed);
 
-    const bool =    (loc1_lat === loc2_lat) &&
-                    (loc1_lon === loc2_lon)
+    const bool = (loc1_lat === loc2_lat) &&
+        (loc1_lon === loc2_lon)
 
     return bool;
 }
@@ -79,10 +79,21 @@ const compareLocations = (loc1, loc2) => {
 // ==================
 // Set the cache
 let cacheSpecialistData = getDefaultCacheSpecialistData();
+let cacheSPWorkplaceData = [];
 
 // ==================
 // Exported functions
 // ==================
+/**
+ * Create a link to open a google map with a direction in a new tab
+ * @param { {lat, lon} } curLocation 
+ * @param { {lat, lon}} workplaceLocation 
+ * @returns Return a link to open a google map with a direction in a new tab
+ */
+const getLinkLocation = (curLocation, workplaceLocation) => {
+    const linkDirection = `https://www.google.com/maps/dir/${curLocation.lat},${curLocation.lon}/${workplaceLocation.lat},${workplaceLocation.lon}`;
+    return linkDirection;
+}
 
 /**
  * Get a specialty code for a given label
@@ -112,7 +123,7 @@ const getNearbySpecialists = async (
     const params = {
         first: 50,
         offset: 0,
-        specialties: [ specialtyCode ],
+        specialties: [specialtyCode],
         location: location
     };
 
@@ -137,16 +148,36 @@ const getNearbySpecialists = async (
 };
 
 /**
+ * Get data of the input specialist
+ * @param {string} id Specilist's ID
+ * @returns {object} Specialist data
+ */
+const getIndividualsByID = async (id) => {
+    const result = await new Promise((resolve, reject) => {
+        api.individualsByID({ id: id })
+            .then(result => {
+                resolve(result);
+            })
+            .catch(err => {
+                console.error('Error while querying individualsByID');
+                reject(err);
+            })
+    });
+
+    return result;
+};
+
+/**
  * Get data of the suggested specialists near the user
  * @param {object} res Response object
  * @returns {object} Data of the near by suggested specialists
  */
-const getSuggestedSPsNearMe = async (res, {coords} = {coords: { lat: -Infinity, lon: -Infinity } }) => {
+const getSuggestedSPsNearMe = async (res, { coords } = { coords: { lat: -Infinity, lon: -Infinity } }) => {
 
     // --- Reset cache value if it is greater than 1 day
 
     const oneDay = 60 * 60 * 24 * 1000; // 1 day in milliseconds
-    if ( (new Date() - cacheSpecialistData.timestamp) > oneDay ) {
+    if ((new Date() - cacheSpecialistData.timestamp) > oneDay) {
         cacheSpecialistData = getDefaultCacheSpecialistData();
     }
 
@@ -192,7 +223,7 @@ const getSuggestedSPsNearMe = async (res, {coords} = {coords: { lat: -Infinity, 
                 } else {
                     specialistsNearMe['data']['message'] = 'Error when getting user location';
                 }
-    
+
                 return specialistsNearMe;
             }
 
@@ -203,7 +234,7 @@ const getSuggestedSPsNearMe = async (res, {coords} = {coords: { lat: -Infinity, 
             curLat = coords.lat;
             curLon = coords.lon;
         }
-        
+
         // // Test: Natick!
         // curLat = 42.2775;
         // curLon = -71.3468;
@@ -230,8 +261,8 @@ const getSuggestedSPsNearMe = async (res, {coords} = {coords: { lat: -Infinity, 
 
         let result, activities;
         try {
-            if (    (compareLocations(curCoords, cacheSpecialistData.location) &&
-                    (cacheSpecialistData.data[spCode].isrun)
+            if ((compareLocations(curCoords, cacheSpecialistData.location) &&
+                (cacheSpecialistData.data[spCode].isrun)
             )) {
                 activities = cacheSpecialistData.data[spCode].activities;
             } else {
@@ -240,12 +271,12 @@ const getSuggestedSPsNearMe = async (res, {coords} = {coords: { lat: -Infinity, 
 
                 // Once the query is done successfully, set the cache value
                 cacheSpecialistData.data[spCode].isrun = true;
-                cacheSpecialistData.data[spCode].activities = [ ...activities ];
+                cacheSpecialistData.data[spCode].activities = [...activities];
             }
 
             specialistsNearMe['data']['status'] = true;
             specialistsNearMe['data']['message'] = 'activities request is done successfully';
-            specialistsNearMe['data']['activities'] = [ ...activities ];
+            specialistsNearMe['data']['activities'] = [...activities];
 
         } catch (error) {
             const errMsg = `Error while finding nearby ${res.predictedHCP}`;
@@ -259,10 +290,62 @@ const getSuggestedSPsNearMe = async (res, {coords} = {coords: { lat: -Infinity, 
 
 };
 
+/**
+ * Get data of a particular specialist by Id
+ * @param {string} spId Id of a Specialist
+ * @async
+ * @returns Return data of a particular specialist
+ */
+const getSpecialistInfo = async (spId) => {
+
+    // First, check whether data for the specified specialist id is already present
+    // in the cache data
+    const findSPData = cacheSPWorkplaceData.find(item => item.id === spId);
+
+    let result, newData;
+    // If the cache data is available
+    if (findSPData) {
+        // Use the cache data
+        newData = { ...findSPData };
+
+    } else {
+        // Otherwise, make a query
+        try {
+            const rawResult = await getIndividualsByID(spId);
+            result = rawResult.individualByID;
+        } catch (error) {
+            const errMsg = `Error while finding data for id ${spId}`;
+            console.error(errMsg);
+
+            result = {};
+        }
+
+        // Then, push it to the end of the cache data array
+        newData = {
+            id: spId,
+            data: result
+        };
+
+        cacheSPWorkplaceData.push(newData);
+
+        // Only keep the cache of the last 100 results
+        if (cacheSPWorkplaceData.length > 100) {
+            // Popping out the first entry if the cache size is over 100
+            cacheSPWorkplaceData.shift();
+        }
+    } 
+
+    return newData;
+};
+
+// ===============
+
 export {
     defaultSDKConfig,
     quickSearchData,
     quickSearchSpecialtyCodes,
+    getLinkLocation,
     getSpecialtyCode,
-    getSuggestedSPsNearMe
+    getSuggestedSPsNearMe,
+    getSpecialistInfo
 }

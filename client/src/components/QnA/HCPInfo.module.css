@@ -1,0 +1,20 @@
+.icon-address {
+  /* color: #20368f; */
+}
+
+.icon-location {
+  color: orange;
+}
+
+
+.maininfo-select {
+  max-width: 100%;
+}
+
+.maininfo-container {
+  padding: 0.5em 0;
+}
+
+.maininfo-row {
+  margin-bottom: 1em;
+}
