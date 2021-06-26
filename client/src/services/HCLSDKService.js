@@ -212,7 +212,7 @@ const getSuggestedSPsNearMe = async (res, { coords } = { coords: { lat: -Infinit
         };
 
         // Only get a new coords if the input coords are valid (e.g. > -Infinity)
-        let curCoords, curLat, curLon;
+        let curCoords;
         if (coords.lat === -Infinity) {
             try {
                 curCoords = await getCoords();
@@ -227,14 +227,14 @@ const getSuggestedSPsNearMe = async (res, { coords } = { coords: { lat: -Infinit
                 return specialistsNearMe;
             }
 
-            // Get the current coordinates
-            curLat = curCoords.lat;
-            curLon = curCoords.lon;
+           
         } else {
             curCoords = { ...coords };
-            curLat = coords.lat;
-            curLon = coords.lon;
         }
+
+         // Get the current coordinates
+         let curLat = curCoords.lat;
+         let curLon = curCoords.lon;
 
         // // Test: Natick!
         // curLat = 42.2775;
