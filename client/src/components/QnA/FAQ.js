@@ -146,10 +146,10 @@ const FAQ = (props) => {
     const resetInputHandler = async () => {
 
         setSelectedCategory([]);
-        // refTypeaheadCat.current.clear();
+        refTypeaheadCat.current.clear();
 
         setSelectedQuestion([]);
-        // refTypeaheadFAQ.current.clear();
+        refTypeaheadFAQ.current.clear();
 
         // Reset questions to 'All'
         const options = await getUpdatedFAQQuestions();
