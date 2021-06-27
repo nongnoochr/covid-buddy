@@ -106,7 +106,7 @@ Specifically for the IQVIA's HealthCare Locator JavaScript SDK, the COVID-19 Bud
 
 ## Challenges we ran into
 
-There are quite a few challenges I ran into while working on this project but the most challenging one is to successfully integreate the HealthCareLocatorWebSDK into my app due to multiple issues as described below
+There are quite a few challenges I ran into while working on this project but the most challenging one is to successfully integrate the HealthCareLocatorWebSDK into my app due to multiple issues as described below
 
 #### Issues with the HealthCareLocatorWebSDK
 
