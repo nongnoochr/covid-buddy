@@ -8,7 +8,7 @@ The COVID-19 pandemic has greatly impact every life on earth, especially underse
 
 The goal of this **COVID-19 Buddy** app is to assist a user by providing accurate information about COVID-19 from trustworthy sources and organizations as well as leveraging AI to suggest nearby Healthcare providers (HCPs) for user based on his/her input to enable greater access to healthcare providers for all.
 
-This project was developed to submit for the DEVPOST Hackathon - Code for COVID Relief ([project](https://devpost.com/software/covid-buddy-sqno5c)).
+This project was developed to submit for the DEVPOST Hackathon - Code for COVID Relief ([Hackathon link](https://healthcareappchallenge.devpost.com/), [Project](https://devpost.com/software/covid-buddy-sqno5c)).
 * To learn more about this project, see [devpost_project.md](./devpost_project.md)
 
 | Features      | Desktop App   | Mobile App    |
