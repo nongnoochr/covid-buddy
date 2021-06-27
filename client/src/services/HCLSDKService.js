@@ -1,8 +1,9 @@
 // --- Init SDK api
 // Update the apiKey value below to a valid HealthcareLocator's apiKey
+// To obtain a HealthcareLocator's apiKey, 
+// you can create your free HCL SDK account [here](https://www.healthcarelocator.com/en/pricing)
 const defaultSDKConfig = {
-    // apiKey: '300131ea848b420a', // Not working
-    apiKey: '300142b840f95490',
+    apiKey: '<Your_API_KEY>',
     appName: 'COVID-19 Buddy',
     appURL: 'https://covid-buddy.herokuapp.com/'
 };
