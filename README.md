@@ -4,7 +4,7 @@ Visit
 * website: https://covid-buddy.herokuapp.com/
 * YouTube: https://youtu.be/2QuPYa8hZWE
 
-The COVID-19 pandemic has greatly impact every life on earth, especially underserved communities who were significantly impacted by COVID-19 due to a lack of access to medical facilities and misleading and disinformation about COVID-19 and the vaccines. 
+The COVID-19 pandemic has been greatly impacting every life on earth, especially underserved communities who were significantly impacted by COVID-19 due to a lack of access to medical facilities and misleading and disinformation about COVID-19 and the vaccines. 
 
 The goal of this **COVID-19 Buddy** app is to assist a user by providing accurate information about COVID-19 from trustworthy sources and organizations as well as leveraging AI to suggest nearby Healthcare providers (HCPs) for user based on his/her input to enable greater access to healthcare providers for all.
 
