@@ -1,13 +1,13 @@
 ## Inspiration
 The COVID-19 pandemic has been greatly impacting every life on earth. Not only the virus is so deadly, The World Health Organization (WHO) declared an "infodemic" of incorrect information about the virus that poses risks to global health([source](https://en.wikipedia.org/wiki/COVID-19_misinformation)). According to a study published by the National Bureau of Economic Research, areas of the country exposed to television programming that downplayed the severity of the pandemic saw greater numbers of cases and deaths—because people didn’t follow public health precautions ([source](https://www.scientificamerican.com/article/covid-misinformation-is-killing-people1/)).
 
-Combining with ongoing issues in the underserved communities which have a lack of access to medical facilities and healthcare, the impact of COVID-19 to the underserved communities is greatly amplified. 
+Combining with ongoing issues in the underserved communities with a lack of access to medical facilities and healthcare, the impact of COVID-19 to the underserved communities is greatly amplified. 
 
 The goal of this **COVID-19 Buddy** app to help users including those in the underserved communities to get a better access to healthcare when needed with accurate information and suggestion during the COVID-19 pandemic by leverage a power of **AI** and **IQVIA's HealthCare Locator Software Developer Kit (SDK)**.
 
 ## What it does
 
-The **COVID-19 Buddy** app is designed to be user-friendly with an easy access to the IQVIA's HealthCare Locator SDK as well as provide accurate information about COVID-19 which were collected from the trustworthy sources ([WHO](https://www.who.int/emergencies/diseases/novel-coronavirus-2019/question-and-answers-hub), [CDC](https://www.cdc.gov/coronavirus/2019-ncov/faq.html), [FDA](https://www.fda.gov/emergency-preparedness-and-response/coronavirus-disease-2019-covid-19/covid-19-frequently-asked-questions)).
+The **COVID-19 Buddy** app is designed to be user-friendly with an easy access to the IQVIA's HealthCare Locator SDK as well as provide accurate information about COVID-19.
 
 
 The app consists of 3 major components including:
@@ -19,13 +19,13 @@ The app consists of 3 major components including:
 The "Find Healthcare Providers" dialog is a modal dialog which consists of two main components:
 1. *Quick Search*
    * This section enable a user to applie a filter to quickly search for nearby specialists in the HealthCare Locator SDK
-   * A set of specialists in this QuickSearch was determined by possible health issues from COVID-19 that were identified from the collected FAQ data which are
+   * A set of specialists in this QuickSearch was determined by possible health issues from COVID-19 that were identified in the collected FAQ data which are
      * Pediatrics
      * Obstetrics
      * Psychiatry
 
 2. *HealthCare Locator SDK*
-   * Leveraging a rich set of built-in features the IQVIA's HealthCare Locator SDK to allow better access to Healthcare Providers to a user
+   * Leveraging a rich set of built-in features of the IQVIA's HealthCare Locator SDK to allow better access to Healthcare Providers to a user
 
 To launch the 'Find Healthcare Providers" dialog is easy, a user can easily launch the dialog from a permanant button in the app's navigation bar or a contextual hyperlink which is provided throughout the app.
 
@@ -98,10 +98,10 @@ Note that our full stack app is server-side rendering using the built bundle of 
 #### 4. Client (Front-end)
 Our client-side app is a Single-Page Application (SPA) and it is developed with React. The IQVIA's HealthCare Locator JavaScript SDK is completely used in the client side via cdn.
 
-To optimize the performance of the app and make it possible to run memory intensive tasks on mobile devices, all expensive operations (i.e. AI tasks) are done in the server, and the client-side app retrieves the output data through the provided REST apis.
+To optimize the performance of the app and make it possible to run this AI app on mobile devices, all expensive operations (i.e. AI tasks) are done in the server, and the client-side app retrieves the output data through the provided REST apis.
 
 Specifically for the IQVIA's HealthCare Locator JavaScript SDK, the COVID-19 Buddy app utilizes both UI and Service calls features where
-* The **SDK UI** is used mainly in the “Find Healthcare Providers” dialog with the QuickSearch function as described earlier
+* The **SDK UI** is used mainly in the “Find Healthcare Providers” dialog with a QuickSearch functionality as described earlier
 * The **SDK Service Calls** are made to get a list of nearby specialists if the AI suggested for a particular specialist in the response either in the FAQs or Buddy mode.
 
 ## Challenges we ran into
@@ -113,7 +113,7 @@ There are quite a few challenges I ran into while working on this project but th
 ##### Documentation
 The [Healthcare Locator documentation](https://docs.healthcarelocator.com/index.htm#t=index_1.html) is still evolving. I started going over this documentation during the beginning of this hackathon and encountered a few issues while developing this project where some of those issues were already fixed, and some of them are still open. For example,
 * (Fixed) Incorrect information about the cdn's path
-* Insufficient information in different areas.
+* Insufficient information in multiple areas.
   * There is very little information about how to programmatically customize the SDK UI or update its state
   * There is no information about a url to make a GraphQL query or a playground as well as how to to specify a subscription key to a request 
 
@@ -137,7 +137,7 @@ With all the struggles mentioned above, I (eventually) successfully integrated t
 Although the Free Trial quota posed quite a few challenges while developing this app (i.e. a number of requests made must be less than 500 a day otherwise the app will experience the CORS issue and the apiKey can no longer be used), it forces me to think hard on where, when, and how to optimize a number of the request to keep my app up and running with this limitation after deployment (e.g. caching mechanism was developed, a request call was removed from a react component, etc.).
 
 In addition to getting an opportunity to learn the Healthcare Locator SDK and sharpen my problem solving as mentioned above, this project gave me an opportunity to have hands-on experience in integrating AI in a fullstack app and deploy it for the wider audience. While developing this project, I encountered multiple hiccups in the early development phase. For example,
-* The app worked well on my machine but randomly crashed when deploying to Heroku due to memory usage and timeout issues
+* The app worked well on my machine but randomly crashed when deploying it in Heroku due to memory usage and timeout issues
 * The app crashed badly on a mobile device due to a use of unsupported JavaScript apis on mobiles or a large amount of memory used by the AI model
 
 The struggles mentioned above forced me to change courses during development to find new approaches to solve problems and optimize both server and client sources, and this is such a great learning experience :)
