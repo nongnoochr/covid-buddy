@@ -1,6 +1,8 @@
 # COVID-19 Buddy App
  
-Visit https://covid-buddy.herokuapp.com/
+Visit 
+* website: https://covid-buddy.herokuapp.com/
+* YouTube: https://youtu.be/2QuPYa8hZWE
 
 The COVID-19 pandemic has greatly impact every life on earth, especially underserved communities who were significantly impacted by COVID-19 due to a lack of access to medical facilities and misleading and disinformation about COVID-19 and the vaccines. 
 
