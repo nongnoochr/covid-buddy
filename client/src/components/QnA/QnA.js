@@ -59,7 +59,7 @@ const QnA = (props) => {
         if (allResponses.length > 0) {
             const curRes = allResponses[0];
             const newResJsx = (
-                <div key={Date.now()}>
+                <div data-testid="response-item" key={Date.now()}>
                     <div className={classes['answer-item-timestamp']}>{curRes.timestamp.toLocaleString()}</div>
                     <Response data={curRes} />
                     <hr />
@@ -170,7 +170,9 @@ const QnA = (props) => {
     // ---------
 
     return (
-        <div className="container main-container">
+        <div
+            data-testid="qna-container" 
+            className="container main-container">
             <div>
                 <Tabs
                     defaultActiveKey={activeKey}
@@ -254,7 +256,7 @@ const QnA = (props) => {
                                             (<span><i>No questions asked yet</i></span>) : null}
                                     </div>
 
-                                    <div>
+                                    <div data-testid="response-container">
                                         {jsxResponse}
                                     </div>
 

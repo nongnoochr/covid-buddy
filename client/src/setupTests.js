@@ -3,3 +3,6 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+
+// Mock HclAPI that is loaded through CDN when running unit tests
+global.HclAPI = jest.fn();

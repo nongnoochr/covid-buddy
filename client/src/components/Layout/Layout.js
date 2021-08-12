@@ -38,16 +38,19 @@ const Layout = (props) => {
               search: ctx.appQueryParams
             }
           }
+          data-testid="nav-item-brand"
         >
           <span className={classes['nav-icon-home']}><BiHome /></span>
-          <span className="icon-text"><b>COVID-19 BUDDY</b></span>
+          <span 
+            data-testid="nav-item-brand-text"
+            className="icon-text"><b>COVID-19 BUDDY</b></span>
         </Navbar.Brand>
 
         <Nav className={`mr-auto ${classes['nav-container']}`}
           navbarScroll
         >
           <Navbar.Text title="Ask Buddy">
-            <NavLink className="nav-link" activeClassName="active"
+            <NavLink data-testid="nav-item-askbuddy" className="nav-link" activeClassName="active"
               to={
                 {
                   pathname: '/askbuddy',

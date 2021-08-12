@@ -94,21 +94,24 @@ const HCPInfo = (props) => {
                                         <GoLocation className={classes['icon-location']} />
                                     </Col>
                                     <Col xs={10}>
-                                        <div>
-                                            {selectedInfoData.workplace.name}
+                                        <div data-testid="data-info">
+                                            <div>
+                                                {selectedInfoData.workplace.name}
+                                            </div>
+
+                                            {selectedInfoData.workplace.address.buildingLabel ?
+                                                (<div>{selectedInfoData.workplace.address.buildingLabel}</div>) : null}
+
+                                            <div data-testid="data-workplace">
+                                                {selectedInfoData.workplace.address.longLabel}&nbsp;
+                                                {selectedInfoData.workplace.address.city.label},&nbsp;
+                                                {selectedInfoData.workplace.address.county.label}&nbsp;
+                                                {selectedInfoData.workplace.address.postalCode}&nbsp;
+                                                {selectedInfoData.workplace.address.country}
+
+                                            </div>
                                         </div>
 
-                                        {selectedInfoData.workplace.address.buildingLabel ?
-                                            (<div>{selectedInfoData.workplace.address.buildingLabel}</div>) : null}
-
-                                        <div>
-                                            {selectedInfoData.workplace.address.longLabel}&nbsp;
-                                            {selectedInfoData.workplace.address.city.label},&nbsp;
-                                            {selectedInfoData.workplace.address.county.label}&nbsp;
-                                            {selectedInfoData.workplace.address.postalCode}&nbsp;
-                                            {selectedInfoData.workplace.address.country}
-
-                                        </div>
 
                                     </Col>
                                 </Row>

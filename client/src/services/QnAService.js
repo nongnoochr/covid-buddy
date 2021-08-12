@@ -10,7 +10,7 @@ import axios from 'axios';
  * @returns {[object]} FAQ Questions data sorted by category name
  */
 const getFAQQuestions = async (category = 'All') => {
-    const res = await axios.get(`/getfaqquestions?category=${category}`)
+    const res = await axios.get(`/getfaqquestions?category=${category}`);
     res.data.sort((a, b) => (a.category > b.category) ? 1 : -1)
 
     return res.data;
@@ -23,7 +23,7 @@ const getFAQQuestions = async (category = 'All') => {
  * @returns {[object]} FAQ Response data
  */
 const getFAQResponseById = async (id) => {
-    const res = await axios.get(`/getfaqresponse?id=${id}`)
+    const res = await axios.get(`/getfaqresponse?id=${id}`);
     return res.data;
 }
 

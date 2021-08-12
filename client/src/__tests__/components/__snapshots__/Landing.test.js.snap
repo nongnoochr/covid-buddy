@@ -1,0 +1,318 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tLanding Landing page should have an appropriate snapshot 1`] = `
+Array [
+  <div
+    className="jumbotron"
+  >
+    <h1>
+      COVID-19 Buddy: Your Trustworthy Assistant
+    </h1>
+    <div>
+      <p>
+        Do you have doubts about COVID-19? Do you need help to make decisions on when to seek medical care? 
+        <br />
+        No worries. COVID-19 Buddy can help you with it! 
+        <br />
+      </p>
+      <p>
+        Simply chat with the Buddy for assistant or talk to a healthcare provider near you.
+      </p>
+    </div>
+    <div
+      className="jumbotron-button-container"
+    >
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <svg
+          fill="currentColor"
+          height="1em"
+          stroke="currentColor"
+          strokeWidth="0"
+          style={
+            Object {
+              "color": undefined,
+            }
+          }
+          viewBox="0 0 24 24"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g>
+            <path
+              d="M0 0h24v24H0z"
+              fill="none"
+            />
+            <path
+              d="M5.455 15L1 18.5V3a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455zm-.692-2H16V4H3v10.385L4.763 13zM8 17h10.237L20 18.385V8h1a1 1 0 0 1 1 1v13.5L17.545 19H9a1 1 0 0 1-1-1v-1z"
+            />
+          </g>
+        </svg>
+         
+        <span>
+          Ask Buddy
+        </span>
+      </button>
+      <button
+        className="btn btn-success"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <svg
+          fill="currentColor"
+          height="1em"
+          stroke="currentColor"
+          strokeWidth="0"
+          style={
+            Object {
+              "color": undefined,
+            }
+          }
+          viewBox="0 0 24 24"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M17.5,6.5 L23,9 L23,22 L16,19 L8,22 L1,19 L1,6 L6,8 M16,19 L16,12 M8,22 L8,12 M12,16.2727273 C12,16.2727273 6,11.5 6,7 C6,3.25 9,1 12,1 C15,1 18,3.25 18,7 C18,11.5 12,16.2727273 12,16.2727273 Z M13,7 C13,6.44766667 12.5523333,6 12,6 C11.4476667,6 11,6.44766667 11,7 C11,7.55233333 11.4476667,8 12,8 C12.5523333,8 13,7.55233333 13,7 Z"
+            fill="none"
+            stroke="#000"
+            strokeWidth="2"
+          />
+        </svg>
+         
+        <span>
+          Find Healthcare Providers
+        </span>
+      </button>
+    </div>
+  </div>,
+  <section
+    className="container main-container"
+  >
+    <div
+      className="card-group-landing card-group"
+    >
+      <div
+        className="card-container-outer card"
+      >
+        <img
+          className="card-img-top"
+          height="150"
+          src="images/vaccine.jpg"
+        />
+        <div
+          className="card-body-container"
+        >
+          <h5>
+            Why Getting a COVID-19 Vaccine
+          </h5>
+          <div>
+            <ul>
+              <li>
+                Help keep you from getting COVID-19
+              </li>
+              <li>
+                Once you are fully vaccinated, you can start doing more
+              </li>
+              <li>
+                Safer way to help build protection
+              </li>
+              <li>
+                Important tool to help stop the pandemic
+              </li>
+              <li>
+                Vaccines are safe and effective
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div>
+              For more details, visit
+            </div>
+            <div>
+              <a
+                href="https://www.cdc.gov/coronavirus/2019-ncov/vaccines/index.html"
+                rel="noreferrer"
+                target="_blank"
+              >
+                CDC: Vaccines for COVID-19
+              </a>
+            </div>
+            <div>
+              <a
+                href="mockUrl"
+              >
+                Mocked getLinkFindHCP
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="card-container-outer card"
+      >
+        <img
+          className="card-img-top"
+          height="150"
+          src="images/cough.jpg"
+        />
+        <div
+          className="card-body-container"
+        >
+          <h5>
+            When You Are Sick - Monitor your symptoms
+          </h5>
+          <div>
+            Symptoms of COVID-19 include
+            <ul>
+              <li>
+                Fever
+              </li>
+              <li>
+                Cough
+              </li>
+              <li>
+                Shortness of breath 
+              </li>
+              <li>
+                ...and more...
+              </li>
+            </ul>
+            Follow instructions from your healthcare provider and local health department.
+          </div>
+          <div>
+            <a
+              href="mockUrl"
+            >
+              Mocked getLinkFindHCP
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        className="card-container-outer card"
+      >
+        <img
+          className="card-img-top"
+          height="150"
+          src="images/ambulance.jpg"
+        />
+        <div
+          className="card-body-container"
+        >
+          <h5>
+            When to seek emergency medical attention
+          </h5>
+          <div>
+            If someone is having
+            <ul>
+              <li>
+                Trouble breathing
+              </li>
+              <li>
+                Persistent pain or pressure in the chest
+              </li>
+              <li>
+                Inability to wake or stay awake
+              </li>
+              <li>
+                Pale, gray, or blue-colored skin, lips, or nail beds depending on skin tone
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div>
+              <svg
+                fill="none"
+                height="1em"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                style={
+                  Object {
+                    "color": undefined,
+                  }
+                }
+                viewBox="0 0 24 24"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                />
+              </svg>
+               Call 
+              <strong>
+                911
+              </strong>
+               or
+            </div>
+            <div>
+              <a
+                href="mockUrl"
+              >
+                Mocked getLinkFindHCP
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="card-container-outer card"
+      >
+        <img
+          className="card-img-top"
+          height="150"
+          src="images/mask.jpg"
+        />
+        <div
+          className="card-body-container"
+        >
+          <h5>
+            To prevent the spread of COVID-19
+          </h5>
+          <div>
+            <ul>
+              <li>
+                Wear a mask
+              </li>
+              <li>
+                Stay at least 6 feet apart from others
+              </li>
+              <li>
+                Wash your hands often
+              </li>
+              <li>
+                Cover your coughs and sneezes
+              </li>
+              <li>
+                Clean high-touch surfaces every day
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div>
+              For more details, see
+            </div>
+            <div>
+              <a
+                href="https://www.cdc.gov/coronavirus/2019-ncov/downloads/sick-with-2019-nCoV-fact-sheet.pdf"
+                rel="noreferrer"
+                target="_blank"
+              >
+                COVID-19 Fact Sheet
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>,
+]
+`;
