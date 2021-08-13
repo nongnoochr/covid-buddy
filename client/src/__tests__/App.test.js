@@ -34,24 +34,24 @@ describe('tApp', () => {
 
   });
 
-  it('click "Ask Buddy" in navbar should navigate to the Buddy view', async () => {
+  it('click "Ask Buddy" in navbar should navigate to the Buddy view',
+    async () => {
+      const history = createMemoryHistory()
+      render(
+        <Router history={history}>
+          <App />
+        </Router>,
+      );
 
-    const history = createMemoryHistory()
-    render(
-      <Router history={history}>
-        <App />
-      </Router>,
-    );
+      const elNavAskBuddy = await screen.findByTestId('nav-item-askbuddy');
+      userEvent.click(elNavAskBuddy);
 
-    const elNavAskBuddy = await screen.findByTestId('nav-item-askbuddy');
-    userEvent.click(elNavAskBuddy);
+      // Location should be updated
+      expect(history.location.pathname).toEqual('/askbuddy');
 
-    // Location should be updated
-    expect(history.location.pathname).toEqual('/askbuddy');
-
-    // View should be updated to the Ask Buddy mode
-    expect(screen.queryByTestId('qna-container')).toBeInTheDocument();
-  });
+      // View should be updated to the Ask Buddy mode
+      expect(screen.queryByTestId('qna-container')).toBeInTheDocument();
+    });
 });
 
 // -----------

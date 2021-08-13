@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
-import GitHubButton from 'react-github-btn';
+// import GitHubButton from 'react-github-btn';
 
 // Components
 import Layout from './components/Layout/Layout';
@@ -245,12 +245,12 @@ function App() {
       </div>
 
       <section data-testid="github-container" className="container bottom-section">
-        <GitHubButton href="https://github.com/nongnoochr/covid-buddy" 
+        {/* <GitHubButton href="https://github.com/nongnoochr/covid-buddy" 
           data-size="large"
           data-show-count="true" 
           aria-label="Star nongnoochr/covid-buddy on GitHub">
           Star
-        </GitHubButton>
+        </GitHubButton> */}
       </section>
     </>
   );
