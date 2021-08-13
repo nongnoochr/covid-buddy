@@ -8,12 +8,9 @@ const { chromium, firefox, webkit, devices } = require("playwright");
 
 const deviceList = [
     'Galaxy S8',
-    // 'iPad Pro 11',
     'iPad Mini landscape',
-    // 'iPhone 8',
     'iPhone 12',
     'Pixel 2 XL',
-    // 'Pixel 5 landscape',
     'Desktop Safari',
     'Desktop Chrome',
     'Dekstop Edge',
@@ -66,7 +63,6 @@ describe.each([
         await page.click(selector);
         await expect(page).toHaveSelector('[data-testid="qna-container"]');
 
-
         const selectorResContainer = '[data-testid="response-container"]';
         const elResContainerBefore = await page.$(selectorResContainer);
         const elResContainerContentBefore = await elResContainerBefore.textContent();
@@ -77,8 +73,7 @@ describe.each([
         // Click [placeholder="Select or type question or category..."]
         await page.click('[placeholder="Select or type question or category..."]');
 
-        // Click text=What can we do so that other diseases like COVID-19 do not affect us in future?C
-        //   await page.click('text=What can we do so that other diseases like COVID-19 do not affect us in future?C');
+        // Click text=What can we do so that other diseases like COVID-19 do not affect us in future?
         await page.click('#faq-typeahead-item-0');
         const element = await page.$('input[placeholder="Select or type question or category..."]');
 
