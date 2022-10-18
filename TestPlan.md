@@ -11,7 +11,7 @@ List of software items that are to be tested.
 [Jest](https://jestjs.io/) is used as the main testing framework for this project. Mocking techniques via Jest are also used extensively in the server-side and client-side testing.
 
 ### Server-side Testing
-**Test Location:** `<project_root>/server/src/__tests__`
+**Test Location:** [<project_root>/server/src/\__tests__](./server/src/__tests__/)
 * TBD
 
 
