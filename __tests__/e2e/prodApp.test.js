@@ -8,22 +8,18 @@ const { chromium, firefox, webkit, devices } = require("playwright");
 
 // https://github.com/microsoft/playwright/blob/main/packages/playwright-core/src/server/deviceDescriptorsSource.json
 const deviceList = [
-    // 'Galaxy S8',
-    // 'iPad Mini landscape',
-    // 'iPhone 12',
-    // 'Pixel 2 XL',
-    // 'iPhone 13',
-    // 'iPhone 13 landscape',
-    // 'Desktop Safari',
-    // 'Dekstop Edge',
-    // 'Desktop Firefox',
+    'Galaxy S9+',
+    'iPad Mini',
+    'Pixel 5 landscape',
+    'iPhone 13',
+    'iPhone 13 landscape',
     'Desktop Chrome',
 ];
 
 describe.each([
     [chromium.name(), chromium],
-    // [firefox.name(), firefox],
-    // [webkit.name(), webkit],
+    [firefox.name(), firefox],
+    [webkit.name(), webkit],
 ])('test on %p', (_browserName, browserType) => {
 
     let newBrowser;

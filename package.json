@@ -9,11 +9,13 @@
     "start-server-app": "cd client && yarn build && cd .. && yarn run start",
     "test": "jest",
     "test-client": "cd client && yarn test --watchAll=false && cd ..",
-    "test-api": "jest server/src/__tests__/api --watchAll=false",
+    "cov-client": "cd client && yarn test --watchAll=false --coverage && cd ..",
     "test-server": "jest server/src/__tests__ --watchAll=false",
+    "cov-server": "npm run test-server -- --coverage",
+    "test-api": "jest server/src/__tests__/api --watchAll=false",
     "test-e2e": "jest __tests__/e2e --config=jest.e2e.config.js --watchAll=false --detectOpenHandles",
     "debug-test-e2e": "PWDEBUG=1 npm run test-e2e",
-    "test-all": "npm run test-client && npm run test-api && && npm run test-server && npm run test-e2e"
+    "test-all": "npm run test-client && npm run test-server && npm run test-e2e"
   },
   "repository": {
     "type": "git",

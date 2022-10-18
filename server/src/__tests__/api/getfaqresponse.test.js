@@ -19,11 +19,11 @@ describe('Test getfaqresponse api', () => {
             predictedHCP: expect.any(String)
         };
       
-        expect(res.body).toStrictEqual(expData);
+        expect(res.body).toMatchObject(expData);
     });
 
 
-    test.only.each([
+    test.each([
         {name: 'without parameter', api: '/getfaqresponse'},
         {name: 'with an invalid parameter name', api: '/getfaqresponse?invalidparam=value'},
         {name: 'with an invalid parameter value', api: '/getfaqresponse?id=-1'}

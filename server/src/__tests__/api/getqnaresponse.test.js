@@ -25,7 +25,7 @@ describe('Test getqnaresponse api', () => {
             score: expect.any(Number)
         };
 
-        expect(resTop).toStrictEqual(expData);
+        expect(resTop).toMatchObject(expData);
         expect(resTop.score).toBeGreaterThan(0.6);
         
     });

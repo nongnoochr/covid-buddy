@@ -19,13 +19,13 @@ describe('Test getfaqquestions api', () => {
             sourceName: expect.any(String)
           }
       
-        expect(actDataNoParam[0]).toStrictEqual(expData0);
+        expect(actDataNoParam[0]).toMatchObject(expData0);
 
         // ---- Test: with parameter category=All
         // The response must be the same as when query without any parameter
         const resAll = await reqServer.get('/getfaqquestions?category=All');
 
-        expect(resAll.body).toStrictEqual(actDataNoParam);
+        expect(resAll.body).toMatchObject(actDataNoParam);
     });
 
     test('a specific category name without spaces', async () => {
