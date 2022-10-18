@@ -16,11 +16,11 @@ List of software items that are to be tested.
 
 
 ### Client-side Testing
-**Test Location:** `<project_root>/client/src/__tests__`
+**Test Location:** [<project_root>/client/src/\__tests__](./client/src/__tests__/)
 * TBD
 
 ### End-to-End Testing
-**Test Location:** `<project_root>/__tests__`
+**Test Location:** [<project_root>/\__tests__/e2e](./__tests__/e2e/)
 * TBD
 
 ## Environmental Needs
