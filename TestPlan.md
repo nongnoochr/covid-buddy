@@ -27,6 +27,6 @@ List of software items that are to be tested.
 Environmental requirements such as hardware, software, OS, network configuration, tools, etc.
 * TBD
 
-## Test Case Design
+## Test Cases Design
 * TBD
 
