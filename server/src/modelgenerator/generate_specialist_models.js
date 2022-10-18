@@ -10,7 +10,7 @@ const path = require('path');
 const tf = require('@tensorflow/tfjs-node'); // Required to use USE
 const use = require('@tensorflow-models/universal-sentence-encoder');
 
-const { specialistToSentencesMap } = require('./specialist_map');
+const { specialistToSentencesMap } = require('./../specialist_map');
 
 
 // --------------------------------

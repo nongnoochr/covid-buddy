@@ -11,9 +11,9 @@ const tf = require('@tensorflow/tfjs-node'); // Required to use USE
 const use = require('@tensorflow-models/universal-sentence-encoder');
 
 // --- Load
-const data_raw_who = require('./../../data/qna/who.json');
-const data_raw_cdc = require('./../../data/qna/cdc.json');
-const data_raw_fda = require('./../../data/qna/fda.json');
+const data_raw_who = require('./../../../data/qna/who.json');
+const data_raw_cdc = require('./../../../data/qna/cdc.json');
+const data_raw_fda = require('./../../../data/qna/fda.json');
 
 // Combine data from all sources
 const data_raw = [
