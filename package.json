@@ -9,9 +9,11 @@
     "start-server-app": "cd client && yarn build && cd .. && yarn run start",
     "test": "jest",
     "test-client": "cd client && yarn test --watchAll=false && cd ..",
-    "test-server": "jest __tests__/server",
-    "test-e2e": "jest __tests__/e2e --config=jest.e2e.config.js --detectOpenHandles",
-    "test-all": "npm run test-client && npm run test-server && npm run test-e2e"
+    "test-api": "jest server/src/__tests__/api --watchAll=false",
+    "test-server": "jest server/src/__tests__ --watchAll=false",
+    "test-e2e": "jest __tests__/e2e --config=jest.e2e.config.js --watchAll=false --detectOpenHandles",
+    "debug-test-e2e": "PWDEBUG=1 npm run test-e2e",
+    "test-all": "npm run test-client && npm run test-api && && npm run test-server && npm run test-e2e"
   },
   "repository": {
     "type": "git",
@@ -33,8 +35,17 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "jest": "^27.0.6",
+    "jest": "^27.5.1",
     "jest-playwright-preset": "^1.7.0",
-    "playwright": "^1.13.1"
+    "jest-when": "^3.5.1",
+    "playwright": "^1.13.1",
+    "supertest": "^6.3.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "index.js",
+      "server/**/*.js",
+      "!<rootDir>/node_modules/"
+    ]
   }
 }

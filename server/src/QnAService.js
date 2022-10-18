@@ -10,7 +10,7 @@ const { dotProduct } = require('./Utils');
 
 
 // --- QnA data
-let { qnaData } = require('./data/qna.data.json');
+let { qnaData } = require('./../data/qna.data.json');
 // Update data to include fields that are required by the client
 qnaData.forEach(item => {
     item['sourceName'] = getSourceName(item.source);
@@ -19,12 +19,12 @@ qnaData.forEach(item => {
 });
 
 // --- Specialist Data
-const spData = require('./data/sp.data.json')['outData'];
+const spData = require('./../data/sp.data.json')['outData'];
 
 // --- Embedding data that will be used to compute a score of an output
 // of the USE models
-const { embeddingMap } = require('./data/qna.embedding.json');
-const spEmbData = require('./data/sp.embedding.json');
+const { embeddingMap } = require('./../data/qna.embedding.json');
+const spEmbData = require('./../data/sp.embedding.json');
 const spEmbeddingMap = spEmbData['embeddingMap'];
 
 // --- Initialize variables for models

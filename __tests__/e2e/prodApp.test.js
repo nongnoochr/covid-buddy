@@ -2,25 +2,28 @@
 // % node index.js
 
 // Needs to be higher than the default Playwright timeout
-jest.setTimeout(40 * 1000)
+jest.setTimeout(40 * 1000);
 
 const { chromium, firefox, webkit, devices } = require("playwright");
 
+// https://github.com/microsoft/playwright/blob/main/packages/playwright-core/src/server/deviceDescriptorsSource.json
 const deviceList = [
-    'Galaxy S8',
-    'iPad Mini landscape',
-    'iPhone 12',
-    'Pixel 2 XL',
-    'Desktop Safari',
+    // 'Galaxy S8',
+    // 'iPad Mini landscape',
+    // 'iPhone 12',
+    // 'Pixel 2 XL',
+    // 'iPhone 13',
+    // 'iPhone 13 landscape',
+    // 'Desktop Safari',
+    // 'Dekstop Edge',
+    // 'Desktop Firefox',
     'Desktop Chrome',
-    'Dekstop Edge',
-    'Desktop Firefox',
 ];
 
 describe.each([
     [chromium.name(), chromium],
-    [firefox.name(), firefox],
-    [webkit.name(), webkit],
+    // [firefox.name(), firefox],
+    // [webkit.name(), webkit],
 ])('test on %p', (_browserName, browserType) => {
 
     let newBrowser;
@@ -29,7 +32,7 @@ describe.each([
         newBrowser = await browserType.launch();
         // // For debugging
         // newBrowser = await browserType.launch({
-        //     // slowMo: 250,
+        //     slowMo: 250,
         //     headless: false
         // });
     });

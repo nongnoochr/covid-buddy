@@ -87,7 +87,7 @@ $ yarn run start
 ```
 Note again that an internet connection is required in order to import `'@tensorflow-models/universal-sentence-encoder'` during the initialization of the serer
 
-##### To start the App's server
+##### To start the App's client
 
 cd to the `./client` folder use the following command to start the client app
 

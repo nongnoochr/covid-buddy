@@ -36,7 +36,9 @@ const getFAQResponseById = async (id) => {
 const getResponse = async (inputQuery) => {
 
     try {
-        const res = await axios.get(`/getqnaresponse?msg=${inputQuery}`)
+        const res = await axios.post('/getqnaresponse', {
+            msg: inputQuery
+        });
         return res.data;
     } catch(err) {
         return [];

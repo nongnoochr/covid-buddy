@@ -1,17 +1,17 @@
-const express = require( 'express' );
-const fs = require( 'fs' );
 const path = require( 'path' );
+const express = require( 'express' );
 const cors = require('cors');
-const timeout = require('connect-timeout');
-var bodyParser = require('body-parser');
 
-const {startService, getFAQQuestions,  getFAQResponseById, getResponse } = 
-    require('./server/QnAService');
+const { startService } = require('./server/src/QnAService');
+const router = require('./server/src/routes/main');
 
 // ------------
 
 // create express application
 const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // allows/disallows cross-site communication
 app.use(cors());
@@ -42,65 +42,7 @@ app.use('/images', express.static(path.resolve( __dirname, 'client/build/images'
 // console.log('pathStatic: ', pathStatic);
 // app.use(express.static(pathStatic));
 
-// https://help.heroku.com/AXOSFIXN/why-am-i-getting-h12-request-timeout-errors-in-nodejs
-// https://github.com/expressjs/timeout 
-function haltOnTimedout (req, res, next) {
-    if (!req.timedout) next()
-  }
-
-app.get('/getfaqquestions', timeout('120s'), bodyParser.json(), haltOnTimedout, async (req, res, next) => {
-
-    try {
-        const category = req.query.category || 'All' ;
-        const faqquestions = getFAQQuestions(category);
-        res.send(faqquestions);
-    } catch(err) {
-        return next(err)
-    }
-});
-
-app.get('/getfaqresponse', timeout('120s'), bodyParser.json(), haltOnTimedout, async (req, res, next) => {
-
-    const id = req.query.id || -1;
-
-    try {
-        const faqresponse = await getFAQResponseById(id);
-        res.send(faqresponse);
-
-    } catch(err) {
-        return next(err)
-    }
-
-});
-
-app.get('/getqnaresponse', timeout('120s'), bodyParser.json(), haltOnTimedout, async (req, res, next) => {
-
-    const msg = req.query.msg || '';
-    let ansRes = null;
-    if (msg) {
-        try {
-            ansRes = await getResponse(msg);
-            res.send(ansRes);
-        } catch(err) {
-            return next(err)
-        }
-    }
-});
-
-// for any other requests, send `index.html` as a response
-app.use( '*', ( req, res ) => {
-
-    // read `index.html` file
-    let indexHTML = fs.readFileSync( path.resolve( __dirname, 'client/build/index.html' ), {
-        encoding: 'utf8',
-    } );
-
-    // set header and status
-    res.contentType( 'text/html' );
-    res.status( 200 );
-
-    return res.send( indexHTML );
-} );
+app.use(router);
 
 // -------------
 const startApp = async () => {

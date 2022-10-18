@@ -8,13 +8,13 @@ import {
 
 jest.mock('axios');
 
-describe('tQnAService', () => {
+describe('Test QnAService', () => {
 
     afterEach(() => {
         jest.resetAllMocks();
     });
 
-    it('getFAQQuestions should fetch an appropriate data', async () => {
+    test('getFAQQuestions should fetch an appropriate data', async () => {
 
         const rawRes = { data: [
             { category: 'mno' }, 
@@ -54,7 +54,7 @@ describe('tQnAService', () => {
 
     });
 
-    it('getFAQResponseById should fetch an appropriate data', async () => {
+    test('getFAQResponseById should fetch an appropriate data', async () => {
 
         const expRes = { data: 'mockedData' };
         axios.get.mockResolvedValue(expRes);
@@ -66,10 +66,10 @@ describe('tQnAService', () => {
         expect(axios.get).toHaveBeenCalledWith(`/getfaqresponse?id=${myId}`);
     });
 
-    it('getResponse should fetch an appropriate data', async () => {
+    test('getResponse should fetch an appropriate data', async () => {
 
         const expRes = { data: 'mockedData' };
-        axios.get.mockResolvedValue(expRes);
+        axios.post.mockResolvedValue(expRes);
 
 
         // --- Call getResponse with a valid query
@@ -78,8 +78,8 @@ describe('tQnAService', () => {
 
         expect(actRes).toEqual(expRes.data);
 
-        const getExpApi = query => `/getqnaresponse?msg=${query}`;
-        expect(axios.get).toHaveBeenCalledWith(getExpApi(myQuery));
+        const getExpApi = '/getqnaresponse';
+        expect(axios.post).toHaveBeenCalledWith(getExpApi, {msg: myQuery});
 
         // --- Call getResponse and a reject GET request is called
         // An empty array should be returned
@@ -91,7 +91,7 @@ describe('tQnAService', () => {
         const actResReject = await getResponse(myQuery);
 
         expect(actResReject).toEqual([]);
-        expect(axios.get).toHaveBeenCalledWith(getExpApi(myQuery));
+        expect(axios.post).toHaveBeenCalledWith(getExpApi, {msg: myQuery});
 
     });
 });

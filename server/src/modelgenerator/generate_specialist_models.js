@@ -24,7 +24,7 @@ for (const [curSP, curSentences] of Object.entries(specialistToSentencesMap)) {
     curSentences.forEach(item => outData[item] = curSP);
 }
 
-fs.writeFileSync('./data/sp.data.json', JSON.stringify({
+fs.writeFileSync('./../../data/sp.data.json', JSON.stringify({
     outData,
 }));
 
@@ -48,7 +48,7 @@ async function generateModel() {
         embeddingMap[curSentence] = embedding.arraySync()[0];
     }));
 
-    fs.writeFileSync('./data/sp.embedding.json', JSON.stringify({
+    fs.writeFileSync('./../../data/sp.embedding.json', JSON.stringify({
         embeddingMap,
     }));
 

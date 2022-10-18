@@ -6,7 +6,7 @@ module.exports = {
   // exitOnPageError: false, // GitHub currently throws errors
 
   // // --- Find a list of devices below
-  // // https://github.com/microsoft/playwright/blob/master/src/server/deviceDescriptorsSource.json
+  // // https://github.com/microsoft/playwright/blob/main/packages/playwright-core/src/server/deviceDescriptorsSource.json
 
   // devices: [
 
@@ -24,19 +24,20 @@ module.exports = {
   // ],
   // useDefaultBrowserType: true,
 
+  // To enable debugging - update launch.json in vscode
   // // --- For debugging
   // launchOptions: {
   //   slowMo: 250,
   //   headless: false,
   // },
 
-  // -------------
-  // Server needs to be started before running e2e tests
-  // Cannot set this option in the test file
-  // See https://github.com/playwright-community/jest-playwright/issues/446
-  serverOptions: {
-    command: 'node index.js',
-    port: 8080,
-    launchTimeout: 300000,
-  }
+  // // -------------
+  // // Server needs to be started before running e2e tests
+  // // Cannot set this option in the test file
+  // // See https://github.com/playwright-community/jest-playwright/issues/446
+  // serverOptions: {
+  //   command: 'node index.js',
+  //   port: 8080,
+  //   launchTimeout: 300000,
+  // }
 };

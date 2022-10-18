@@ -21,7 +21,7 @@ describe('tApp', () => {
       <Router history={history}>
         <App />
       </Router>,
-    )
+    );
 
     // NavBar
     expect(screen.queryByTestId('nav-item-askbuddy')).toBeInTheDocument();

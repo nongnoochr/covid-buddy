@@ -1,8 +1,8 @@
-const { zipWith } = require('../../server/Utils');
+const { zipWith } = require('../Utils');
 
 describe('tUtils', () => {
 
-    it('zipWith should return an appropriate output', () => {
+    test('zipWith should return an appropriate output', () => {
 
         const myFcn = (a, b) => [a, b];
 
